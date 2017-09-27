@@ -1,0 +1,119 @@
+\documentclass[a4paper,portrait,columns=2]{cheatsheet}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\title{Probability and Statistics}
+\author{Matthew Scicluna\\\href{mailto:matthew.scicluna@umontreal.ca}{matthew.scicluna@umontreal.ca}}
+\begin{document}
+
+\maketitle
+
+
+\section{Probability Vs Statistics}
+\textbf{Probability}: Given Model, how likely is Data? $\rightarrow$ Well-formed since these are Mathematical questions.\\
+\textbf{Statistics}: Given Data, how likely is Model? $\rightarrow$ Ill-formed since many Models can create the same data!
+
+\begin{center}
+	\begin{tikzpicture}[-latex, auto, node distance = 3cm and 3cm, on grid, semithick,
+	state/.style ={circle, top color = white, draw, text = black, minimum width=2.5cm}]
+	\node (A) {\textbf{Model}};
+	\node (B) [right = of A] {\textbf{Data}};
+	
+	\draw [->, out=60, in=120] (A.north) to node[above]{Probability}  (B.north);
+	\draw [->, out=-120, in=-60] (B.south) to node[below]{Statistics (ill-defined)} (A.south);
+	\end{tikzpicture}
+\end{center}
+
+\section{Probability Space}
+\textbf{Probability Space}: a triple \( (\Omega, F, P)\) consisting of:
+\begin{enumerate}
+	\item \( \Omega \) the \textbf{Sample Space}
+	\item \( F \subseteq 2^{\Omega}\) a \textbf{\(\sigma\)-algebra} on \(\Omega\) i.e.
+	\begin{enumerate}
+		\item \(\Omega \in F\)
+		\item \(E \in F \Rightarrow E^{\complement} \in F\)
+		\item \(E_1, E_2, \cdots \in F \Rightarrow\bigcup_{i=1}^{\infty} E_i \in F\)
+	\end{enumerate}
+	\item \(P\): \(F \mapsto [0,1] \) a \textbf{Probability Measure} i.e.
+	\begin{enumerate}
+		\item \(P(E) \ge 0\) for \(E \in F\)
+		\item \(P(\Omega) = 1\)
+		\item \(P \left(\bigsqcup_{i=1}^{\infty} E_i \right)\Rightarrow\sum_{i=1}^{\infty} P(E_i)\) for \(E_i \in F\)
+	\end{enumerate}
+\end{enumerate}
+
+Given \textbf{Events} \(E_i, E \in F\), $P$ also satisfies:
+\begin{enumerate}
+\item \textbf{Upward and Downward continuity} of \(P\):
+	\begin{enumerate}
+	\item \(E_i \uparrow E \Rightarrow \lim\limits_{n\to\infty} P(E_n) = P(E) \)
+	\item \(E_i \downarrow E \Rightarrow \lim\limits_{n\to\infty} P(E_n) = P(E) \)
+	\end{enumerate}
+\item \textbf{Monotonicity} of \(P\):
+        \begin{enumerate}
+        	\item \( E_i \subseteq E_j \Rightarrow P(E_i) \le P(E_j)\)
+        \end{enumerate}
+\end{enumerate}
+
+\section{Conditional Probability}
+We can compute Probabilities of Events Conditioned on other Events. \\
+\textbf{Conditional Probability} of event \(A\) on event \(B\) with \(P(B) > 0\) is:
+\begin{align*}
+P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B \mid A)P(A)}{P(B)}
+\end{align*}
+
+A set of events \(\{A_i\}\) are \textbf{Mutually Independent} if, for any n element subset of \(\{A_i\}\):
+\begin{align*}
+P \left( \bigcap_{i=1}^{n} A_i \right) = \prod_{i=1}^{n}P(A_i) 
+\end{align*}
+
+\textbf{Law of Total Probability}: Given Events \(A\) and \textbf{Partition} \(\{B_i\}\) (i.e. where \(\bigsqcup_{i=1}^{\infty} B_i = \Omega \) )
+\begin{align*}
+P(A) = \sum_{i=1}^{\infty} P(A \mid B_i)P(B_i)
+\end{align*}
+
+
+
+\section{Random Variables}
+
+A \textbf{Random Variable} is a \(\mathbb{B}\)-Measurable function \\
+X: \( (\Omega, F) \mapsto (\mathbb{R},\mathbb{B}) \)
+\begin{enumerate}
+	\item For \( A \in \mathbb{B}\) we can compute \( P(X \in A)\)
+	\item \( P(X \in A) := P(X^{-1}(A)) = P(\{ \omega \in \Omega : X(\omega) \in A \})\)
+	\item \( P(X^{-1}(\cdot)) := P_X(\cdot)\) which is called the \textbf{Push-Forward Measure} of \(P\) by \(X\) on \( \mathbb{R}\)
+	\item Hence \( X\) induces a new Probability Space \((\mathbb{R}, \mathbb{B}, P_X) \) from the original \( (\Omega, F, P)\)
+\end{enumerate}
+
+\begin{tikzpicture}[scale=0.5]
+%% \draw[help lines] (0,0) grid (12,6);
+%% \node [align=center, red] at (1, 1.5) {bla \\ bla} ;
+%% \draw [blue, thick] (6,5) rectangle (10,10);
+\draw (0,0) circle (2cm);
+\node[above] at (0,2) {$\Omega$};
+\node (o) at (0.1,.4) {};
+\draw (o) circle[radius=2pt] node[above] {$\omega$};
+\fill (o) circle[radius=2pt];
+\node at (-1,-2.8) {\emph{\small ``world of possibilities''}};
+
+\draw [->] (3,1) -- (7,1) node[right]{$\mathbb{R}$};
+\node (x) at (4.1,1) {};
+\draw (x) circle[radius=2pt] node[below] {$X(\omega)$};
+\fill (x) circle[radius=3pt];
+\draw [->, green!70!black] (o) to [bend left=30] node[midway, above, red] {$X$} (x);
+
+\draw [->] (3,-1) -- (7,-1) node[right]{$\mathbb{R}$};
+\node (y) at (6.2,-1) {};
+\draw (y) circle[radius=2pt] node[above] {$Y(\omega)$};
+\fill (y) circle[radius=3pt];
+\draw [->, thin] (o) to [bend right=40] (y);
+\node at (6,-2.5) {\emph{\small ``measurements''}};
+\end{tikzpicture}
+
+Continuous Random Variables test
+
+
+\section{Moments of a Random Variable}
+
+\end{document}
