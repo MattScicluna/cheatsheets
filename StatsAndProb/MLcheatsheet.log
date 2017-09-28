@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.22)  27 SEP 2017 17:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.22)  28 SEP 2017 16:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1238,20 +1238,27 @@ LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/m/it' will be
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 119.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 119.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 147.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 147.
  (./MLcheatsheet.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 119.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 119.
-Package rerunfilecheck Info: File `MLcheatsheet.out' has not changed.
-(rerunfilecheck)             Checksum: 444E6A452E391C9813BA70A48E8803AE;289.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 119.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 147.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 147.
+
+
+Package rerunfilecheck Warning: File `MLcheatsheet.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `MLcheatsheet.out':
+(rerunfilecheck)             Before: EDC8C0B0915A608BAFFA9F188BC1605B;339
+(rerunfilecheck)             After:  F707FF011BBDD76A73E69AB98ECB3D4A;395.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 147.
  ) 
 Here is how much of TeX's memory you used:
- 28082 strings out of 494953
- 528207 string characters out of 6180977
- 599123 words of memory out of 5000000
- 30937 multiletter control sequences out of 15000+600000
+ 28099 strings out of 494953
+ 528337 string characters out of 6180977
+ 614530 words of memory out of 5000000
+ 30938 multiletter control sequences out of 15000+600000
  56875 words of font info for 38 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  55i,9n,54p,10423b,1064s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1272,10 +1279,10 @@ amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
 sy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam
 7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10
 .pfb>
-Output written on MLcheatsheet.pdf (1 page, 349167 bytes).
+Output written on MLcheatsheet.pdf (1 page, 360896 bytes).
 PDF statistics:
- 117 PDF objects out of 1000 (max. 8388607)
- 100 compressed objects within 1 object stream
- 25 named destinations out of 1000 (max. 500000)
- 53 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 141 PDF objects out of 1000 (max. 8388607)
+ 123 compressed objects within 2 object streams
+ 41 named destinations out of 1000 (max. 500000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
 

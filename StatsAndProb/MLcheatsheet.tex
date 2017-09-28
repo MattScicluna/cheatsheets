@@ -111,9 +111,37 @@ X: \( (\Omega, F) \mapsto (\mathbb{R},\mathbb{B}) \)
 \node at (6,-2.5) {\emph{\small ``measurements''}};
 \end{tikzpicture}
 
-Continuous Random Variables test
+Random Variables can be uniquely determined by their \textbf{CDF}:
+\( F_X(t) := P_X\left((-\infty,t]\right) = P(X \le t) \)
+\begin{enumerate}
+	\item Right Continuous
+	\item Non-Negative
+	\item \(\lim\limits_{t \to \infty} F_X(t) = 1, \lim\limits_{t \to -\infty} F_X(t) = 0\)
+	\item Any function satisfying above properties is the CDF for some random variable.
+\end{enumerate}
 
+Random Variables studied are usually either \textbf{Continuous} or \textbf{Discrete} (although they can be neither.)
+\begin{enumerate}
+	\item If \( F_X\) \textbf{Absolutely Continuous} then \(X\) is Continuous.
+	\begin{enumerate}
+		\item \textbf{Absolutely Continuous}: $F$ differentiable a.e. and $\exists f(x)$ s.t. $F_X(x) = \int_{-\infty}^{x} f(u) du$
+		\item \(f\) is called the $PDF$
+		\item Where $f$ is continuous, $\frac{d}{dx}F_X(x) = f(x)$
+		\item hence, $f$ is unique a.e. (may not be everywhere!)
+	\end{enumerate}
+	\item If \(Range(X)\) is countable then \(X\) is Discrete.
+	\item If \(X\) Continuous and Non-negative:	\textbf{Hazard} of X is \( \lambda(t) = \frac{f(t)}{1 - F(t)}\)
+	\begin{enumerate}
+		\item \(1 - F(t) = \exp\left(-\int_0^t \lambda(x)\,dx \right) \)
+		\item \(\lambda(t)\) interpreted as instantaneous survival rate at time t.
+		\item \( \lambda(t) = c \ \forall t \iff X \sim Exp(c) \)
+	\end{enumerate}
+\end{enumerate}
+
+\section{Random Vectors}
 
 \section{Moments of a Random Variable}
+
+\section{Convergence Theorems}
 
 \end{document}
