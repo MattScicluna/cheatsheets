@@ -7,7 +7,7 @@
 \author{Matthew Scicluna\\\href{mailto:matthew.scicluna@umontreal.ca}{matthew.scicluna@umontreal.ca}}
 \begin{document}
 
-\maketitle
+%\maketitle
 
 
 \section{Probability Vs Statistics}
@@ -125,23 +125,81 @@ Random Variables studied are usually either \textbf{Continuous} or \textbf{Discr
 	\item If \( F_X\) \textbf{Absolutely Continuous} then \(X\) is Continuous.
 	\begin{enumerate}
 		\item \textbf{Absolutely Continuous}: $F$ differentiable a.e. and $\exists f(x)$ s.t. $F_X(x) = \int_{-\infty}^{x} f(u) du$
-		\item \(f\) is called the $PDF$
+		\item \(f\) is called the \textbf{PDF}
 		\item Where $f$ is continuous, $\frac{d}{dx}F_X(x) = f(x)$
 		\item hence, $f$ is unique a.e. (may not be everywhere!)
+		\item If \(X\) also Non-Negative then \textbf{Hazard} of X is \( \lambda(t) = \frac{f(t)}{1 - F(t)}\)	
+		\begin{enumerate}
+			\item \(1 - F(t) = \exp\left(-\int_0^t \lambda(x)\,dx \right) \)
+			\item \(\lambda(t)\) interpreted as instantaneous survival rate at time t.
+			\item \( \lambda(t) = c \ \forall t \iff X \sim Exp(c) \)
+		\end{enumerate}
 	\end{enumerate}
 	\item If \(Range(X)\) is countable then \(X\) is Discrete.
-	\item If \(X\) Continuous and Non-negative:	\textbf{Hazard} of X is \( \lambda(t) = \frac{f(t)}{1 - F(t)}\)
 	\begin{enumerate}
-		\item \(1 - F(t) = \exp\left(-\int_0^t \lambda(x)\,dx \right) \)
-		\item \(\lambda(t)\) interpreted as instantaneous survival rate at time t.
-		\item \( \lambda(t) = c \ \forall t \iff X \sim Exp(c) \)
+		\item \(f(x):=P(\{X=x\})\)
 	\end{enumerate}
 \end{enumerate}
 
 \section{Random Vectors}
+\textbf{Joint CDF} for \( \vec{X} = (X_1, X_2, ..., X_n)\) is \(F(t_1,...,t_n)=P(X_1 \le t_1, ..., X_n \le t_n)\)
+\begin{enumerate}
+	\item  \textbf{Marginal PDF} of \(\vec{X}_{1:p} = (X_{1}, \cdots X_{p})\) is 
+	\begin{align*}
+	f_{\vec{X}_{1:p}}\left(\vec{u}_{1:p}\right) = \int_{\vec{X}_{(p+1):n}}f_{\vec{X}}\left(\vec{u}_{1:p}, \vec{X}_{(p+1):n}\right)d\vec{X}_{(p+1):n}
+	\end{align*}
+	\item \textbf{Conditional PDF} on \(\vec{X}_{1:p}\) given \(\vec{X}_{(p+1):n}\) is 
+	\begin{align*}
+	f_{\vec{X}_{1:p} | \vec{X}_{(p+1):n}}\left(\vec{u}_{1:p}, \vec{u}_{(p+1):n}\right) =\frac{f_{\vec{X}}\left(\vec{u}_{1:p}, \vec{u}_{(p+1):n}\right)}{f_{\vec{X}_{(p+1):n}}\left(\vec{u}_{(p+1):n}\right)}
+	\end{align*}
+	\item \textbf{kth Order Statistic} \( X_{(k)}\) of \( \vec{X}\) is the kth smallest value
+	\begin{enumerate}
+		 \item \( f_{X_{(1)}}(u) = \sum_{i=1}^n f_{X_i}(u)\prod_{j \ne i}(1 - F_{X_j}(u))\)
+		\item \( f_{X_{(n)}}(u)=\sum_{i=1}^n f_{X_i}(u)\prod_{j \ne i}F_{X_j}(u)\)
+	\end{enumerate}
+\end{enumerate}
+
 
 \section{Moments of a Random Variable}
+\(\mathbb{E}_X(X^r) := \mathbb{E}(X^r)\) is the \textbf{\(r\)th Moment} of \(X\) under the distribution of \(X\)
+\begin{enumerate}
+	\item \(\mathbb{E}(X) = \int_0^\infty 1 - F_X(t)\,dt - \int_{-\infty}^0 F_X(t)\,dt\)
+	\item If \(X\) Continuous, \(\mathbb{E}(X) = \int_{-\infty}^{\infty} t \cdot f_X(t)\,dt\)
+	\item \textbf{LOTUS}: \(\mathbb{E}(g(X)) = \int_{-\infty}^{\infty} g(t) \cdot f_X(t)\,dt\)
+\end{enumerate}
+Can generate Moments using the \textbf{MGF} of \(X\): \( M_X(t) = \mathbb{E} \left(\exp(Xt) \right) \), if \( \exists \epsilon >0 \) s.t. \( \forall |t| < \epsilon\),  \(M_X(t) < \infty \)
+\begin{enumerate}
+	\item \( \exists \epsilon >0 \) s.t. \( \forall |t| < \epsilon\),  \(M_X(t) = M_Y(t) \Rightarrow X\) and \(Y\) have same distribution
+	\item \(\mathbb{E}(|X^r|) = \left.\frac{\partial^r}{\partial^r t}M_X(t)\right\rvert_{t=0}\), if \(M_X\) exists.
+	\item If \(\{ X_i\}\) independent RVs, then \( M_{\sum X_i} (t) = \prod M_{X_i}(t)\)
+	\item Moments most commonly analyzed are:
+	\begin{enumerate}
+		\item \textbf{Mean} of \(X\): \(\mathbb{E}(X):=\mu_X\)
+		\item \textbf{Variance} of \(X\): \(Var(X)=\mathbb{E}((X-\mu_{X})^2)=\sigma^2_{X}\)
+	\end{enumerate}
+\end{enumerate}
+If \(X\) and \(Y\) are Random Variables on the same Probability Space
+\begin{enumerate}
+	\item \textbf{Law of Total Expectation}: If \(\mathbb{E}(|X|)<\infty\) \(\mathbb{E}(X)=\mathbb{E}_{Y}(\mathbb{E}_{X \mid Y}(X \mid Y))\)
+	\item \textbf{Law of Total Variance}: If \(Var(X)<\infty\)
+	\(Var(X)=\mathbb{E}(Var(X \mid Y))+Var(\mathbb{E}(X \mid Y))\)
 
-\section{Convergence Theorems}
+\end{enumerate}
+
+For random vectors we have
+
+\section{Notes}
+\begin{enumerate}
+	\item Continuity of \(X\) as a function has nothing to do with its continuity as a Random Variable (which depends on the absolute continuity of its CDF) \cite{976739}
+
+	\item \(\mathbb{E}(|X|)<\infty\) iff \(\mathbb{E}(X)\) exists, by the definition of lebesgue integrability and the measurability of \(X\)
+\end{enumerate}
+
+\newpage
+
+\bibliography{prob_cs}
+\bibliographystyle{ieeetr}
+
+
 
 \end{document}
