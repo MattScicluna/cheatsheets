@@ -2,6 +2,14 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.pathreplacing}
+
+\usepackage{bbm}
+\usepackage{graphicx}
+\usepackage{xcolor} % For color
+\usepackage{subcaption}
+\usepackage{booktabs}
 
 \title{Probability and Statistics}
 \author{Matthew Scicluna\\\href{mailto:matthew.scicluna@umontreal.ca}{matthew.scicluna@umontreal.ca}}
@@ -26,6 +34,12 @@
 	\node at (1.5,-0.4) {data};
 	\end{tikzpicture}
 \end{center}
+
+There are two interpretations for what the Probability of an Event means:
+\begin{enumerate}
+	\item \textbf{Frequentists}: \emph{limiting frequency} of the Event
+	\item \textbf{Bayesians}: \emph{subjective belief} that the Event occurs
+\end{enumerate}
 
 \section{Probability Space}
 \textbf{Probability Space}: a triple \( (\Omega, F, P)\) consisting of:
@@ -65,9 +79,9 @@ We can compute Probabilities of Events Conditioned on other Events. \\
 P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B \mid A)P(A)}{P(B)}
 \end{align*}
 
-A set of events \(\{A_i\}\) are \textbf{Mutually Independent} if, for any n element subset of \(\{A_i\}\):
+A set of events \(\{A_i\}\) are \textbf{Mutually Independent} if, for any subset of \(\{A_j\}_{j\in k}\):
 \begin{align*}
-P \left( \bigcap_{i=1}^{n} A_i \right) = \prod_{i=1}^{n}P(A_i) 
+P \left( \bigcap_{j\in k} A_j \right) = \prod_{j\in k}P(A_j) 
 \end{align*}
 
 \textbf{Law of Total Probability}: Given Events \(A\) and \textbf{Partition} \(\{B_i\}\) (i.e. where \(\bigsqcup_{i=1}^{\infty} B_i = \Omega \) )
@@ -117,10 +131,12 @@ Random Variables can be uniquely determined by their \textbf{CDF}:
 	\item Right Continuous
 	\item Non-Negative
 	\item \(\lim\limits_{t \to \infty} F_X(t) = 1, \lim\limits_{t \to -\infty} F_X(t) = 0\)
-	\item Any function satisfying above properties is the CDF for some random variable.
 \end{enumerate}
+Any function satisfying above properties is the CDF for some random variable.
 
-Random Variables studied are usually either \textbf{Continuous} or \textbf{Discrete} (although they can be neither.)
+\hfill
+
+Random Variables studied are usually either \textbf{Continuous} or \textbf{Discrete} (they can also be \textbf{Singular} or \textbf{Mixed}).
 \begin{enumerate}
 	\item If \( F_X\) \textbf{Absolutely Continuous} then \(X\) is a Continuous RV.\hyperref[sec:ft3]{$^3$}
 	\begin{enumerate}
@@ -135,13 +151,15 @@ Random Variables studied are usually either \textbf{Continuous} or \textbf{Discr
 			\item \( \lambda(t) = c \ \forall t \iff X \sim Exp(c) \)
 		\end{enumerate}
 	\end{enumerate}
-	\item If \(Range(X)\) is countable then \(X\) is Discrete.
+	\item If \(X(\Omega)\) is countable then \(X\) is Discrete.
 	\begin{enumerate}
 		\item \(f(x):=P(\{X=x\})\)
 		\item analogously, $F_{X}(t) = \sum_{i=0}^{t}f(i)$\hyperref[sec:ft4]{$^4$}
 		\item \(f\) is called the \textbf{PMF}
 	\end{enumerate}
 \end{enumerate}
+
+\newpage
 
 \section{Random Vectors}
 \textbf{Joint CDF} for \( \vec{X} = (X_1, X_2, ..., X_n)\) is \(F(t_1,...,t_n)=P(X_1 \le t_1, ..., X_n \le t_n)\)
@@ -163,7 +181,7 @@ Random Variables studied are usually either \textbf{Continuous} or \textbf{Discr
 
 
 \section{Moments of a Random Variable}
-\(\mathbb{E}_X(X^r) := \mathbb{E}(X^r)\) is the \textbf{\(r\)th Moment} of \(X\) under the distribution of \(X\)
+\(\mathbb{E}_X(X^r) := \mathbb{E}(X^r)\) is the textbf{\(r\)th Moment} of \(X\) under the distribution of \(X\)
 \begin{enumerate}
 	\item \(\mathbb{E}(X) = \int_0^\infty 1 - F_X(t)\,dt - \int_{-\infty}^0 F_X(t)\,dt\)
 	\item If \(X\) Continuous, \(\mathbb{E}(X) = \int_{-\infty}^{\infty} t \cdot f_X(t)\,dt\)
@@ -186,7 +204,7 @@ Moments most commonly analyzed are:
 For random vectors \(\vec{X}\) we have:
 \begin{enumerate}
 	\item \(\mathbb{E}(\vec{X}) = [\mathbb{E}(X_1), \cdots, \mathbb{E}(X_n)]=\vec{\mu}\)
-	\item \(Cov(\vec{X})= \mathbb{E}[(\vec{X}-\vec{\mu})(\vec{X}-\vec{\mu})^T] = \Sigma\)
+	\item \(Cov(\vec{X})= \mathbb{E}[(\vec{X}-\vec{\mu})(\vec{X}-\vec{\mu})^\intercal] = \Sigma\)
 \end{enumerate}
 
 If \(X\) and \(Y\) are Random Variables on the same Probability Space
@@ -197,23 +215,82 @@ If \(X\) and \(Y\) are Random Variables on the same Probability Space
 \end{enumerate}
 
 \section{Parametric Family}
-A \textbf{parametric model} is a family of distributions that is defined by a fixed finite number of parameters.
+A \textbf{parametric model} is a family of distributions that is defined by a fixed finite number of parameters. Formally,
+\begin{align*}
+ \mathcal{P}_\Theta = \{ p_\theta (\cdot ; \theta) \mid \theta \in \Theta \}
+\end{align*}
 \begin{enumerate}
-	\item Formally, \(\mathcal{P}_\Theta = \{ p_\theta (\cdot ; \theta) \mid \theta \in \Theta \}\) where $p_\theta (\cdot ; \theta)$ is a possible density depending on the \textbf{Parameter} $ \theta $ and $ \Theta $ is the \textbf{Parameter Space}
-	\item
+	\item  $p_\theta (\cdot ; \theta)$ is a possible density depending on the \textbf{Parameter} $ \theta $, and $\Theta $ is the \textbf{Parameter Space}
+	\item Most important Parametric family: \textbf{Normal Distribution}:
+	\begin{enumerate}
+		\item \(X \sim \mathcal{N}_p(\mu, \Sigma)\) with \(\mu\in\mathbb{R}^p\), \(\Sigma \in \mathbb{R}^{p \times p}\) Symmetric and Positive Definite iff
+		\item  \(\forall a \in \mathbb{R}^p\) we have that \(a^\intercal x \sim \mathcal{N}_p(a^\intercal\mu, a^\intercal\Sigma a)\)
+		\item If \(\Sigma\) non-singular, \(f(x)={(2\pi)}^{-\frac{p}{2}}|\Sigma|^{-\frac{1}{2}}\exp{ \left\{-\frac{1}{2}(x-\mu)^\intercal\Sigma^{-1}(x-\mu) \right\} } \)
+	\end{enumerate}
+	\item Another important family: \textbf{Multinoulli Distribution}
+	\begin{enumerate}
+		\item $X$ is a discrete RV over $K$ choices.We encode $X$ as a \textbf{one-hot encoding}: a random vector taking values in the unit bases in $\mathbb{R}^{K}$.
+		
+		\item i.e. \(X(\Omega) = \left\{e_{1}, e_{2}, \ldots, e_{K}\right\}\) where \(e_{j} = \left(0\,\ldots\tikz[remember picture,baseline]{\node[anchor=base] (one-hot-1) {$1$};}\ldots\,0\right)^{T} \in \mathbb{R}^{K}\)
+		\tikz[overlay,remember picture]{\draw[stealth'-] (one-hot-1) -- ++(270:0.6cm) -- ++(0:1cm) node[anchor=west,inner ysep=0pt,yshift=1pt] {\scriptsize $j$\textsuperscript{th} coordinate};}
+		
+		\hfill
+		
+		\item  $\Theta = \Delta_{K}$ is the \textbf{Probability Simplex} on $K$ choices, and is given by: \(\Delta_{K} = \left\{\pi \in \mathbb{R}^{K}\ ;\ \forall j\ \pi_{j} \geq 0 \text{ and } \sum_{j=1}^{K}\pi_{j} = 1\right\}\)
+		\item \(f(x) = p(x;\pi) = \prod_{j=1}^{K}\pi_{j}^{x_{j}}\) where \(x_{j} \in \left\{0,1\right\}\) is the $j$\textsuperscript{th} component of $x$
+	\end{enumerate}
+	\item From this we get the: \textbf{Multinomial Distribution}
+	\begin{enumerate}
+		\item \(X = \sum_{i=1}^{n}X_{i}\) where each \(X_i\) are IID multinoulli with same parameter \(\pi\).
+		\item \(X(\Omega) = \left\{(n_{1},\ldots,n_{K})\ ;\ \forall j\ n_{j} \in \mathbb{N} \text{ and } \sum_{j=1}^{K}n_{j} = n\right\}\)
+	\end{enumerate}
 \end{enumerate}
 
-\section{Asymptotic Results}
+\section{Statistical Decision Theory}
+
+\section{Maximum Likelihood Estimation}
+Given some data $x_1, \cdots, x_n$. We want to infer the model which generated the data.
+
+\textbf{Likelihood Function} for some IID observations , coming from a Parametric model is denoted as $\mathcal{L}(\theta)$:
+\begin{align*}
+\mathcal{L}(\theta) = p(x_{1},\ldots,x_{n};\theta) = \prod_{i=1}^{n}p(x_{i};\theta)
+\end{align*}
+
+\section{Bayesian Statistics}
+
+The Bayesian approach is very simple philosophically: it treats all uncertain quantities as random variables.
+$$ p(\theta \mid X = x) = \frac{p(x \mid \theta) p(\theta)}{p(x)} $$
+where,
+\begin{itemize}
+	\item[] $ p(\theta \mid X = x) $ is the \emph{posterior belief}, 
+	\item[] $ p(x \mid \theta) $ is the \emph{likelihood} or the observation model, 
+	\item[] $ p(\theta) $ is the \emph{prior belief} and 
+	\item[] $ p(x) $ is the \emph{normalization} or ''marginal likelihood''
+\end{itemize}
+
+%	\begin{table*}
+%		\caption {Common Parametric Families} \label{tab:title} 
+%		\begin{center}		
+%			\begin{tabular}{*8l}   
+%				\toprule
+%			Family & \(p(x \mid \theta)\) & \(\mu_X\)& \(\sigma^2_{X}\)& \(X(\Omega)\)& \(\Theta\) & Notes \\\midrule
+%			Multinoulli & \(\prod_{j=1}^{K}\theta_j^{x_j}\) & \(\theta \) & \(\theta(1-\theta) \) & \(\{1, \cdots, k\}\)& \(\Delta_k\)& \\ 
+%			Multinomial	&  &  &  \\
+%				&  &  &  \\\bottomrule
+%				\hline
+%			\end{tabular}
+%		\end{center}
+%	\end{table*}
+
+\newpage
 
 \section{Notes}
 \begin{enumerate}
 	\item \label{sec:ft1} For some \(\Omega\) we cannot use \(2^{\Omega}\) as a \(\sigma\)-algebra since this may contain sets which do not satisfy all of the axioms. See \cite{Rosenthal2006} for an example.
 	\item \label{sec:ft2} Where $\mathbb{B}$ is the \textbf{Borel \(\sigma\)-algebra}: the smallest \(\sigma\)-algebra containing all the open intervals. This must contain all intervals of the form \((-\infty, x]\), and since \(X\) measurable \(\Rightarrow\) \(F_X\) guarenteed to exist.
 	\item \label{sec:ft3} Continuity of \(X\) as a function on \(\Omega\) has nothing to do with its continuity as a Random Variable (which depends on the absolute continuity of its CDF) \cite{976739}
-	\item \label{sec:ft4} Taking \(P\) to be the \textbf{Counting Measure}, it can be shown that the Lebesgue integral is this sum.
+	\item \label{sec:ft4} For Discrete RVs, taking \(P\) to be the \textbf{Counting Measure} and \(F=2^{\Omega}\), it can be shown that Lebesgue integrals are sums. Throughout this cheatsheet whenever we display integrals the reader can replace these with sums as needed.
 \end{enumerate}
-
-\newpage
 
 \bibliography{prob_cs}
 \bibliographystyle{ieeetr}
