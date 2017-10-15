@@ -185,7 +185,7 @@ Random Variables studied are usually either \textbf{Continuous} or \textbf{Discr
 \begin{enumerate}
 	\item \(\mathbb{E}(X) = \int_0^\infty 1 - F_X(t)\,dt - \int_{-\infty}^0 F_X(t)\,dt\)
 	\item If \(X\) Continuous, \(\mathbb{E}(X) = \int_{-\infty}^{\infty} t \cdot f_X(t)\,dt\)
-	\item \textbf{LOTUS}: \(\mathbb{E}(g(X)) = \int_{-\infty}^{\infty} g(t) \cdot f_X(t)\,dt\)
+	\item \textbf{LOTUS}: \(\mathbb{E}(g(X)) = \int_{-\infty}^{\infty} g(t) \cdot f_X(t)\,dt\)\hyperref[sec:ft5]{$^5$}
 	\item Moments need not exist! (i.e. \(E(|X^r|)=\pm\infty\) )
 \end{enumerate}
 Can generate Moments using the \textbf{MGF} of \(X\): \( M_X(t) = \mathbb{E} \left(\exp(Xt) \right) \), if \( \exists \epsilon >0 \) s.t. \( \forall |t| < \epsilon\),  \(M_X(t) < \infty \)
@@ -214,8 +214,8 @@ If \(X\) and \(Y\) are Random Variables on the same Probability Space
 	\(Var(X)=\mathbb{E}(Var(X \mid Y))+Var(\mathbb{E}(X \mid Y))\)
 \end{enumerate}
 
-\section{Parametric Family}
-A \textbf{parametric model} is a family of distributions that is defined by a fixed finite number of parameters. Formally,
+\section{Parametric Model}
+A \textbf{Parametric model} is a family of distributions that is defined by a fixed finite number of parameters\hyperref[sec:ft6]{$^6$}. Formally,
 \begin{align*}
  \mathcal{P}_\Theta = \{ p_\theta (\cdot ; \theta) \mid \theta \in \Theta \}
 \end{align*}
@@ -247,6 +247,32 @@ A \textbf{parametric model} is a family of distributions that is defined by a fi
 \end{enumerate}
 
 \section{Statistical Decision Theory}
+
+A general theory for using Statistics to make decisions under uncertainty. Specifically, given data \(D \in \mathcal{D}\), \(D \sim P\) for \(P\in \mathcal{P}\)\hyperref[sec:ft7]{$^7$} and set of possible actions \(\mathcal{A}\). Note: \(\Theta\) can be used as \(\mathcal{P}\) if using a Parametric family, in which case \(P := P_{\theta}\).
+ \begin{enumerate}
+ 	\item Our \textbf{Decision Rule} is represented by \(\delta: \mathcal{D} \mapsto \mathcal{A}\)
+ 	\item The \textbf{Loss} (cost) of doing an action is given by \(L: \mathcal{P} \times \mathcal{A} \mapsto \mathbb{R}\)
+ 	\item To compare different \(\delta\)'s, can look at the (Frequentist) \textbf{Risk} \(R(P,\delta)=E_{D\sim P}[L(P,\delta(D))]\). Problem: Risk of any \(\delta\) changes with \(P\), so must account for this unless \(\delta\) is Admissible.
+ 	\begin{enumerate}
+	 	\item \(\delta_1\) \textbf{Dominates} \(\delta_2\) (for given loss function \(L\)) if $$R(P,\delta_1)\leq R(P,\delta_2) \forall P \in \mathcal{P}\ and$$
+	 	$$\exists P \in \mathcal{P},\ R(P,\delta_1) < R(P, \delta_2)$$
+	 	\item We say that a decision rule $\delta$ is \textbf{Admissible} if $\nexists \delta_0$ s.t. $\delta_0$ dominates $\delta$. 
+	\end{enumerate}
+	\item If no \(\delta\) is Admissible must use a critereon to decide on the optimal one. For Parametric Models:
+ 	\begin{enumerate}
+ 		\item \textbf{Minimax Criteria}: Optimal \(\delta\) minimizes Risk in worst case scenerio 
+ 		$$\delta_{minimax} = \,\min\limits_{\delta}\,\max\limits_{P \in \mathcal{P}}\ R(P,\delta)$$
+ 		\item Add a \textbf{Weighting} \(\pi\) over $\Theta$ (can be interpreted as a Prior)
+ 		$$\delta_{weight}= \text{arg}\,\min\limits_{\delta}\,\int_{\Theta}^{}R(P_\theta,\delta)\pi(\theta)d\theta$$
+ 		\item \textbf{Bayesian Statistical Decision Theory}: Minimize
+ 		$$\delta_{bayes}(D)= \text{arg}\,\min\limits_{\delta}\,R_B(\delta|D)$$ where $R_B(\delta|D) = \int_{\Theta}^{}L(P_{\theta},\delta)p(\theta|D)d\theta$
+ 		\begin{enumerate}
+ 			\item $p(\theta|D)$ is the posterior for a given prior $\pi(\theta)$.
+ 			\item \(\delta\) chosen this way is optimal for the given \(D\), since any uncertainty (\(\theta\)) is integrated out!
+ 			\item \(\delta_{bayes}=\delta_{weight}\) if we set \(\pi\) as the prior for \(\Theta\).
+ 		\end{enumerate}
+ 	\end{enumerate}
+\end{enumerate}
 
 \section{Maximum Likelihood Estimation}
 Given some data $x_1, \cdots, x_n$. We want to infer the model which generated the data.
@@ -290,6 +316,9 @@ where,
 	\item \label{sec:ft2} Where $\mathbb{B}$ is the \textbf{Borel \(\sigma\)-algebra}: the smallest \(\sigma\)-algebra containing all the open intervals. This must contain all intervals of the form \((-\infty, x]\), and since \(X\) measurable \(\Rightarrow\) \(F_X\) guarenteed to exist.
 	\item \label{sec:ft3} Continuity of \(X\) as a function on \(\Omega\) has nothing to do with its continuity as a Random Variable (which depends on the absolute continuity of its CDF) \cite{976739}
 	\item \label{sec:ft4} For Discrete RVs, taking \(P\) to be the \textbf{Counting Measure} and \(F=2^{\Omega}\), it can be shown that Lebesgue integrals are sums. Throughout this cheatsheet whenever we display integrals the reader can replace these with sums as needed.
+	\item \label{sec:ft5} To be explicit, can write \(\mathbb{E}_{X \sim f}[g(x)]=\int g(x)f(x)dx\)
+	\item \label{sec:ft6} Note: Models with infinite sized \(\Theta\) are called \textbf{Non Parametric}.
+	\item \label{sec:ft7} Often $P$ will describe an IID process, e.g. $D = (X_1,...,X_n)$ where $X_i \overset{iid}\sim P_0$. In this case, the loss is usually written w.r.t $P_0$ instead of $P$.
 \end{enumerate}
 
 \bibliography{prob_cs}
