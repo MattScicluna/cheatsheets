@@ -1,0 +1,132 @@
+\documentclass[a4paper, columns=2, hidelinks]{cheatsheet}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+% formatting
+\usepackage{fullpage}
+\usepackage{tasks}
+
+% Theorems, Definitions
+\usepackage{amsthm, amsmath}
+\usepackage[most]{tcolorbox}
+\usepackage{framed}
+
+% section
+\newtcbtheorem{Section}{Section}{
+	enhanced,
+	sharp corners,
+	boxrule=0pt,
+	toprule=1pt,bottomrule=0pt,
+	left=0.2cm,right=0.2cm,top=0.2cm,
+	titlerule=0.5em,
+	toptitle=0.1cm,
+	bottomtitle=-0.1cm,
+	attach boxed title to top left={yshift=-2mm},
+	colback=white,
+	colframe=black!50,
+	fonttitle=\bfseries,
+	boxed title style={
+		size=small,
+		colback=black!50,
+		colframe=black!50,
+	} 
+}{thm}
+
+% Proposition
+\newtheoremstyle{mystyle}
+{\topsep}%
+{\topsep}%
+{\itshape}%
+{}%
+{\bfseries}
+{.}
+{.5em}%
+{\thmname{#1}~\thmnumber{#2}\thmnote{ (#3)}}%
+\theoremstyle{mystyle}
+\newtheorem{proposition}{Proposition}
+
+%  Make title
+\title{Probabilistic Graphical Models Notes}
+
+%  Make narrow margins
+\newgeometry{margin=0.15in}
+
+% For lists
+\usepackage{enumitem}
+
+\begin{document}
+
+\onecolumn
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}
+\setlength{\belowdisplayshortskip}{0pt}
+\setlength{\jot}{0pt}
+
+\maketitle
+
+\begin{Section}{Background}{}
+	\begin{enumerate}[noitemsep, label={}, leftmargin=*]
+	\item\textbf{Conditional Independence}: Given RVs $X, Y, Z$ we say that $X 	\perp Y \mid Z$ iff $P(X, Y| Z) = P(X \mid Z)P(Y \mid Z)$
+	\item \bfseries  \normalfont Useful properties:
+		\begin{tasks}(2)
+			\task Decomposition: $X \perp Y,Z \mid W \Rightarrow 
+			\begin{cases}
+			X \perp Y \mid Z \\
+			X \perp Y \mid W
+			\end{cases}$
+			\task
+		\end{tasks}
+	\item An ordering \(I: v \mapsto \{1,\cdots,n\}\) is \textbf{Topological} iff \(j \in \pi_i \Rightarrow I(j) < I(i)\) \emph{i.e. parents always come before their children}
+	\item If \(G\) is a DAG, then \(\exists\) a Topological Ordering on \(G\)
+	\end{enumerate}
+\end{Section}
+
+\begin{Section}{Directed Graphical Models}{}
+Given DAG \(G=(V,E)\)\\
+\(\mathcal{L}(G)=\left\{p \text{ is a dist over } x_v : \exists \text{ factors } f_i \text{ s.t. } p(x_v) = \prod_{i=1}^n f_i(x_i; x_{\pi_i}) \text{ and } f_i \text{ satisfies: } \begin{array}{lll}
+ f_i>0 \\
+ \sum_{x_i}f_i(x_i; x_{\pi_i}) = 1 \\
+ f_i: Dom(x_i)^2 \mapsto [0,1]
+\end{array}
+\right\} \)
+\begin{proposition}[Leaf Plucking Property]
+	if \(n\) is a leaf of \(G\), \(p(x_v)\in \mathcal{L}\left(G-\{n\}\right)\)
+\end{proposition}
+\begin{proof}
+	$P(x_v)=p(x_{1:n-1},x_n)=f_n(x_n;x_{\pi_n})\prod_{i\ne n} f_i(x_i,x_{\pi_i})$. Next marginalizing out \(x_n\) and using that it is a leaf, we have:
+	\begin{align*}p(x_{1:n-1})=\underbrace{\sum_{x_n}f_n(x_n;x_{\pi_n})}_{\text{sums to 1}}\underbrace{\prod_{i=1}^{n-1} f_i(x_i;x_{\pi_i})}_{\text{Does not contain } x_n} = \prod_{i=1}^{n-1} f_i(x_i;x_{\pi_i})
+	\end{align*}
+	So $p(x_v) \in \mathcal{L}\left(G-\{n\}\right)$ as needed.
+\end{proof}
+\begin{proposition}[Factors are Conditional PMFs]
+	Let \(p \in \mathcal{L}(G)\) and $\{f_j\}$ be a factorization, then $\forall i, P(x_i | x_{\pi_i}) = f_i(x_i;x_{\pi_i})$
+\end{proposition}
+\begin{proof}
+	WLOG let $\{1,\cdots,n\}$ be a Topological Ordering and use Theorem 1 to get that \(p(x_{1:i}) \in \mathcal{L}(G-\{i+1,\cdots,n\})\), and so \(p(x_{1:i})=\underbrace{\prod_{j=1}^{i-1} f_j(x_j;x_{\pi_j})}_{\text{Call this } g(x_{1:i-1})} f_i(x_i;x_{\pi_i})\). We partition \(\{1:i\}\) as \( \{i\}\cup \pi_i \cup A\) and get that:
+	\begin{align*}
+	p(x_i \mid x_{\pi_i})= \frac{\sum_{x_A}f_i(x_i;x_{\pi_i})g(x_{1:i-1})}{\sum_{x_A}\sum_{x'_i}f_i(x'_i;x'_{\pi_i})g(x_{1:i-1})}=\frac{f_i(x_i;x_{\pi_i})\sum_{x_A}g(x_{1:i-1})}{\sum_{x'_i}f_i(x'_i;x'_{\pi_i})\sum_{x_A}g(x_{1:i-1})}=f_i(x_i;x_{\pi_i})
+	\end{align*}
+\end{proof}
+Note: adding edges adds more distributions i.e. \(E \subseteq E'\) and \(G' = (V, E')\) then \(\mathcal{L}(G) \subseteq \mathcal{L}(G')\)
+\begin{proposition}[] 
+	\( p \in \mathcal{L}(G) \iff x_i \perp x_{nd(i)} \mid \pi_i\)
+\end{proposition}
+\begin{proof}
+	(\(\Rightarrow\))
+	(\(\Leftarrow\))
+\end{proof}
+\end{Section}
+
+
+
+
+\newpage
+
+\bibliography{prob_cs}
+\bibliographystyle{ieeetr}
+
+
+
+\end{document}
