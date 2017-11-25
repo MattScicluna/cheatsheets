@@ -11,12 +11,16 @@
 \usepackage{subcaption}
 \usepackage{booktabs}
 
+\usepackage{enumitem}
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+\newgeometry{margin=0.25in}
+
+
 \title{Probability and Statistics}
 \author{Matthew Scicluna\\\href{mailto:matthew.scicluna@umontreal.ca}{matthew.scicluna@umontreal.ca}}
 \begin{document}
 
 %\maketitle
-
 
 \section{Probability and Statistics}
 \textbf{Probability}: Given Model, how likely is Data? $\rightarrow$ Well-formed since these are Mathematical questions.\\
@@ -239,7 +243,7 @@ A \textbf{Parametric model} is a family of distributions that is defined by a fi
 		\item  $\Theta = \Delta_{K}$ is the \textbf{Probability Simplex} on $K$ choices, and is given by: \(\Delta_{K} = \left\{\pi \in \mathbb{R}^{K}\ ;\ \forall j\ \pi_{j} \geq 0 \text{ and } \sum_{j=1}^{K}\pi_{j} = 1\right\}\)
 		\item \(f(x) = p(x;\pi) = \prod_{j=1}^{K}\pi_{j}^{x_{j}}\) where \(x_{j} \in \left\{0,1\right\}\) is the $j$\textsuperscript{th} component of $x$
 	\end{enumerate}
-	\item From this we get the: \textbf{Multinomial Distribution}
+	\item From this we get the \textbf{Multinomial Distribution}
 	\begin{enumerate}
 		\item \(X = \sum_{i=1}^{n}X_{i}\) where each \(X_i\) are IID multinoulli with same parameter \(\pi\).
 		\item \(X(\Omega) = \left\{(n_{1},\ldots,n_{K})\ ;\ \forall j\ n_{j} \in \mathbb{N} \text{ and } \sum_{j=1}^{K}n_{j} = n\right\}\)
@@ -265,7 +269,7 @@ A general theory for using Statistics to make decisions under uncertainty. Speci
  		\item Add a \textbf{Weighting} \(\pi\) over $\Theta$ (can be interpreted as a Prior)
  		$$\delta_{weight}= \text{arg}\,\min\limits_{\delta}\,\int_{\Theta}^{}R(P_\theta,\delta)\pi(\theta)d\theta$$
  		\item \textbf{Bayesian Statistical Decision Theory}: Minimize
- 		$$\delta_{bayes}(D)= \text{arg}\,\min\limits_{\delta}\,R_B(\delta|D)$$ where $R_B(\delta|D) = \int_{\Theta}^{}L(P_{\theta},\delta)p(\theta|D)d\theta$
+ 		$$\delta_{bayes}= \text{arg}\,\min\limits_{\delta}\,R_B(\delta|D)$$ where $R_B(\delta|D) = \int_{\Theta}^{}L(P_{\theta},\delta)p(\theta|D)d\theta$
  		\begin{enumerate}
  			\item $p(\theta|D)$ is the posterior for a given prior $\pi(\theta)$.
  			\item \(\delta\) chosen this way is optimal for the given \(D\), since any uncertainty (\(\theta\)) is integrated out!

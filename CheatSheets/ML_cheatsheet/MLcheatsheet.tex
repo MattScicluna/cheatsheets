@@ -2,6 +2,9 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+\usetikzlibrary{shapes.misc}
+
 
 % formatting
 \usepackage{fullpage}
@@ -11,6 +14,7 @@
 \usepackage{amsthm, amsmath}
 \usepackage[most]{tcolorbox}
 \usepackage{framed}
+\usepackage{adjustbox}
 
 % section
 \newtcbtheorem{Section}{Section}{
@@ -34,17 +38,36 @@
 }{thm}
 
 % Proposition
-\newtheoremstyle{mystyle}
+\newtheoremstyle{propstyle}
 {\topsep}%
 {\topsep}%
 {\itshape}%
 {}%
 {\bfseries}
-{.}
+{}
 {.5em}%
-{\thmname{#1}~\thmnumber{#2}\thmnote{ (#3)}}%
-\theoremstyle{mystyle}
-\newtheorem{proposition}{Proposition}
+{
+{\thmname{#1}~\thmnumber{#2}\thmnote{ (#3)}}
+}
+\theoremstyle{propstyle}
+\newtheorem{proposition}{Prop}
+
+% Definition
+\newtheoremstyle{defstyle}
+{\topsep}%
+{\topsep}%
+{\itshape}%
+{}%
+{\bfseries}
+{}
+{.5em}%
+{
+{\thmname{#1}~\thmnumber{#2}\thmnote{ (#3)}}
+}
+\theoremstyle{defstyle}
+
+\newtheorem{definition}{Def}
+
 
 %  Make title
 \title{Probabilistic Graphical Models Notes}
@@ -67,30 +90,46 @@
 \maketitle
 
 \begin{Section}{Background}{}
-	\begin{enumerate}[noitemsep, label={}, leftmargin=*]
-	\item\textbf{Conditional Independence}: Given RVs $X, Y, Z$ we say that $X 	\perp Y \mid Z$ iff $P(X, Y| Z) = P(X \mid Z)P(Y \mid Z)$
-	\item \bfseries  \normalfont Useful properties:
+\begin{definition}[Conditional Independence]
+Given RVs $X, Y, Z$ we say that $X 	\perp Y \mid Z$ iff $P(X, Y| Z) = P(X \mid Z)P(Y \mid Z)$
+\end{definition}
+\bfseries  \normalfont Useful properties:
 		\begin{tasks}(2)
-			\task Decomposition: $X \perp Y,Z \mid W \Rightarrow 
+			\task Symmetry: $X \perp Y \mid Z \Rightarrow Y \perp X \mid Z$
+			\task Decomposition: $X \perp Y,W \mid Z \Rightarrow 
 			\begin{cases}
 			X \perp Y \mid Z \\
-			X \perp Y \mid W
+			X \perp W \mid Y
+			\end{cases}$ 
+			\task Weak Union: $X \perp Y,W \mid Z \Rightarrow 	
+			\begin{cases}
+			X \perp Y \mid Z, W \\
+			X \perp W \mid Z, Y
 			\end{cases}$
-			\task
+			\task Contraction: $\begin{cases}
+			X \perp Y \mid Z,W \\
+			X \perp W \mid Z
+			\end{cases}
+			\Rightarrow X \perp Y, W \mid Z
+			$
 		\end{tasks}
-	\item An ordering \(I: v \mapsto \{1,\cdots,n\}\) is \textbf{Topological} iff \(j \in \pi_i \Rightarrow I(j) < I(i)\) \emph{i.e. parents always come before their children}
-	\item If \(G\) is a DAG, then \(\exists\) a Topological Ordering on \(G\)
-	\end{enumerate}
+An ordering \(I: v \mapsto \{1,\cdots,n\}\) is \textbf{Topological} iff \(j \in \pi_i \Rightarrow I(j) < I(i)\) \emph{i.e. parents always come before their children}
+If \(G\) is a DAG, then \(\exists\) a Topological Ordering on \(G\)
+A \textbf{Forest} is a Graph s.t. each node has at most one parent
+A \textbf{Tree} is a Forest if it is connected
 \end{Section}
 
 \begin{Section}{Directed Graphical Models}{}
-Given DAG \(G=(V,E)\)\\
-\(\mathcal{L}(G)=\left\{p \text{ is a dist over } x_v : \exists \text{ factors } f_i \text{ s.t. } p(x_v) = \prod_{i=1}^n f_i(x_i; x_{\pi_i}) \text{ and } f_i \text{ satisfies: } \begin{array}{lll}
- f_i>0 \\
- \sum_{x_i}f_i(x_i; x_{\pi_i}) = 1 \\
- f_i: Dom(x_i)^2 \mapsto [0,1]
-\end{array}
-\right\} \)
+\begin{definition}[Factorization Property of DAGs]
+	Given DAG \(G=(V,E)\)\\
+	\(\mathcal{L}(G)=\left\{p \text{ is a dist over } x_v : \exists \text{ factors } f_i \text{ s.t. } p(x_v) = \prod_{i=1}^n f_i(x_i; x_{\pi_i}) \text{ and } f_i \text{ satisfies: } \begin{array}{lll}
+	f_i>0 \\
+	\sum_{x_i}f_i(x_i; x_{\pi_i}) = 1 \\
+	f_i: Dom(x_i)^2 \mapsto [0,1]
+	\end{array}
+	\right\} \)
+\end{definition}
+
 \begin{proposition}[Leaf Plucking Property]
 	if \(n\) is a leaf of \(G\), \(p(x_v)\in \mathcal{L}\left(G-\{n\}\right)\)
 \end{proposition}
