@@ -1,0 +1,174 @@
+\documentclass[]{article}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage[hidelinks]{hyperref}
+\usepackage{bbm}
+\usepackage{graphicx}
+\usepackage{xcolor} % For color
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+\begin{document}
+
+\title{Machine Learning Notes}
+\author{Matthew Scicluna}
+\maketitle
+
+\section{Why Bayesian?}
+
+Given an Event, what does the probability of that Event \emph{mean}? There are two interpretations:
+
+\begin{enumerate}
+	\item \textbf{Frequentists}: the \emph{limiting frequency} of the event
+	\item \textbf{Bayesians}: the \emph{reasonable expectation} that the event occurs
+\end{enumerate}
+
+The \emph{reasonable expectation} can be further broken down into two views. The \textbf{Objective Bayesians} view the \emph{reasonable expectation} as the \emph{state of knowledge}. They view probability as an extension of propositional logic, which is described in \cite{jaynes}. The \textbf{Subjective Bayesians} view probability as a quantification of \emph{personal belief}. The main difference between the groups is in how they choose their priors: the Subjective Bayesians use knowledge about or prior experience with model parameters, wheras the Objectivists try to introduce as little prior knowledge as possible, using noninformative priors.
+
+\subsection{Existence Of The Prior}
+We need a theoretical justification for why we assume the existence of a prior distribution on \(\theta\) when doing Bayesian statistics. The theoretical justification requires the following assumption about the data. We say a sequence of random variables \(x_1, \cdots\) are \textbf{Infinitely Exchangable} if for any \(n\), and any permutation of size \(n\) \(\pi_{1:n}\)
+\begin{equation}
+p(x_1, \cdots, x_n) = p(x_{\pi_1}, \cdots, x_{\pi_n})
+\end{equation}
+
+The \textbf{De Finetti Theorem} says that a sequence is infinitely exchangible iff for any \(n\), 
+\begin{equation}
+p(x_1, \cdots x_n) = \int\prod_{i=1}^n p(x_i|\theta)P(d\theta)
+\end{equation}
+For some measure \(P\) on \(\theta\). 
+\\
+Note: if $\theta$ has a density then $P(d\theta) = p(\theta)d\theta$. What this theory means is that given the assumption of exchangable data (and iid $\Rightarrow$ exchangable) then there must exist a \(\theta\), \(p(x|\theta)\) and distribution \(P\) on \(\theta\). Also note: \(\theta\) may be infinite!
+
+\subsection{Likelihood Principle}
+
+The \textbf{Likelihood Principle} says that all the evidence in a sample relevent to parameters \(\theta\) is contained in the likelihood function. Furthermore, two likelihood functions contain the same information about \(\theta\) if they
+are proportional to each other.\cite{slides} This principle, if you believe it, gives a good justification for Bayesianism since \(p(\theta|D) \propto P(D|\theta)P(\theta)\) (i.e. $\theta$ is being inferred from the likelihood). Frequentists do not like the Likelihood Principle as it leads to contradictions with their methodology - see the following coin tossing example \cite{MJordanNotes}.
+
+If you have trouble accepting the Likelihood Principle, it has been shown to be equivalent to two other principles:
+\begin{enumerate}
+	\item \textbf{Sufficiency Principle}: If two different observations $x$, $y$ are such that $T(x) = T(y)$ for sufficient statistic $T$, then inference based on $x$ and $y$ should be the same.
+	\item \textbf{Conditionality Principle}: If an experiment concerning inference about $\theta$ is chosen from a collection of
+	possible experiments independently, then any experiment not chosen is irrelevant to the inference.
+\end{enumerate}
+
+Of these, Sufficiency is accepted by both Frequentists and Bayesians, while the Conditionality principle is debated.
+
+
+\section{Statistical Decision Theory}
+
+\subsection{Formal Set-Up}
+
+We need a general framework to make data-driven decisions under uncertainty. More formally, we observe some \textbf{Data} \(D \in \mathcal{D}\) which comes from some \textbf{Data Generating Distribution} \(D \sim P\). Let \(P\in \mathcal{P}\)\hyperref[sec:ft1]{$^1$}, where \(\mathcal{P}\) is the set of possible distributions. Let \(\mathcal{A}\) be our set of possible actions. To determine how good an action is, we define the \textbf{Loss} (cost) of doing that action as \(L: \mathcal{P} \times \mathcal{A} \mapsto \mathbb{R}\). The goal is to determine a \textbf{Decision Rule} \(\delta: \mathcal{D} \mapsto \mathcal{A}\) which, given data, produces an action.
+
+Typically we consider \(\mathcal{P}\) as a Parametric Family of distributions, and we use \(\Theta\) interchangibly with \(\mathcal{P}\), using that \(P := P_{\theta}\).
+
+\subsection{Procedure Analysis}
+
+We need a way to assign a value to any \(\delta\) and a way to compare these values to find which one is ``best''. One such way of doing this is via the Frequentist Risk.
+
+\subsubsection{Frequentist Risk Perspective} 
+The first approach seeks to minimize the \textbf{Frequentist Risk}  
+\begin{equation}\label{eq:1}
+	R(P,\delta)=\mathbb{E}_{D\sim P}\{L(P,\delta(D))\}
+\end{equation}
+If we want to compare decision rules \(\delta_1, \delta_2\) using (\ref{eq:1}), we have to take into account \(P\), since \(R\) varies with both \(P\) and \(\delta\). Sometimes one decision rule \(\delta_1\) is better then another \(\delta_2\) regardless of \(P\), in which case we say \(\delta_1\) \textbf{Dominates} \(\delta_2\).
+More formally:
+$$R(P,\delta_1)\leq R(P,\delta_2) \forall P \in \mathcal{P}\ and$$
+$$\exists P \in \mathcal{P},\ R(P,\delta_1) < R(P, \delta_2)$$
+
+This basically means that \(\delta_1\) is a better decision rule then \(\delta_2\). Sometimes, there may be a ``best'' \(\delta\), one which isn't dominated by any other \(\delta_0\). We say \(\delta\) is \textbf{Admissible} if $\nexists \delta_0$ s.t. $\delta_0$ dominates $\delta$. Note: we should rule out inadmissible decision rules (except for simplicity or efficiency) but not necessarily accept Admissible ones!
+
+Unfortunately, different \(P\)'s usually produce different optimal \(\delta\)'s! we must take into account the unknown \(P\) when minimizing (\ref{eq:1}). One way to take this into account is to use the \textbf{Minimax Criteria}: the optimal \(\delta\) minimizes the Frequentist Risk in worst case scenerio
+
+\begin{equation}
+\delta_{minimax} = \,\min\limits_{\delta}\,\max\limits_{P \in \mathcal{P}}\ R(P,\delta)
+\end{equation}
+
+If \(\mathcal{P}\) is a Parameteric Family, we can handle the dependence of \(R\) on \(P\) by averaging it out, adding weights \(\pi\) over $\Theta$ to put more weight on certain $\theta$'s. We can then minimize over \(\delta\). This is called the \textbf{Bayes Risk}, even though it is Frequentist concept since it averages over $D$ via (\ref{eq:1}).
+\begin{equation}\label{eq:3}
+\delta_{bayes}= \text{arg}\,\min\limits_{\delta}\,\int_{\Theta}^{}R(P_\theta,\delta)\pi(\theta)d\theta
+\end{equation}
+
+Where $\delta_{bayes}$ is called the \textbf{Bayes Rule}. Note that the Bayes Rule may not exist, and when they do they may not be unique.
+
+\subsubsection{Bayesian Risk Perspective} 
+
+Note that (\ref{eq:1}) does not consider that we only observed one \(D\). We can define a Risk function that does. The \textbf{Posterior Risk} is
+\begin{equation}\label{eq:2}R_B(\delta|D) = \int_{\Theta}^{}L(P_{\theta},\delta)p(\theta|D)d\theta
+\end{equation}
+Where $p(\theta|D)$ is the posterior for a given prior $\pi(\theta)$. We can choose our decision rule based on this new risk function. This is called the \textbf{Bayes Estimator} or \textbf{Bayes Action} (not to be confused with the \textbf{Bayes Rule} above).
+
+\begin{equation}\label{eq:5}
+\delta_{post}= \text{arg}\,\min\limits_{\delta}\,R_B(\delta|D)
+\end{equation}
+
+
+Notice that in (\ref{eq:2}), we do not consider different unobserved values of \(D\), since the Bayesian would say they are irrelevent courtesy of the Conditionality Principle. For them, only the observed $D$ matters for inference. 
+Additionally, \(\theta\) is integrated out in (\ref{eq:2}), meaning that (\ref{eq:5}) gives the undisputed optimal \(\delta\)! 
+
+Note that the Frequentist can still use (\ref{eq:5}) by interpreting it as (\ref{eq:3}) with \(\pi\) as the ``true'' prior for \(\Theta\).
+We would then get that:
+\begin{align*}
+ \int_{\Theta}^{}R(P_\theta,\delta)\pi(\theta)d\theta &= \int_{\Theta}^{}\int_{D}L(P_\theta,\delta)P(D|\theta)P(\theta)dDd\theta \\&\overset{(a)}{=} \int_{D}^{}\int_{\Theta}L(P_\theta,\delta)P(\theta|D)P(D)d\theta dD\\
+&=\int_{D}^{}R_B(\delta|D)P(D)dD
+\end{align*}
+
+Where (a) is due to Fubini's theorem (provided the integral is finite).
+Therefore, a \emph{Bayes rule} can be obtained by taking the \emph{Bayes action} for each particular $D$! See \cite{PHoffNotes2} for more details.
+
+\subsubsection{Examples}
+An example of a Bayes Action is: given \(\mathcal{A} = \Theta\) and \(L(\theta,a) = ||\theta-a||^2\) we have that \(\delta_{post}(D) = \mathbb{E}\{\theta|D\}\). This is because:
+\begin{align*}
+R_B(\delta|D) &= \int_{\Theta}^{}||\theta-\delta(D)||^2p(\theta|D)d\theta \\
+&=\delta(D)^2 -2\delta(D)\int_{\Theta}^{}\theta p(\theta|D)d\theta+\int_{\Theta}^{}\theta^2 p(\theta|D)d\theta
+\end{align*}
+
+and taking the derivative and setting to 0 yields:
+\begin{align*}
+&\frac{\partial R_B}{\partial \delta} = 2\delta(D) -2\int_{\Theta}^{}\theta p(\theta|D)d\theta = 0 \\
+&\Rightarrow \delta(D) = \int_{\Theta}^{}\theta p(\theta|D)d\theta = \mathbb{E}\{\theta|D\}
+\end{align*}
+
+\subsection{Decision Theoretic Explaination}
+It can be shown that every admissible statistical procedure is either a Bayesian procedure, or a limit of Bayesian procedures. Conversely, every Bayesian procedure is admissible (see \cite{PHoffNotes}).
+
+\newpage
+
+
+
+\section{Information Theory}
+
+We want to define the \textbf{Information Content} of an event $i$ with probability $p_i$ to be a function which satisfies:
+\begin{enumerate}
+	\item I(p) is anti-monotonic in p – increases and decreases in the probability of an event produce decreases and increases in information, respectively
+\end{enumerate}
+
+I(p) ≥ 0 – information is a non-negative quantity
+I(1) = 0 – events that always occur do not communicate information
+I(p1 p2) = I(p1) + I(p2) – information due to independent events is additive
+
+\begin{equation}
+I(X=x) = -log(P(X=x))
+\end{equation}
+
+\subsection{Maximum Entropy Principle}
+\textbf{Density Estimation} - Given a Parametric Family \(\{P_{\theta}\}_{\theta\in\Theta}\) we would like to use data \(X\) to choose a \(P\) from our Family.
+
+\newpage
+
+\section{Notes}
+\begin{enumerate}
+	\item \label{sec:ft1} Often $P$ will describe an IID process, e.g. $D = (X_1,...,X_n)$ where $X_i \overset{iid}\sim P_0$. In this case, the loss is usually written w.r.t $P_0$ instead of $P$.
+\end{enumerate}
+
+\bibliography{Note1.bib}
+\bibliographystyle{ieeetr}
+
+\end{document}
