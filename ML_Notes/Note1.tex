@@ -14,6 +14,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{enumitem}
+%\usepackage{enumerate} % For lettered enumeration
 
 \begin{document}
 
@@ -121,7 +122,7 @@ We would then get that:
 \end{align*}
 
 Where (a) is due to Fubini's theorem (provided the integral is finite).
-Therefore, a \emph{Bayes rule} can be obtained by taking the \emph{Bayes action} for each particular $D$! See \cite{PHoffNotes2} for more details.
+It turns out that a \emph{Bayes rule} can be obtained by taking the \emph{Bayes action} for each particular $D$! See \cite{PHoffNotes2} for more details.
 
 \subsubsection{Examples}
 An example of a Bayes Action is: given \(\mathcal{A} = \Theta\) and \(L(\theta,a) = ||\theta-a||^2\) we have that \(\delta_{post}(D) = \mathbb{E}\{\theta|D\}\). This is because:
@@ -136,30 +137,143 @@ and taking the derivative and setting to 0 yields:
 &\Rightarrow \delta(D) = \int_{\Theta}^{}\theta p(\theta|D)d\theta = \mathbb{E}\{\theta|D\}
 \end{align*}
 
-\subsection{Decision Theoretic Explaination}
-It can be shown that every admissible statistical procedure is either a Bayesian procedure, or a limit of Bayesian procedures. Conversely, every Bayesian procedure is admissible (see \cite{PHoffNotes}).
-
 \newpage
 
 
 
 \section{Information Theory}
 
-We want to define the \textbf{Information Content} of an event $i$ with probability $p_i$ to be a function which satisfies:
+We want a function $I$ which measures how much information you learn from observing some event $E$. We want it to satisfy some properties, mainly:
+
 \begin{enumerate}
-	\item I(p) is anti-monotonic in p – increases and decreases in the probability of an event produce decreases and increases in information, respectively
+	\item Highly probable $E$ have low $I(E)$ and conversely $\rightarrow$ \emph{ rare events give more information}.
+	\item $I(E) \ge 0$ $\rightarrow$\emph{ Information is non-negative}.
+	\item if $P(E)=1$ then $I(E) = 0$ $\rightarrow$\emph{ Events that always occur provide no information}.
+	\item If $E_1, E_2$ are independent events then $I(E_1 \cap E_2) = I(E_1) + I(E_2)$ $\rightarrow$\emph{ information due to independent events are additive}.
 \end{enumerate}
 
-I(p) ≥ 0 – information is a non-negative quantity
-I(1) = 0 – events that always occur do not communicate information
-I(p1 p2) = I(p1) + I(p2) – information due to independent events is additive
-
+It turns out that if we assume that $I$ is continuous, only one function satisfies the above \cite{EntNotes}
 \begin{equation}
-I(X=x) = -log(P(X=x))
+I(E) = -log P(E)
 \end{equation}
+
+
+\subsection{Entropy}
+We can extend this notion to a discrete Random Variable $X\sim P$ with finite domain $\mathcal{X}$. By defining the \textbf{Shannon Entropy} $H(X)$ as the average amount of information i.e. 
+\begin{equation}
+H(X) = \mathbb{E}_{X\sim P}\{I(X)\} = \mathbb{E}_{X\sim P}\{-\log P(X)\} = -\sum_{x\in\mathcal{X}}p(x)\log p(x)
+\end{equation}
+We can also denote this as $H(p)$ where $p \sim X$ depending on what we want to emphasize. Note that WLOG we can assume that \(p(x)>0 \ \forall x\in\mathcal{X}\). This is because we can use the convention that \(0\cdot log0 = 0\) (based on continuity arguments). Hence zero probability outcomes do not contribute to $H(X)$ anyways. We can further extend this for two Random Variables $X$, $Y$ with finite domain \(\mathcal{X}\times\mathcal{Y}\) by defining the \textbf{Joint Entropy} as:
+\begin{equation}
+H(X,Y) = -\sum_{x,y}P_{XY}(x,y)\log P_{XY}(x,y)
+\end{equation}
+
+The \textbf{Conditional Entropy} is defined as:
+\begin{equation}
+H(X|Y) = \mathbb{E}_{X|Y}\{-\log P(X|Y)\} = -\sum_{x,y}P_{XY}(x,y)\log P_{X|Y}(x|y)
+\end{equation}
+
+These quantities have nice properties:
+\begin{enumerate}
+	\item \emph{Non-negativity}: \(H(X)\ge0\), with equality only when X is a constant.
+	
+	PROOF: WLOG we assume that \(p(x)>0 \ \forall x\in\mathcal{X}\). We have that \(H(X) = -\sum_{x} p(x)logp(x) = \sum_{x} p(x)logp(x)^{-1}\ge0\), since \(p(x)>0\) and \(p(x)^{-1} \ge 1\). If \(H(X)=0\) then \(\exists \alpha\) such that \(p(\alpha)^{-1}=1 \Rightarrow p(\alpha)=1\). Hence \(X\) must be a constant, as needed.
+	
+	\item \emph{Chain Rule}: $H(X,Y) = H(X \mid Y) + H(Y) = H(Y \mid X) + H(X)$ 
+	\item \emph{Monotonicity}: $H(X\mid Y) \le H(X)$ 
+\end{enumerate}
+
+We can extend these Entropy definitions to the continuous case, where the above properties hold - except for non negativity.
+
+\subsection{KL Divergence}
+We can now look at the \textbf{KL Divergence} or \textbf{Relative Entropy}. This quantity measures the distance between two probability mass functions $p$ and $q$.
+\begin{equation}
+KL(p||q) = \mathbb{E}_{X\sim p}\left\{\log \frac{p(X)}{q(X)}\right\} = \sum_{x\in\mathcal{X}}p(x)\log\frac{p(x)}{q(x)}
+\end{equation}
+
+The KL divergence has some nice properties.
+\begin{enumerate}
+	\item $KL(p||q) \ge 0$
+	
+	PROOF: Use that
+	\begin{align*}
+	-KL(p||q) &= \mathbb{E}_{X\sim p}\left\{\log \frac{q(X)}{p(X)}\right\}\\
+	&\le \log \mathbb{E}_{X\sim p}\left\{\frac{q(X)}{p(X)}\right\} \\
+	&= \log \sum_{x} p(x)\frac{q(x)}{p(x)} = \log \sum_{x} q(x) = 0
+	\end{align*}
+	
+	\item $KL(p||q)$ is strictly convex in each argument
+\end{enumerate}
+
+We can decompose the KL divergence into two seperate terms:
+
+\begin{align*} KL(p||q) &= \sum_{x\in\mathcal{X}}p(x)\log p(x) - \sum_{x\in\mathcal{X}}p(x)\log q(x) \\
+&= -H(p) + \mathbb{E}_{X\sim p}\{-\log q(x)\}
+\end{align*}
+
+Where the first term is the Entropy and the second term is called the \textbf{Cross Entropy}. The Cross Entropy makes a good Loss function.
+
+\subsubsection{Maximum Likelihood Estimation}
+
+Given a Parametric Family $\{P_{\theta}\}_{\theta\in\Theta}$ it turns out that the MLE for $\theta$ is the same as $\text{arg}\,\min\limits_{\theta\in\Theta}
+KL(\hat{p},p_{\theta})$, where $\hat{p}$ is the empirical distribution, i.e. 
+\begin{equation}
+\hat{p}(x) = \frac{1}{n}\sum_{i=1}^n\delta(x,x^{(i)})
+\end{equation}
+
+This is since:
+\begin{align*}
+KL(\hat{p},p_{\theta}) &= -H(\hat{p}) + \mathbb{E}_{X\sim \hat{p}}\{-\log p_{\theta}(x)\} \\
+&= -H(\hat{p}) - \sum_{x\in\mathcal{X}}\hat{p}(x)\log p_{\theta}(x)\\
+&= -H(\hat{p}) - \frac{1}{n}\sum_{x\in\mathcal{X}}\sum_{i=1}^n\delta(x,x^{(i)}) \log p_{\theta}(x)\\
+&= -H(\hat{p}) - \frac{1}{n}\sum_{i=1}^n\log p_{\theta}(x^{(i)})\\
+&= -H(\hat{p}) - \frac{1}{n}\mathcal{L}(\theta \mid x^{(1)}, \cdots, x^{(n)})
+\end{align*}
+
+\subsection{Mutual Information}
+We can quantify the amount of information obtained about one random variable $X$, through another $Y$ by defining the \textbf{Mutual Information} as:
+\begin{equation}
+I(X,Y)=\sum_{(x,y)\in\mathcal{X}\times\mathcal{Y}}p_{X,Y}(x,y)log\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}
+\end{equation}
+
+We again assume WLOG that \(p(x_1,x_2)>0 \ \forall (x_1,x_2)\in\mathcal{X}_1\times\mathcal{X}_2\)
+
+\begin{enumerate}
+	\item CLAIM: \(I(X_1,X_2)\ge 0\)
+	
+	PROOF: Notice that \(I(X_1,X_2) = D(p_{1,2}||p_1p_2) \ge 0\) by the positiveness of \(D(\cdot||\cdot)\).
+	
+	\item We want to express  \(I(X_1,X_2)\) as a function of \(H(X_1), H(X_2)\) and \(H(X_1,X_2)\).
+	\begin{align*}
+	I(X_1,X_2) &= \sum_{(x_1,x_2)\in\mathcal{X}_1\times\mathcal{X}_2}p_{1,2}(x_1,x_2)log\frac{p_{1,2}(x_1,x_2)}{p_1(x_1)p_2(x_2)} \\
+	&=\sum_{(x_1,x_2)\in\mathcal{X}_1\times\mathcal{X}_2}p_{1,2}(x_1,x_2)logp_{1,2}(x_1,x_2)-p_{1,2}(x_1,x_2)logp_1(x_1)p_2(x_2)\\
+	&=-H(X_1,X_2) - \sum_{(x_1,x_2)\in\mathcal{X}_1\times\mathcal{X}_2}\bigg( p_1(x_1)p_2(x_2)logp_1(x_1) - p_1(x_1)p_2(x_2)logp_2(x_2) \bigg) \\
+	&=-H(X_1,X_2) - \sum_{j=1}^{2}\sum_{(x_1,x_2)\in\mathcal{X}_1\times\mathcal{X}_2}p_1(x_1)p_2(x_2)logp_j(x_j)\\
+	&= -H(X_1,X_2) -\sum_{j=1}^{2}\sum_{x_j\in\mathcal{X}_j}p_j(x_j)logp_j(x_j)\\
+	&= -H(X_1,X_2) + H(X_1) + H(X_2)
+	\end{align*}
+	And so we can represent \(I(X_1,X_2)\) using \(H(X_1), H(X_2)\) and \(H(X_1,X_2)\), as needed.
+	\item From the previous result we have that \(I(X_1,X_2)\ge0 \Rightarrow H(X_1) + H(X_2) \ge H(X_1,X_2) \), and so the maximal entropy of \((X_1,X_2)\) is \(H(X_1) + H(X_2)\). By definition this only occurs when \(I(X_1,X_2)=0\), which only occurs if
+	\(p_{1,2}(x_1,x_2)=p_1(x_1)p_2(x_2) \ \forall x_1,x_2 \in \mathcal{X}_1\times\mathcal{X}_2\). This can be seen directly from the definition of \(I\) and using the strict positivity of \(p(x_1,x_2)\).
+\end{enumerate}
+
+
+Mutual Information \(I(X,X) = H(X)\)
 
 \subsection{Maximum Entropy Principle}
 \textbf{Density Estimation} - Given a Parametric Family \(\{P_{\theta}\}_{\theta\in\Theta}\) we would like to use data \(X\) to choose a \(P\) from our Family.
+
+We can show that for discrete spaces, the uniform density is the Maximum Entropy.
+Let \(X \sim p\) and $Dom(X) = \mathcal{X}$ with $k$ elements and \(q\sim Unif\) on $\mathcal{X}$. Then \(D(p||q) = -H(X) + logk\)
+
+PROOF: 
+\begin{align*}
+D(p||q)&=\sum_{x}p(x)log\frac{p(x)}{q(x)}\\
+&=\sum_{x}p(x)logp(x)-\sum_xp(x)logq(x)\\
+&= -H(X) + \sum_xp(x)logk \\
+&= -H(x) + logk
+\end{align*}
+An upper bound for \(H(X)\) is \(logk\) since \(H(X)=logk-D(p||q) \Rightarrow H(X) \le logk \).
 
 \newpage
 

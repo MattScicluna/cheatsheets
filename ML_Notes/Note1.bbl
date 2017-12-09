@@ -10,7 +10,10 @@ B.~Vidakovic, ``The likelihood principle.'' Slides.
 \bibitem{MJordanNotes}
 M.~I. Jordan, ``260 course notes.'' Slides.
 
-\bibitem{PHoffNotes}
-P.~Hoff, ``Admissibility and complete cases.'' Slides, 2013.
+\bibitem{PHoffNotes2}
+P.~Hoff, ``Bayes estimators.'' Notes, 2013.
+
+\bibitem{EntNotes}
+T.~Carter, ``An introduction to information theory and entropy.'' Slides, 2004.
 
 \end{thebibliography}

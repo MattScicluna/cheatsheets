@@ -7,7 +7,10 @@
 \BOOKMARK [3][-]{subsubsection.2.2.1}{Frequentist Risk Perspective}{subsection.2.2}% 7
 \BOOKMARK [3][-]{subsubsection.2.2.2}{Bayesian Risk Perspective}{subsection.2.2}% 8
 \BOOKMARK [3][-]{subsubsection.2.2.3}{Examples}{subsection.2.2}% 9
-\BOOKMARK [2][-]{subsection.2.3}{Decision Theoretic Explaination}{section.2}% 10
-\BOOKMARK [1][-]{section.3}{Information Theory}{}% 11
-\BOOKMARK [2][-]{subsection.3.1}{Maximum Entropy Principle}{section.3}% 12
-\BOOKMARK [1][-]{section.4}{Notes}{}% 13
+\BOOKMARK [1][-]{section.3}{Information Theory}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{Entropy}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.2}{KL Divergence}{section.3}% 12
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Maximum Likelihood Estimation}{subsection.3.2}% 13
+\BOOKMARK [2][-]{subsection.3.3}{Mutual Information}{section.3}% 14
+\BOOKMARK [2][-]{subsection.3.4}{Maximum Entropy Principle}{section.3}% 15
+\BOOKMARK [1][-]{section.4}{Notes}{}% 16
