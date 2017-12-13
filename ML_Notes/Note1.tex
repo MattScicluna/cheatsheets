@@ -86,7 +86,7 @@ $$\exists P \in \mathcal{P},\ R(P,\delta_1) < R(P, \delta_2)$$
 
 This basically means that \(\delta_1\) is a better decision rule then \(\delta_2\). Sometimes, there may be a ``best'' \(\delta\), one which isn't dominated by any other \(\delta_0\). We say \(\delta\) is \textbf{Admissible} if $\nexists \delta_0$ s.t. $\delta_0$ dominates $\delta$. Note: we should rule out inadmissible decision rules (except for simplicity or efficiency) but not necessarily accept Admissible ones!
 
-Unfortunately, different \(P\)'s usually produce different optimal \(\delta\)'s! we must take into account the unknown \(P\) when minimizing (\ref{eq:1}). One way to take this into account is to use the \textbf{Minimax Criteria}: the optimal \(\delta\) minimizes the Frequentist Risk in worst case scenerio
+Unfortunately, different \(P\)'s usually produce different optimal \(\delta\)'s! we must take into account the unknown \(P\) when minimizing (\ref{eq:1}). One way to take this into account is to use the \textbf{Minimax Criteria}: the optimal \(\delta\) minimizes the Frequentist Risk in worst case scenerio.
 
 \begin{equation}
 \delta_{minimax} = \,\min\limits_{\delta}\,\max\limits_{P \in \mathcal{P}}\ R(P,\delta)
@@ -124,8 +124,40 @@ We would then get that:
 Where (a) is due to Fubini's theorem (provided the integral is finite).
 It turns out that a \emph{Bayes rule} can be obtained by taking the \emph{Bayes action} for each particular $D$! See \cite{PHoffNotes2} for more details.
 
-\subsubsection{Examples}
-An example of a Bayes Action is: given \(\mathcal{A} = \Theta\) and \(L(\theta,a) = ||\theta-a||^2\) we have that \(\delta_{post}(D) = \mathbb{E}\{\theta|D\}\). This is because:
+
+\subsection{Types of Procedures}
+
+\subsubsection{Parameter Estimation}
+Given a Parametric Family $\{P_{\theta}\}_{\theta\in\Theta}$, typically we have data \(D=(X^{(1)}, \cdots, X^{(n)})\) where each \(X^{(i)}\overset{iid}{\sim} P_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\). The estimator should minimize some cost, for example: \(L(\theta,\delta(D)) = ||\theta-\delta(D)||^2\). Note that since the data are IID we use the marginal density over $X$ instead of the joint over $D$ in the loss function.
+
+If we take the expectation of the loss function above (the risk), we can decompose it nicely into two pieces:
+
+\begin{align*}
+R(P,\delta)&=\mathbb{E}_{D\sim P}\{||\theta-\delta(D)||^2\}\\
+&=\mathbb{E}_{D\sim P}\{(\theta-\mathbb{E}_{D\sim P}\{\delta(D)\} + \mathbb{E}_{D\sim P}\{\delta(D)\} - \delta(D))^2\}\\
+&=\underbrace{(\theta-\mathbb{E}_{D\sim P}\{\delta(D)\})^2}_{Bias^2} + \underbrace{\mathbb{E}_{D\sim P}\{(\mathbb{E}_{D\sim P}\{\delta(D)\} - \delta(D))^2\}}_{Variance}
+\end{align*}
+
+The above says that when we average the loss over all possible datasets, we can compare how much of the loss is due to the Bias and how much to the Variance. This is a Frequentist idea since it involves taking an expectation over the data generating distribution, an idea doesn't appeal to Bayesians since it is contrary to the conditionality principle.
+
+\subsubsection{Prediction}
+Let $D=((X^{(1)},Y^{(1)}), \cdots, (X^{(n)},Y^{(n)}))$ where $X^{(i)} \sim \mathcal{X}$ and $Y^{(i)} \sim \mathcal{Y}$. 
+
+We put a density on $X$ and $Y$: $(X^{(i)},Y^{(i)}) \overset{iid}{\sim} P_{XY}$. Our action space $\mathcal{A} = \mathcal{Y}^\mathcal{X}$, the set of functions $f: \mathcal{X}\mapsto \mathcal{Y}$. Hence \(\delta(D)\) is a \textbf{Learning Algorithm} which learns a function i.e. $\delta(D) = \hat{f}$. 
+
+We can evaluate the performance of $f$ using a \emph{prediction loss} $l: \mathcal{Y} \times \mathcal{Y} \mapsto \mathbb{R}$, a measure of the distance between a given prediction and it’s associated ground truth. We define the \textbf{Generalization Error} from $l$ as:
+\begin{equation}\label{eq:8}
+L(P,f) = \mathbb{E}_{(X,Y)\sim P_{XY}}\{l(Y,f(X)) \}
+\end{equation}
+This is often called the Risk in Machine Learning. Note that we do not know (\ref{eq:8}), but we can approximate it using the below formula. This is called \textbf{Empirical Risk Minimization}
+\begin{equation}
+L(P,f) = \frac{1}{n}\sum_{i=1}^n l\left(Y^{(i)},f(X^{(i)})\right)
+\end{equation}
+
+
+\subsection{Loss Functions}
+
+Given \(\mathcal{A} = \Theta\) and \(L(\theta,a) = ||\theta-a||^2\) we have that \(\delta_{post}(D) = \mathbb{E}\{\theta|D\}\). This is because:
 \begin{align*}
 R_B(\delta|D) &= \int_{\Theta}^{}||\theta-\delta(D)||^2p(\theta|D)d\theta \\
 &=\delta(D)^2 -2\delta(D)\int_{\Theta}^{}\theta p(\theta|D)d\theta+\int_{\Theta}^{}\theta^2 p(\theta|D)d\theta
@@ -136,6 +168,15 @@ and taking the derivative and setting to 0 yields:
 &\frac{\partial R_B}{\partial \delta} = 2\delta(D) -2\int_{\Theta}^{}\theta p(\theta|D)d\theta = 0 \\
 &\Rightarrow \delta(D) = \int_{\Theta}^{}\theta p(\theta|D)d\theta = \mathbb{E}\{\theta|D\}
 \end{align*}
+
+The loss \(L(\theta,a) = ||\theta-a||^2\) is so popular that it has its own name -- the squared loss. It falls in a family of loss functions called the \textbf{Minkowski Loss}. Some examples in this family include:
+\begin{enumerate}
+	\item \(L(P_{\theta}, a) = || \theta - \delta(D) ||^2 \)
+	\item \(L(P_{\theta}, a) = || \theta - \delta(D) ||^1 \)
+	\item \(L(P_{\theta}, a) = \lim\limits_{p \rightarrow 0}\, || \theta - \delta(D) ||^p \)
+\end{enumerate}
+
+These distributions result in the mean, median and mode of the data, respectively.
 
 \newpage
 
@@ -151,26 +192,33 @@ We want a function $I$ which measures how much information you learn from observ
 	\item if $P(E)=1$ then $I(E) = 0$ $\rightarrow$\emph{ Events that always occur provide no information}.
 	\item If $E_1, E_2$ are independent events then $I(E_1 \cap E_2) = I(E_1) + I(E_2)$ $\rightarrow$\emph{ information due to independent events are additive}.
 \end{enumerate}
+From 1. and 3. we see that $I$ should be a function of the probability of an events occurence, i.e. $I(E)=f(P(E))$ for some $f$. From 4., given independent events $E_1, E_2$, we have that:
+\begin{align}
+f(P(E_1)P(E_2)) &= f(P(E_1\cap E_2)) = f(P(E_1)) + f(P(E_2))\\
+f(x\cdot y) &= f(x) + f(y)
+\end{align}
 
-It turns out that if we assume that $I$ is continuous, only one function satisfies the above \cite{EntNotes}
+If we assume that $I$ is continuous, then only $I(E) = Klog P(E)$ satisfies (11)  \cite{EntNotes}. Finally, using 2., we see that $K<0$. We can then define $I$ as:
+
 \begin{equation}
 I(E) = -log P(E)
 \end{equation}
 
+Where the choice of $K$ decides the base of the logarithm.
 
 \subsection{Entropy}
-We can extend this notion to a discrete Random Variable $X\sim P$ with finite domain $\mathcal{X}$. By defining the \textbf{Shannon Entropy} $H(X)$ as the average amount of information i.e. 
+We can extend this notion to a discrete Random Variable $X\sim p$ with finite domain $\mathcal{X}$. By defining the \textbf{Shannon Entropy} $H(X)$ as the average amount of information i.e. 
 \begin{equation}
 H(X) = \mathbb{E}_{X\sim P}\{I(X)\} = \mathbb{E}_{X\sim P}\{-\log P(X)\} = -\sum_{x\in\mathcal{X}}p(x)\log p(x)
 \end{equation}
 We can also denote this as $H(p)$ where $p \sim X$ depending on what we want to emphasize. Note that WLOG we can assume that \(p(x)>0 \ \forall x\in\mathcal{X}\). This is because we can use the convention that \(0\cdot log0 = 0\) (based on continuity arguments). Hence zero probability outcomes do not contribute to $H(X)$ anyways. We can further extend this for two Random Variables $X$, $Y$ with finite domain \(\mathcal{X}\times\mathcal{Y}\) by defining the \textbf{Joint Entropy} as:
 \begin{equation}
-H(X,Y) = -\sum_{x,y}P_{XY}(x,y)\log P_{XY}(x,y)
+H(X,Y) = -\sum_{x,y}p_{XY}(x,y)\log p_{XY}(x,y)
 \end{equation}
 
 The \textbf{Conditional Entropy} is defined as:
 \begin{equation}
-H(X|Y) = \mathbb{E}_{X|Y}\{-\log P(X|Y)\} = -\sum_{x,y}P_{XY}(x,y)\log P_{X|Y}(x|y)
+H(X|Y) = \mathbb{E}_{X|Y}\{-\log p(X|Y)\} = -\sum_{x,y}p_{XY}(x,y)\log p_{X|Y}(x|y)
 \end{equation}
 
 These quantities have nice properties:
@@ -183,86 +231,119 @@ These quantities have nice properties:
 	\item \emph{Monotonicity}: $H(X\mid Y) \le H(X)$ 
 \end{enumerate}
 
-We can extend these Entropy definitions to the continuous case, where the above properties hold - except for non negativity.
-
 \subsection{KL Divergence}
-We can now look at the \textbf{KL Divergence} or \textbf{Relative Entropy}. This quantity measures the distance between two probability mass functions $p$ and $q$.
+We can now look at the \textbf{KL Divergence} or \textbf{Relative Entropy}. This quantity measures the ``distance'' between two probability mass functions $p$ and $q$.
+
 \begin{equation}
 KL(p||q) = \mathbb{E}_{X\sim p}\left\{\log \frac{p(X)}{q(X)}\right\} = \sum_{x\in\mathcal{X}}p(x)\log\frac{p(x)}{q(x)}
 \end{equation}
 
 The KL divergence has some nice properties.
 \begin{enumerate}
-	\item $KL(p||q) \ge 0$
+	\item $KL(p||q) \ge 0$ with equality iff $p=q$
 	
-	PROOF: Use that
+	PROOF: If there exists $x \in \mathcal{X}$ such that $p(x) = 0$ and $q(x) > 0$, then $KL(p || q) = \infty$.	Otherwise:
 	\begin{align*}
 	-KL(p||q) &= \mathbb{E}_{X\sim p}\left\{\log \frac{q(X)}{p(X)}\right\}\\
-	&\le \log \mathbb{E}_{X\sim p}\left\{\frac{q(X)}{p(X)}\right\} \\
+	&\overset{(a)}{\le} \log \mathbb{E}_{X\sim p}\left\{\frac{q(X)}{p(X)}\right\} \\
 	&= \log \sum_{x} p(x)\frac{q(x)}{p(x)} = \log \sum_{x} q(x) = 0
 	\end{align*}
+	Where (a) follows from Jensen's inequality. $KL(p||q) = 0$ only occurs when there is equality in Jensen's inequality, which only occurs when $p(x)=cq(x)$ for some $c$. Since $\sum_{x}cq(x) = c\sum_{x}q(x) = c \Rightarrow c=1$, so $p=q$ as needed.
 	
 	\item $KL(p||q)$ is strictly convex in each argument
+	
+	\item $KL(p||q) \ne KL(q||p)$ so it is not a metric
+	
+	\item We can decompose the KL divergence into two seperate terms:
+	
+	\begin{align} KL(p||q) &= \sum_{x\in\mathcal{X}}p(x)\log p(x) - \sum_{x\in\mathcal{X}}p(x)\log q(x) \\
+	&= -H(p) + \mathbb{E}_{X\sim p}\{-\log q(x)\} \\
+	&= -H(p) + CE(p,q)
+	\end{align}
+	
+	Where the $H(p)$ is the Entropy and $CE(p,q)$ is called the \textbf{Cross Entropy}.
+	
 \end{enumerate}
 
-We can decompose the KL divergence into two seperate terms:
+The KL divergence can be used within the Decision Theoretic framework. We elaborate in the following subsections.
 
-\begin{align*} KL(p||q) &= \sum_{x\in\mathcal{X}}p(x)\log p(x) - \sum_{x\in\mathcal{X}}p(x)\log q(x) \\
-&= -H(p) + \mathbb{E}_{X\sim p}\{-\log q(x)\}
-\end{align*}
+\subsubsection{Cross Entropy as a Loss Function}
 
-Where the first term is the Entropy and the second term is called the \textbf{Cross Entropy}. The Cross Entropy makes a good Loss function.
+Semantically, $KL(p||q)$ represents how well some distribution $q$ approximates the ``true'' $p$. Suppose we wanted to estimate a distribution $p$ which we knew belonged to a Parametric Family  $p\in \{p_{\theta}\}_{\theta\in\Theta}$. We can put this into our decision theoretic framework. Let \(\mathcal{A} = \{p_{\theta}\}_{\theta\in\Theta}\) and $\delta(D)=p_{\theta}$. We can use the Cross Entropy as a loss function.
+
+\begin{equation}\label{eq:celf}
+L(p,p_{\theta}) = \mathbb{E}_{X\sim p}\{ -\log p_{\theta}(X) \}
+\end{equation}	
+
+This is because $KL(p,p_{\theta}) = -H(p) + L(p,p_{\theta})$, and since $H(p)$ is constant, minimizing the KL is equivalent to minimizing the cross entropy. Since $KL(p,p_{\theta}) \ge 0$ we see that the minimum is attained at $L(p,p_{\theta}) = H(p)$, which occurs when $p_{\theta}=p$ i.e. when our prediction matches the ``true'' density.
+
 
 \subsubsection{Maximum Likelihood Estimation}
 
-Given a Parametric Family $\{P_{\theta}\}_{\theta\in\Theta}$ it turns out that the MLE for $\theta$ is the same as $\text{arg}\,\min\limits_{\theta\in\Theta}
-KL(\hat{p},p_{\theta})$, where $\hat{p}$ is the empirical distribution, i.e. 
+We don't know $p$, so we cannot compute (\ref{eq:celf}). Instead, we can use in its place the empirical distribution $\hat{p}$, i.e. 
 \begin{equation}
 \hat{p}(x) = \frac{1}{n}\sum_{i=1}^n\delta(x,x^{(i)})
 \end{equation}
 
-This is since:
+Given $X$ discrete, it turns out that the MLE for $\theta$ is the same as $\text{arg}\,\min\limits_{\theta\in\Theta} KL(\hat{p}||p_{\theta})$. This is because:
+
 \begin{align*}
-KL(\hat{p},p_{\theta}) &= -H(\hat{p}) + \mathbb{E}_{X\sim \hat{p}}\{-\log p_{\theta}(x)\} \\
+KL(\hat{p}||p_{\theta}) &= -H(\hat{p}) + CE(\hat{p},p_{\theta}) \\
 &= -H(\hat{p}) - \sum_{x\in\mathcal{X}}\hat{p}(x)\log p_{\theta}(x)\\
 &= -H(\hat{p}) - \frac{1}{n}\sum_{x\in\mathcal{X}}\sum_{i=1}^n\delta(x,x^{(i)}) \log p_{\theta}(x)\\
 &= -H(\hat{p}) - \frac{1}{n}\sum_{i=1}^n\log p_{\theta}(x^{(i)})\\
-&= -H(\hat{p}) - \frac{1}{n}\mathcal{L}(\theta \mid x^{(1)}, \cdots, x^{(n)})
+&= -H(\hat{p}) - \frac{1}{n}l(\theta \mid x^{(1)}, \cdots, x^{(n)})
 \end{align*}
 
+This provides a nice interpretation for the MLE - it is finding the $p\in \{p_{\theta}\}_{\theta\in\Theta}$ which minimizes the dissimilarity between the empirical distribution of the training set and itself as measured by the KL divergence. Conversly we can justify the use of the Cross Entropy loss through its equivalence to Maximum Likelihood. Because of this, the Cross Entropy loss is also known as the \textbf{Negative Log Loss}.
+
+On a final note, one may think that the quantity $KL(p_{\theta}|| \hat{p})$ could be interesting. They would be wrong. This is since $p_{\theta}(x)=0 \Rightarrow \hat{p}_{\theta}(x)=0$ but $\hat{p}_{\theta}(x)=0 \not\Rightarrow p_{\theta}(x)=0$ since $\hat{p}_{\theta}(x)=0$ only means that the particular value of $x$ wasn't observed in the sample.	
+
+\subsection{Differential Entropy}
+We can define the Entropy and the KL divergence for continuous random variables.
+
+\begin{align}
+H(p) &= -\int_{x\in\mathcal{X}}p(x)\log p(x)d\mu(x) \\
+KL(p,q) &= \mathbb{E}_{X\sim p}\left\{\log \frac{p(X)}{q(X)}\right\} = \int_{x\in\mathcal{X}}p(x)\log\frac{p(x)}{q(x)}d\mu(x)
+\end{align}
+
+In the continuous case, the properties previously described hold except that the entropy is no longer necessarily non negative.
+
 \subsection{Mutual Information}
-We can quantify the amount of information obtained about one random variable $X$, through another $Y$ by defining the \textbf{Mutual Information} as:
+We can quantify the amount of information obtained about one discrete random variable $X$, through another $Y$ by defining the \textbf{Mutual Information} as:
 \begin{equation}
-I(X,Y)=\sum_{(x,y)\in\mathcal{X}\times\mathcal{Y}}p_{X,Y}(x,y)log\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}
+I(X,Y)=\sum_{x,y}p_{X,Y}(x,y)\log\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}
 \end{equation}
 
-We again assume WLOG that \(p(x_1,x_2)>0 \ \forall (x_1,x_2)\in\mathcal{X}_1\times\mathcal{X}_2\)
+We again assume WLOG that \(p(x,y)>0 \ \forall (x,y)\in\mathcal{X}\times\mathcal{Y}\). We note the following properties of $I$:
 
 \begin{enumerate}
-	\item CLAIM: \(I(X_1,X_2)\ge 0\)
+	\item \(I(X,X) = H(X)\) \(\rightarrow\) Sometimes the Entropy is called the \textbf{Self Information}
+	\item $I(X,Y) = KL(p_{XY}||p_Xp_Y)$
+	\item \(I(X,Y)\ge 0\)
 	
-	PROOF: Notice that \(I(X_1,X_2) = D(p_{1,2}||p_1p_2) \ge 0\) by the positiveness of \(D(\cdot||\cdot)\).
+	PROOF: Notice that \(I(X,Y) = KL(p_{XY}||p_Xp_Y) \ge 0\) by the positiveness of \(KL(\cdot||\cdot)\).
 	
-	\item We want to express  \(I(X_1,X_2)\) as a function of \(H(X_1), H(X_2)\) and \(H(X_1,X_2)\).
+	\item $I(X,Y) = H(p_X) + H(p_Y) -H(p_{XY})$
+	
+	PROOF:
 	\begin{align*}
-	I(X_1,X_2) &= \sum_{(x_1,x_2)\in\mathcal{X}_1\times\mathcal{X}_2}p_{1,2}(x_1,x_2)log\frac{p_{1,2}(x_1,x_2)}{p_1(x_1)p_2(x_2)} \\
-	&=\sum_{(x_1,x_2)\in\mathcal{X}_1\times\mathcal{X}_2}p_{1,2}(x_1,x_2)logp_{1,2}(x_1,x_2)-p_{1,2}(x_1,x_2)logp_1(x_1)p_2(x_2)\\
-	&=-H(X_1,X_2) - \sum_{(x_1,x_2)\in\mathcal{X}_1\times\mathcal{X}_2}\bigg( p_1(x_1)p_2(x_2)logp_1(x_1) - p_1(x_1)p_2(x_2)logp_2(x_2) \bigg) \\
-	&=-H(X_1,X_2) - \sum_{j=1}^{2}\sum_{(x_1,x_2)\in\mathcal{X}_1\times\mathcal{X}_2}p_1(x_1)p_2(x_2)logp_j(x_j)\\
-	&= -H(X_1,X_2) -\sum_{j=1}^{2}\sum_{x_j\in\mathcal{X}_j}p_j(x_j)logp_j(x_j)\\
-	&= -H(X_1,X_2) + H(X_1) + H(X_2)
+	I(X,Y) &= KL(p_{XY}||p_Xp_Y) \\
+	&= -H(p_{XY}) + CE(p_{XY},p_Xp_Y) \\
+	&= -H(p_{XY}) - \sum_{x,y}p_{X,Y}(x,y)\log p_X(x)p_Y(y)\\
+	&= -H(p_{XY}) - \left(\sum_{x,y}p_{X,Y}(x,y)\log p_X(x) + \sum_{x,y}p_{X,Y}(x,y)\log p_Y(y)\right)\\
+	&=-H(p_{XY}) - \left(\sum_{x}p_{X}(x)\log p_X(x) + \sum_{y}p_{Y}(y)\log p_Y(y)\right)\\
+	&= -H(p_{XY}) + H(p_X) + H(p_Y)
 	\end{align*}
-	And so we can represent \(I(X_1,X_2)\) using \(H(X_1), H(X_2)\) and \(H(X_1,X_2)\), as needed.
-	\item From the previous result we have that \(I(X_1,X_2)\ge0 \Rightarrow H(X_1) + H(X_2) \ge H(X_1,X_2) \), and so the maximal entropy of \((X_1,X_2)\) is \(H(X_1) + H(X_2)\). By definition this only occurs when \(I(X_1,X_2)=0\), which only occurs if
-	\(p_{1,2}(x_1,x_2)=p_1(x_1)p_2(x_2) \ \forall x_1,x_2 \in \mathcal{X}_1\times\mathcal{X}_2\). This can be seen directly from the definition of \(I\) and using the strict positivity of \(p(x_1,x_2)\).
 \end{enumerate}
 
 
-Mutual Information \(I(X,X) = H(X)\)
+
 
 \subsection{Maximum Entropy Principle}
-\textbf{Density Estimation} - Given a Parametric Family \(\{P_{\theta}\}_{\theta\in\Theta}\) we would like to use data \(X\) to choose a \(P\) from our Family.
 
+
+\subsubsection{Examples}
 We can show that for discrete spaces, the uniform density is the Maximum Entropy.
 Let \(X \sim p\) and $Dom(X) = \mathcal{X}$ with $k$ elements and \(q\sim Unif\) on $\mathcal{X}$. Then \(D(p||q) = -H(X) + logk\)
 
@@ -274,6 +355,12 @@ D(p||q)&=\sum_{x}p(x)log\frac{p(x)}{q(x)}\\
 &= -H(x) + logk
 \end{align*}
 An upper bound for \(H(X)\) is \(logk\) since \(H(X)=logk-D(p||q) \Rightarrow H(X) \le logk \).
+
+The maximum entropy solution for Random Variables is Independence
+From the previous result we have that \(I(X_1,X_2)\ge0 \Rightarrow H(X_1) + H(X_2) \ge H(X_1,X_2) \), and so the maximal entropy of \((X_1,X_2)\) is \(H(X_1) + H(X_2)\). By definition this only occurs when \(I(X_1,X_2)=0\), which only occurs if
+\(p_{1,2}(x_1,x_2)=p_1(x_1)p_2(x_2) \ \forall x_1,x_2 \in \mathcal{X}_1\times\mathcal{X}_2\). This can be seen directly from the definition of \(I\) and using the strict positivity of \(p(x_1,x_2)\).
+
+The maximum entropy solution for continuous random variables with given mean and variance is Normal.
 
 \newpage
 
