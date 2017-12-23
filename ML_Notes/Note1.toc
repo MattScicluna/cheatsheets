@@ -1,0 +1,23 @@
+\contentsline {section}{\numberline {1}Statistics and Probability Background}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}Empirical Distribution}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Bayesian Statistics}{4}{subsection.1.2}
+\contentsline {subsubsection}{\numberline {1.2.1}Existence Of The Prior}{4}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.2}Likelihood Principle}{5}{subsubsection.1.2.2}
+\contentsline {section}{\numberline {2}Statistical Decision Theory}{5}{section.2}
+\contentsline {subsection}{\numberline {2.1}Formal Set-Up}{5}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Procedure Analysis}{6}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Frequentist Risk Perspective}{6}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}Bayesian Risk Perspective}{6}{subsubsection.2.2.2}
+\contentsline {subsection}{\numberline {2.3}Types of Procedures}{7}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Parameter Estimation - Frequentist}{7}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Parameter Estimation - Bayesian}{8}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.3}Prediction}{9}{subsubsection.2.3.3}
+\contentsline {section}{\numberline {3}Information Theory}{10}{section.3}
+\contentsline {subsection}{\numberline {3.1}Entropy}{10}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}KL Divergence}{11}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Cross Entropy as a Loss Function}{12}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Maximum Likelihood Estimation}{12}{subsubsection.3.2.2}
+\contentsline {subsection}{\numberline {3.3}Differential Entropy}{13}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Mutual Information}{13}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Maximum Entropy Principle}{14}{subsection.3.5}
+\contentsline {subsubsection}{\numberline {3.5.1}Examples}{14}{subsubsection.3.5.1}

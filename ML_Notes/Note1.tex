@@ -15,6 +15,26 @@
 \usepackage{amssymb}
 \usepackage{enumitem}
 %\usepackage{enumerate} % For lettered enumeration
+\usepackage{amsthm}
+
+%  Make theorems look nice
+\newtheoremstyle{mattstyle}%                % Name
+{}%                                     % Space above
+{}%                                     % Space below
+{\itshape}%                                     % Body font
+{}%                                     % Indent amount
+{\bfseries}%                            % Theorem head font
+{.}%                                    % Punctuation after theorem head
+{ }%                                    % Space after theorem head, ' ', or \newline
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}%      
+
+%  State and prove theorems
+\theoremstyle{mattstyle}
+\newtheorem{theorem}{Theorem}[section]
+
+%  Definitions
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
 
 \begin{document}
 
@@ -22,7 +42,63 @@
 \author{Matthew Scicluna}
 \maketitle
 
-\section{Why Bayesian?}
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Statistics and Probability Background}
+
+We discuss the statistical background of Machine Learning and introduce the ideas that will be used throughout these notes.
+
+\subsection{Empirical Distribution}
+
+Given some data \(x_1, \cdots x_n \sim F\) where $F$ is an unknown CDF, we want to approximate this using some mapping $\hat{F}$ called the \textbf{Empirical Distribution} of the data.
+
+\begin{equation}
+	\hat{F}(t) = \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{x_i \le t\}}
+\end{equation} 
+
+It can be shown that $\hat{F}(t) \rightarrow F(t) \ a.s.\ \forall t$, justifying its use as an approximation of $F$, provided enough data has been observed. As with $F$ we can approximate $f$. We define the \textbf{Empirical Density Function} $\hat{f}$:
+
+\begin{equation}
+	\hat{f}(t) = \frac{1}{n}\sum_{i=1}^n \delta(x_i, t)
+\end{equation}
+
+Where $\delta$ is defined differently in the continuous and discrete case. In the continuous case it is called the \textbf{Dirac Delta Function}:
+	\begin{equation}
+		\delta(x,y) = \begin{cases}
+		\infty & x=y \\
+		0 & \text{o.w.}
+	\end{cases}
+	\end{equation}
+	Additionally, we suppose that:
+	\begin{enumerate}
+		\item $\int_{-\infty}^{\infty} \delta(t,y)dt = 1$
+		\item $\int \delta(t,y) f(t) dt = f(y)$, for any $f$ with compact support that is continuous around $y$
+	\end{enumerate}
+
+This is not a function, but is called a \emph{Generalized Function}. In the discrete case things are much simpler, as we can use the simpler \textbf{Kronecker delta function}:
+\begin{equation}
+	\delta(x,y) = 
+	\begin{cases}
+		1 & x=y \\
+		0 & \text{o.w.}
+	\end{cases}
+\end{equation}
+
+Finally, we notice that $\hat{f}$ and $\hat{F}$ satisfy an important relationship that would be expected from the cdf and pdf: $\int_{-\infty}^{t}\hat{f}(y)dy = \hat{F}(t)$.
+
+\begin{align*}
+\int_{-\infty}^{t}\hat{f}(y)dy &= \int_{-\infty}^{t} \frac{1}{n}\sum_{i=1}^n \delta(x_i, y)dy\\
+&= \frac{1}{n}\sum_{i=1}^n \int_{-\infty}^{t}  \delta(x_i, y)dy\\
+&= \frac{1}{n}\sum_{i=1}^n \int_{-\infty}^{\infty} \mathbbm{1}_{\{x_i \le y\}} \delta(x_i, y)dy\\
+&= \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{x_i \le y\}}\\
+&= \hat{F}(t)
+\end{align*}
+
+\subsection{Bayesian Statistics}
 
 Given an Event, what does the probability of that Event \emph{mean}? There are two interpretations:
 
@@ -33,26 +109,29 @@ Given an Event, what does the probability of that Event \emph{mean}? There are t
 
 The \emph{reasonable expectation} can be further broken down into two views. The \textbf{Objective Bayesians} view the \emph{reasonable expectation} as the \emph{state of knowledge}. They view probability as an extension of propositional logic, which is described in \cite{jaynes}. The \textbf{Subjective Bayesians} view probability as a quantification of \emph{personal belief}. The main difference between the groups is in how they choose their priors: the Subjective Bayesians use knowledge about or prior experience with model parameters, wheras the Objectivists try to introduce as little prior knowledge as possible, using noninformative priors.
 
-\subsection{Existence Of The Prior}
-We need a theoretical justification for why we assume the existence of a prior distribution on \(\theta\) when doing Bayesian statistics. The theoretical justification requires the following assumption about the data. We say a sequence of random variables \(x_1, \cdots\) are \textbf{Infinitely Exchangable} if for any \(n\), and any permutation of size \(n\) \(\pi_{1:n}\)
+\subsubsection{Existence Of The Prior}
+We need a theoretical justification for why we assume the existence of a prior distribution on \(\theta\) in the first place! The justification for this requires the \textbf{Infinite Exchangeable} assumption of the data \(\{x_i\}_{i=1}^{\infty}\). This is satisfied when, given a sequence of random variables, any finite subset \(\{x_j\}_{j=1}^{n}\), and any permutation of this subset \(\pi_{1:n}\) 
 \begin{equation}
 p(x_1, \cdots, x_n) = p(x_{\pi_1}, \cdots, x_{\pi_n})
 \end{equation}
 
-The \textbf{De Finetti Theorem} says that a sequence is infinitely exchangible iff for any \(n\), 
-\begin{equation}
-p(x_1, \cdots x_n) = \int\prod_{i=1}^n p(x_i|\theta)P(d\theta)
-\end{equation}
-For some measure \(P\) on \(\theta\). 
-\\
-Note: if $\theta$ has a density then $P(d\theta) = p(\theta)d\theta$. What this theory means is that given the assumption of exchangable data (and iid $\Rightarrow$ exchangable) then there must exist a \(\theta\), \(p(x|\theta)\) and distribution \(P\) on \(\theta\). Also note: \(\theta\) may be infinite!
+It turns out the above is equivalent to assuming the existence of the prior! The following theorem makes this precise.
 
-\subsection{Likelihood Principle}
+\begin{theorem}[De Finetti Theorem]
+	A sequence is Infinite Exchangeable iff for any \(n\)
+	$$ p(x_1, \cdots x_n) = \int\prod_{i=1}^n p(x_i|\theta)P(d\theta) $$
+	for some measure \(P\) on \(\theta\). Also, if $\theta$ has a density then $P(d\theta) = p(\theta)d\theta$. Note: \(\theta\) may be infinite!
+\end{theorem}
+
+This theory says that, if we assume exchangable data (and iid $\Rightarrow$ exchangeable), then there must exist a \(\theta\), \(p(x|\theta)\) and distribution \(P\) on \(\theta\)! So the idea of having a prior distribution on the parameters does have theory to back it up!
+
+
+\subsubsection{Likelihood Principle}
 
 The \textbf{Likelihood Principle} says that all the evidence in a sample relevent to parameters \(\theta\) is contained in the likelihood function. Furthermore, two likelihood functions contain the same information about \(\theta\) if they
 are proportional to each other.\cite{slides} This principle, if you believe it, gives a good justification for Bayesianism since \(p(\theta|D) \propto P(D|\theta)P(\theta)\) (i.e. $\theta$ is being inferred from the likelihood). Frequentists do not like the Likelihood Principle as it leads to contradictions with their methodology - see the following coin tossing example \cite{MJordanNotes}.
 
-If you have trouble accepting the Likelihood Principle, it has been shown to be equivalent to two other principles:
+If you have trouble accepting the Likelihood Principle, it has been shown to be equivalent to two milder principles:
 \begin{enumerate}
 	\item \textbf{Sufficiency Principle}: If two different observations $x$, $y$ are such that $T(x) = T(y)$ for sufficient statistic $T$, then inference based on $x$ and $y$ should be the same.
 	\item \textbf{Conditionality Principle}: If an experiment concerning inference about $\theta$ is chosen from a collection of
@@ -66,7 +145,7 @@ Of these, Sufficiency is accepted by both Frequentists and Bayesians, while the 
 
 \subsection{Formal Set-Up}
 
-We need a general framework to make data-driven decisions under uncertainty. More formally, we observe some \textbf{Data} \(D \in \mathcal{D}\) which comes from some \textbf{Data Generating Distribution} \(D \sim P\). Let \(P\in \mathcal{P}\)\hyperref[sec:ft1]{$^1$}, where \(\mathcal{P}\) is the set of possible distributions. Let \(\mathcal{A}\) be our set of possible actions. To determine how good an action is, we define the \textbf{Loss} (cost) of doing that action as \(L: \mathcal{P} \times \mathcal{A} \mapsto \mathbb{R}\). The goal is to determine a \textbf{Decision Rule} \(\delta: \mathcal{D} \mapsto \mathcal{A}\) which, given data, produces an action.
+We need a general framework to make data-driven decisions under uncertainty. More formally, we observe some \textbf{Data} \(D \in \mathcal{D}\) which comes from some \textbf{Data Generating Distribution} \(D \sim P\). Let \(P\in \mathcal{P}\)\footnote{Often $P$ will describe an IID process, e.g. $D = (X_1,...,X_n)$ where $X_i \overset{iid}\sim P_0$. In this case, the loss is usually written w.r.t $P_0$ instead of $P$.}, where \(\mathcal{P}\) is the set of possible distributions. Let \(\mathcal{A}\) be our set of possible actions. To determine how good an action is, we define the \textbf{Loss} (cost) of doing that action as \(L: \mathcal{P} \times \mathcal{A} \mapsto \mathbb{R}\). The goal is to determine a \textbf{Decision Rule} \(\delta: \mathcal{D} \mapsto \mathcal{A}\) which, given data, produces an action.
 
 Typically we consider \(\mathcal{P}\) as a Parametric Family of distributions, and we use \(\Theta\) interchangibly with \(\mathcal{P}\), using that \(P := P_{\theta}\).
 
@@ -75,11 +154,12 @@ Typically we consider \(\mathcal{P}\) as a Parametric Family of distributions, a
 We need a way to assign a value to any \(\delta\) and a way to compare these values to find which one is ``best''. One such way of doing this is via the Frequentist Risk.
 
 \subsubsection{Frequentist Risk Perspective} 
-The first approach seeks to minimize the \textbf{Frequentist Risk}  
+The first approach seeks to minimize the \textbf{Frequentist Risk}, which is defined as:
 \begin{equation}\label{eq:1}
 	R(P,\delta)=\mathbb{E}_{D\sim P}\{L(P,\delta(D))\}
 \end{equation}
-If we want to compare decision rules \(\delta_1, \delta_2\) using (\ref{eq:1}), we have to take into account \(P\), since \(R\) varies with both \(P\) and \(\delta\). Sometimes one decision rule \(\delta_1\) is better then another \(\delta_2\) regardless of \(P\), in which case we say \(\delta_1\) \textbf{Dominates} \(\delta_2\).
+
+If we want to compare decision rules \(\delta_1, \delta_2\) using def \ref{eq:1}, we have to take into account \(P\), since \(R\) varies with both \(P\) and \(\delta\). Sometimes one decision rule \(\delta_1\) is better then another \(\delta_2\) regardless of \(P\), in which case we say \(\delta_1\) \textbf{Dominates} \(\delta_2\).
 More formally:
 $$R(P,\delta_1)\leq R(P,\delta_2) \forall P \in \mathcal{P}\ and$$
 $$\exists P \in \mathcal{P},\ R(P,\delta_1) < R(P, \delta_2)$$
@@ -127,7 +207,7 @@ It turns out that a \emph{Bayes rule} can be obtained by taking the \emph{Bayes 
 
 \subsection{Types of Procedures}
 
-\subsubsection{Parameter Estimation}
+\subsubsection{Parameter Estimation - Frequentist}
 Given a Parametric Family $\{P_{\theta}\}_{\theta\in\Theta}$, typically we have data \(D=(X^{(1)}, \cdots, X^{(n)})\) where each \(X^{(i)}\overset{iid}{\sim} P_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\). The estimator should minimize some cost, for example: \(L(\theta,\delta(D)) = ||\theta-\delta(D)||^2\). Note that since the data are IID we use the marginal density over $X$ instead of the joint over $D$ in the loss function.
 
 If we take the expectation of the loss function above (the risk), we can decompose it nicely into two pieces:
@@ -138,7 +218,57 @@ R(P,\delta)&=\mathbb{E}_{D\sim P}\{||\theta-\delta(D)||^2\}\\
 &=\underbrace{(\theta-\mathbb{E}_{D\sim P}\{\delta(D)\})^2}_{Bias^2} + \underbrace{\mathbb{E}_{D\sim P}\{(\mathbb{E}_{D\sim P}\{\delta(D)\} - \delta(D))^2\}}_{Variance}
 \end{align*}
 
-The above says that when we average the loss over all possible datasets, we can compare how much of the loss is due to the Bias and how much to the Variance. This is a Frequentist idea since it involves taking an expectation over the data generating distribution, an idea doesn't appeal to Bayesians since it is contrary to the conditionality principle.
+The above says that when we average this loss over all possible datasets, we can compare how much of the loss is due to the Bias and how much to the Variance. This is a Frequentist idea since it involves taking an expectation over the data generating distribution, an idea doesn't appeal to Bayesians since it is contrary to the conditionality principle. 
+
+\subsubsection{Parameter Estimation - Bayesian}
+
+Next we show that \(\delta_{post}(D) = \mathbb{E}\{\theta|D\}\). This is a simple optimization problem:
+\begin{align*}
+R_B(\delta|D) &= \int_{\Theta}^{}||\theta-\delta(D)||^2p(\theta|D)d\theta \\
+&=\delta(D)^2 -2\delta(D)\int_{\Theta}^{}\theta p(\theta|D)d\theta+\int_{\Theta}^{}\theta^2 p(\theta|D)d\theta
+\end{align*}
+
+and taking the derivative and setting to 0 yields:
+\begin{align*}
+&\frac{\partial R_B}{\partial \delta} = 2\delta(D) -2\int_{\Theta}^{}\theta p(\theta|D)d\theta = 0 \\
+&\Rightarrow \delta(D) = \int_{\Theta}^{}\theta p(\theta|D)d\theta = \mathbb{E}\{\theta|D\}
+\end{align*}
+
+
+The loss \(L(\theta,a) = ||\theta-a||^2\) is so popular that it has its own name -- the \textbf{Squared Loss}. It is a member of a family of loss functions called the \textbf{Minkowski Loss}. This family has the following form:
+\begin{equation}
+	L(\theta,\delta(D))_q = ||\theta-\delta(D)||^q
+\end{equation}
+
+We have seen the decision rule for for $q=2$. We assume that $\Theta=\mathbb{R}$ and show that for $q=1$ the solution is the posterior median:
+
+\begin{align*}
+R_B(\delta|D) &= \int_{\Theta}^{}||\theta-\delta(D)||p(\theta|D)d\theta \\
+&= \int_{-\infty}^{\delta(D)}(\theta-\delta(D))p(\theta|D)d\theta + \int_{\delta(D)}^{\infty}(\delta(D)-\theta)p(\theta|D)d\theta\\
+&\overset{(a)}{=} \delta(D)\int_{-\infty}^{\delta(D)}p(\theta|D)d\theta - \int_{-\infty}^{\delta(D)}\theta p(\theta|D)d\theta -\\
+&\hspace{10px} \lim\limits_{c \rightarrow \infty} \int_{c}^{\delta(D)}\theta p(\theta|D)d\theta + \lim\limits_{c \rightarrow \infty} \delta(D)\int_{c}^{\delta(D)}p(\theta|D)d\theta
+\end{align*}
+
+and taking the derivative and setting to 0 yields:
+\begin{align*}
+\frac{\partial R_B}{\partial \delta} 
+&\overset{(b)}{=} \delta(D)p(\delta(D)|D)d\theta + \int_{-\infty}^{\delta(D)}p(\theta|D)d\theta - \delta(D)p(\delta(D)|D)d\theta -\\
+&\hspace{10px} \delta(D)p(\delta(D)|D)d\theta + \delta(D)p(\delta(D)|D)d\theta + \lim\limits_{c \rightarrow \infty} \delta(D)\int_{c}^{\delta(D)}p(\theta|D)d\theta \\
+&= \int_{-\infty}^{\delta(D)}p(\theta|D)d\theta - \lim\limits_{c \rightarrow \infty} \delta(D)\int_{\delta(D)}^{c}p(\theta|D)d\theta
+\end{align*}
+
+And equating to zero gives us
+
+\begin{align*}
+\int_{-\infty}^{\delta(D)}p(\theta|D)d\theta = \int_{\delta(D)}^{\infty}p(\theta|D)d\theta
+\end{align*}
+
+And so $\delta$ is the posterior median, as needed. For $q \rightarrow 0$ the solution is the posterior mode. 
+
+\begin{enumerate}
+	\item \(L(P_{\theta}, a) = \lim\limits_{p \rightarrow 0}\, || \theta - \delta(D) ||^p \)
+\end{enumerate}
+
 
 \subsubsection{Prediction}
 Let $D=((X^{(1)},Y^{(1)}), \cdots, (X^{(n)},Y^{(n)}))$ where $X^{(i)} \sim \mathcal{X}$ and $Y^{(i)} \sim \mathcal{Y}$. 
@@ -154,29 +284,6 @@ This is often called the Risk in Machine Learning. Note that we do not know (\re
 L(P,f) = \frac{1}{n}\sum_{i=1}^n l\left(Y^{(i)},f(X^{(i)})\right)
 \end{equation}
 
-
-\subsection{Loss Functions}
-
-Given \(\mathcal{A} = \Theta\) and \(L(\theta,a) = ||\theta-a||^2\) we have that \(\delta_{post}(D) = \mathbb{E}\{\theta|D\}\). This is because:
-\begin{align*}
-R_B(\delta|D) &= \int_{\Theta}^{}||\theta-\delta(D)||^2p(\theta|D)d\theta \\
-&=\delta(D)^2 -2\delta(D)\int_{\Theta}^{}\theta p(\theta|D)d\theta+\int_{\Theta}^{}\theta^2 p(\theta|D)d\theta
-\end{align*}
-
-and taking the derivative and setting to 0 yields:
-\begin{align*}
-&\frac{\partial R_B}{\partial \delta} = 2\delta(D) -2\int_{\Theta}^{}\theta p(\theta|D)d\theta = 0 \\
-&\Rightarrow \delta(D) = \int_{\Theta}^{}\theta p(\theta|D)d\theta = \mathbb{E}\{\theta|D\}
-\end{align*}
-
-The loss \(L(\theta,a) = ||\theta-a||^2\) is so popular that it has its own name -- the squared loss. It falls in a family of loss functions called the \textbf{Minkowski Loss}. Some examples in this family include:
-\begin{enumerate}
-	\item \(L(P_{\theta}, a) = || \theta - \delta(D) ||^2 \)
-	\item \(L(P_{\theta}, a) = || \theta - \delta(D) ||^1 \)
-	\item \(L(P_{\theta}, a) = \lim\limits_{p \rightarrow 0}\, || \theta - \delta(D) ||^p \)
-\end{enumerate}
-
-These distributions result in the mean, median and mode of the data, respectively.
 
 \newpage
 
@@ -363,11 +470,6 @@ From the previous result we have that \(I(X_1,X_2)\ge0 \Rightarrow H(X_1) + H(X_
 The maximum entropy solution for continuous random variables with given mean and variance is Normal.
 
 \newpage
-
-\section{Notes}
-\begin{enumerate}
-	\item \label{sec:ft1} Often $P$ will describe an IID process, e.g. $D = (X_1,...,X_n)$ where $X_i \overset{iid}\sim P_0$. In this case, the loss is usually written w.r.t $P_0$ instead of $P$.
-\end{enumerate}
 
 \bibliography{Note1.bib}
 \bibliographystyle{ieeetr}
