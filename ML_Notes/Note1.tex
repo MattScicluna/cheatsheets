@@ -48,11 +48,13 @@
 
 \newpage
 
-\section{Statistics and Probability Background}
+\section{Statistics, Probability and Optimization Background}
 
 We discuss the statistical background of Machine Learning and introduce the ideas that will be used throughout these notes.
 
-\subsection{Empirical Distribution}
+\subsection{Useful Statistical Ideas}
+
+\subsubsection{Empirical Distribution}\label{sec:empdist}
 
 Given some data \(x_1, \cdots x_n \sim F\) where $F$ is an unknown CDF, we want to approximate this using some mapping $\hat{F}$ called the \textbf{Empirical Distribution} of the data.
 
@@ -98,6 +100,7 @@ Finally, we notice that $\hat{f}$ and $\hat{F}$ satisfy an important relationshi
 &= \hat{F}(t)
 \end{align*}
 
+\newpage
 \subsection{Bayesian Statistics}
 
 Given an Event, what does the probability of that Event \emph{mean}? There are two interpretations:
@@ -140,6 +143,88 @@ If you have trouble accepting the Likelihood Principle, it has been shown to be 
 
 Of these, Sufficiency is accepted by both Frequentists and Bayesians, while the Conditionality principle is debated.
 
+\newpage
+\subsection{Optimization}
+
+We now discuss how to solve optimization problems. This section is largly based off of \cite{Boyd:2004:CO:993483}. We want to minimize our \textbf{Objective Function} $f_0 : \mathcal{D} \rightarrow \mathbb{R}$ w.r.t some our \textbf{Optimization Variable} $x \in \mathbb{R}^n$ subject to some \textbf{Inequality Constraints} $f_i: \mathbb{R}^n \rightarrow \mathbb{R}$ and some \textbf{Equality Constraints} $h_i: \mathbb{R}^n \rightarrow \mathbb{R}$. Formally:
+\begin{align*}
+\text{Minimize } & f_0(x) \\
+\text{subject to } & f_i(x) \le 0 \ i = 1, \cdots, m\\
+& h_i(x) = 0 \ i = 1, \cdots, p
+\end{align*}
+
+We call a point $x$ \textbf{Feasible} if $x\in \mathcal{D}$ and satisfies the constraints. We call $x$ \textbf{Strictly Feasible} if $x\in$ int($\mathcal{D}$) and satisfies $f_1(x)<0, \cdots, f_m(x)<0$ and $h_1(x)=0, \cdots, h_p(x)=0$.
+The \textbf{Optimal Value} of this problem is $p^*=\inf\{f_0(x): \text{x satisfies constraints}\}$. We let $p* = \infty$ if there are no feasible points, and $p^*=-\infty$ is the problem is unbounded from below. If $x$ feasible and $f_0(x) = p^*$ then we call it \textbf{Optimal}.
+
+\subsubsection{Langrangian Duality}
+We can solve the above problem using the \textbf{Lagrangian} $L: \mathbb{R}^n\times \mathbb{R}^m\times \mathbb{R}^p \rightarrow \mathbb{R} $ with domain $\mathcal{D}\times\mathbb{R}^m\times \mathbb{R}^p$
+\begin{equation}\label{eq:primal}
+L(x,\lambda,\nu) = f_0(x) + \sum_{i=1}^m \lambda_if_i(x) + \sum_{i=1}^p \nu_i h_i(x)
+\end{equation}
+
+This problem may be difficult to solve. The problem can be simplified by introducing the \textbf{Lagrange dual function} $g: \mathbb{R}^m\times \mathbb{R}^p \rightarrow \mathbb{R}$
+\begin{equation}\label{eq:dual}
+g(\lambda,\nu) =\inf\limits_{x\in D} L(x,\lambda,\nu)
+\end{equation}
+
+We call (\ref{eq:primal}) the \textbf{Primal Problem} and (\ref{eq:dual}) the \textbf{Dual Problem}. We note that $g$ is concave (regardless of $f_0$) and can be $-\infty$. We call $\lambda, \nu$ \textbf{Dual Feasible} if $\lambda \ge 0$ and $(\lambda, \nu) \in$ dom($g$). We denote the \textbf{Dual Optimum} (supremum) of $g$ as $d^*$. We now relate the primal and dual problems:
+\begin{theorem}[Lower Bound Property]
+	Let $\lambda \ge 0$, then $g(\lambda, \nu) \le p^*$ 
+\end{theorem}
+\begin{proof}
+	Note that for any feasible $\tilde{x}$ and $\lambda \ge 0$:
+	$$f_0(\tilde{x}) \ge L(\tilde{x}, \lambda, \nu) \ge \inf\limits_{x\in D} L(x,\lambda,\nu) = g(\lambda, \nu)$$
+	and since $p^*$ is the infemum of all feasible $\tilde{x}$, it follows that $ p^* \ge g(\lambda, \nu)$
+\end{proof}
+
+Instead of minimizing $f_0$ to get $p^*$ we can maximize the lower bound $g$. This is an easier problem since $g$ is concave. It is clear that we always have \textbf{Weak Duality} $p^* \ge d^*$, although we want \textbf{Strong Duality}: $p^* = d^*$. A sufficient condition for strong duality is \textbf{Slater's Condition}
+
+\begin{theorem}[Slater's Condition]
+	Suppose we have a convex primal (i.e. $f_0, f_i$ convex and $h_i$ affine), if there exists a strictly feasible $x$ we then have strong duality
+\end{theorem}
+
+\subsubsection{KKT Conditions}
+
+We now state some conditions often used to determine whether a solution $x^*$ of $f$ is optimal. These are the \textbf{KKT Conditions}.
+
+\begin{theorem}[KKT Conditions]
+	Let $f_0, f_i, h_i$ be differentiable. If $x^*$ is optimal and $(\lambda^*, \nu^*)$ are dual optimal and we have strong duality; then the following Conditions must be satisfied:
+	\begin{itemize}
+		\item $\nabla_x f_0(x^*) + \sum_{i=1}^m \lambda_i^* \nabla_x f_i(x^*) + \sum_{i=1}^p \nu_i^* \nabla_x h_i(x^*) = 0$ $\rightarrow$ Stationarity
+		\item $\lambda_i^* f_i(x^*)=0 \rightarrow$ Complementary Slackness
+		\item $x^*$ is feasible $\rightarrow$ Primal Feasibility
+		\item $\lambda^* \ge 0 \rightarrow$ Dual Feasibility
+	\end{itemize}
+\end{theorem}
+\begin{proof}
+	We have to show Stationarity and Complementary Slackness. Notice that
+	\begin{align}
+	f_{0}(x^*) = g(\lambda^*, \nu^*) &= \inf_x \left( f_0(x) + \sum_{i=1}^m \lambda_i^*f_i(x) + \sum_{i=1}^p \nu_i^* h_i(x) \right) \\
+	&\le f_0(x^*) + \sum_{i=1}^m \lambda_i^*f_i(x^*) + \sum_{i=1}^p \nu_i^* h_i(x^*)\\
+	&\overset{(a)}{\le} f_0(x^*)
+	\end{align}
+	Where (a) comes from the condition that $h_i(x^*) = 0 \Rightarrow \sum_{i=1}^p \nu_i^* h_i(x^*) = 0$ and $f_i(x^*) \le 0, \lambda_i \ge 0 \Rightarrow \sum_{i=1}^m \lambda_i^* f_i(x^*) \le 0$. We get that $\inf\limits_{x} L(x, \lambda^*, \nu^*) = f_0(x^*)$, i.e. $x^*$ minimizes $L(x, \lambda^*, \nu^*)$ which implies Stationarity. Complementary slackness comes from $\sum_{i=1}^m \lambda_i^* f_i(x^*) = 0$ and $\lambda_i^* f_i(x^*) \le 0 \Rightarrow \lambda_i^* f_i(x^*) = 0$ for every $i$.
+\end{proof}
+
+\begin{theorem}
+	If $x^*, \lambda^*, \nu^*$ satisfy the KKT conditions and the primal is convex; then $x^*$ is optimal, $\lambda^*, \nu^*$ are dual optimal and we have strong duality.
+\end{theorem}
+\begin{proof}
+		\begin{align}
+		g(\lambda^*, \nu^*) &= \inf_x \left( f_0(x) + \sum_{i=1}^m \lambda_i^*f_i(x) + \sum_{i=1}^p \nu_i^* h_i(x) \right) \\
+		&\overset{(a)}{=}f_0(x^*) + \sum_{i=1}^m \lambda_i^*f_i(x^*) + \sum_{i=1}^p \nu_i^* h_i(x^*)\\
+		&\overset{(b)}{=}f_0(x^*)
+		\end{align}
+	 Since $\lambda^*\ge0$, $L(x,\lambda^*,\nu^*)$ is convex in $x$. By the KKT conditions, $x^*$ is primal feasible and $\nabla_x L(x,\lambda^*,\nu^*)$ evaluated at $x^*$ is 0 $\Rightarrow$ $x^*$ minimizes $L(x,\lambda^*,\nu^*)$ (a). (b) follows from complementary slackness. Therefore, we have strong duality and so $x^*$ is optimal and $\lambda^*, \nu^*$ are dual optimal.
+\end{proof}
+
+So the KKT conditions are necessary for optimality under strong duality and sufficient if the primal is convex. Slater's condition can make this into an if and only if statement. 
+
+\begin{theorem}
+	If Slaters condition is satisfied, then $x^*$ is optimal if and only if there exists $\lambda^*, \nu^*$ that satisfy KKT conditions.
+\end{theorem}
+
+\newpage
 
 \section{Statistical Decision Theory}
 
@@ -168,8 +253,7 @@ This basically means that \(\delta_1\) is a better decision rule then \(\delta_2
 
 Unfortunately, different \(P\)'s usually produce different optimal \(\delta\)'s! we must take into account the unknown \(P\) when minimizing (\ref{eq:1}). One way to take this into account is to use the \textbf{Minimax Criteria}: the optimal \(\delta\) minimizes the Frequentist Risk in worst case scenerio.
 
-\begin{equation}
-\delta_{minimax} = \,\min\limits_{\delta}\,\max\limits_{P \in \mathcal{P}}\ R(P,\delta)
+\begin{equation}\delta_{minimax} = \,\min\limits_{\delta}\,\max\limits_{P \in \mathcal{P}}\ R(P,\delta)
 \end{equation}
 
 If \(\mathcal{P}\) is a Parameteric Family, we can handle the dependence of \(R\) on \(P\) by averaging it out, adding weights \(\pi\) over $\Theta$ to put more weight on certain $\theta$'s. We can then minimize over \(\delta\). This is called the \textbf{Bayes Risk}, even though it is Frequentist concept since it averages over $D$ via (\ref{eq:1}).
@@ -204,13 +288,14 @@ We would then get that:
 Where (a) is due to Fubini's theorem (provided the integral is finite).
 It turns out that a \emph{Bayes rule} can be obtained by taking the \emph{Bayes action} for each particular $D$! See \cite{PHoffNotes2} for more details.
 
+\newpage
 
 \subsection{Types of Procedures}
 
-\subsubsection{Parameter Estimation - Frequentist}
-Given a Parametric Family $\{P_{\theta}\}_{\theta\in\Theta}$, typically we have data \(D=(X^{(1)}, \cdots, X^{(n)})\) where each \(X^{(i)}\overset{iid}{\sim} P_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\). The estimator should minimize some cost, for example: \(L(\theta,\delta(D)) = ||\theta-\delta(D)||^2\). Note that since the data are IID we use the marginal density over $X$ instead of the joint over $D$ in the loss function.
+\subsubsection{Parameter Estimation}\label{sec:parest}
+Given a Parametric Family $\{P_{\theta}\}_{\theta\in\Theta}$, typically we have data \(D=(X^{(1)}, \cdots, X^{(n)})\) where each \(X^{(i)}\overset{iid}{\sim} P_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\). The estimator should minimize the loss (more specifically the risk). One popular loss function is the \textbf{Squared Loss}: \(L(\theta,\delta(D)) = ||\theta-\delta(D)||^2\). Note that since the data are IID we use the marginal density over $X$ instead of the joint over $D$ in the loss function.
 
-If we take the expectation of the loss function above (the risk), we can decompose it nicely into two pieces:
+If we take the expectation of the loss function above (the frequentist risk), we can decompose it nicely into two pieces:
 
 \begin{align*}
 R(P,\delta)&=\mathbb{E}_{D\sim P}\{||\theta-\delta(D)||^2\}\\
@@ -218,11 +303,11 @@ R(P,\delta)&=\mathbb{E}_{D\sim P}\{||\theta-\delta(D)||^2\}\\
 &=\underbrace{(\theta-\mathbb{E}_{D\sim P}\{\delta(D)\})^2}_{Bias^2} + \underbrace{\mathbb{E}_{D\sim P}\{(\mathbb{E}_{D\sim P}\{\delta(D)\} - \delta(D))^2\}}_{Variance}
 \end{align*}
 
-The above says that when we average this loss over all possible datasets, we can compare how much of the loss is due to the Bias and how much to the Variance. This is a Frequentist idea since it involves taking an expectation over the data generating distribution, an idea doesn't appeal to Bayesians since it is contrary to the conditionality principle. 
+The above says that when we average this loss over all possible datasets, we can compare how much of the loss is due to the Bias and how much to the Variance of the estimator $\delta$. This idea works for other loss functions, but the decomposition is not nearly as clean. Finally, this is a Frequentist idea since it involves taking an expectation over the data generating distribution, an idea doesn't appeal to Bayesians since it is contrary to the conditionality principle. 
+\\
 
-\subsubsection{Parameter Estimation - Bayesian}
-
-Next we show that \(\delta_{post}(D) = \mathbb{E}\{\theta|D\}\). This is a simple optimization problem:
+We conclude by showing an interesting result: for parameter estimation, the bayes action for the squared loss
+\(\delta_{post}(D) = \mathbb{E}\{\theta|D\}\). This is a simple optimization problem:
 \begin{align*}
 R_B(\delta|D) &= \int_{\Theta}^{}||\theta-\delta(D)||^2p(\theta|D)d\theta \\
 &=\delta(D)^2 -2\delta(D)\int_{\Theta}^{}\theta p(\theta|D)d\theta+\int_{\Theta}^{}\theta^2 p(\theta|D)d\theta
@@ -234,44 +319,10 @@ and taking the derivative and setting to 0 yields:
 &\Rightarrow \delta(D) = \int_{\Theta}^{}\theta p(\theta|D)d\theta = \mathbb{E}\{\theta|D\}
 \end{align*}
 
-
-The loss \(L(\theta,a) = ||\theta-a||^2\) is so popular that it has its own name -- the \textbf{Squared Loss}. It is a member of a family of loss functions called the \textbf{Minkowski Loss}. This family has the following form:
-\begin{equation}
-	L(\theta,\delta(D))_q = ||\theta-\delta(D)||^q
-\end{equation}
-
-We have seen the decision rule for for $q=2$. We assume that $\Theta=\mathbb{R}$ and show that for $q=1$ the solution is the posterior median:
-
-\begin{align*}
-R_B(\delta|D) &= \int_{\Theta}^{}||\theta-\delta(D)||p(\theta|D)d\theta \\
-&= \int_{-\infty}^{\delta(D)}(\theta-\delta(D))p(\theta|D)d\theta + \int_{\delta(D)}^{\infty}(\delta(D)-\theta)p(\theta|D)d\theta\\
-&\overset{(a)}{=} \delta(D)\int_{-\infty}^{\delta(D)}p(\theta|D)d\theta - \int_{-\infty}^{\delta(D)}\theta p(\theta|D)d\theta -\\
-&\hspace{10px} \lim\limits_{c \rightarrow \infty} \int_{c}^{\delta(D)}\theta p(\theta|D)d\theta + \lim\limits_{c \rightarrow \infty} \delta(D)\int_{c}^{\delta(D)}p(\theta|D)d\theta
-\end{align*}
-
-and taking the derivative and setting to 0 yields:
-\begin{align*}
-\frac{\partial R_B}{\partial \delta} 
-&\overset{(b)}{=} \delta(D)p(\delta(D)|D)d\theta + \int_{-\infty}^{\delta(D)}p(\theta|D)d\theta - \delta(D)p(\delta(D)|D)d\theta -\\
-&\hspace{10px} \delta(D)p(\delta(D)|D)d\theta + \delta(D)p(\delta(D)|D)d\theta + \lim\limits_{c \rightarrow \infty} \delta(D)\int_{c}^{\delta(D)}p(\theta|D)d\theta \\
-&= \int_{-\infty}^{\delta(D)}p(\theta|D)d\theta - \lim\limits_{c \rightarrow \infty} \delta(D)\int_{\delta(D)}^{c}p(\theta|D)d\theta
-\end{align*}
-
-And equating to zero gives us
-
-\begin{align*}
-\int_{-\infty}^{\delta(D)}p(\theta|D)d\theta = \int_{\delta(D)}^{\infty}p(\theta|D)d\theta
-\end{align*}
-
-And so $\delta$ is the posterior median, as needed. For $q \rightarrow 0$ the solution is the posterior mode. 
-
-\begin{enumerate}
-	\item \(L(P_{\theta}, a) = \lim\limits_{p \rightarrow 0}\, || \theta - \delta(D) ||^p \)
-\end{enumerate}
-
+\newpage
 
 \subsubsection{Prediction}
-Let $D=((X^{(1)},Y^{(1)}), \cdots, (X^{(n)},Y^{(n)}))$ where $X^{(i)} \sim \mathcal{X}$ and $Y^{(i)} \sim \mathcal{Y}$. 
+Let $D=((X^{(1)},Y^{(1)}), \cdots, (X^{(n)},Y^{(n)}))$ where $X^{(i)} \in \mathcal{X}$ and $Y^{(i)} \in \mathcal{Y}$. 
 
 We put a density on $X$ and $Y$: $(X^{(i)},Y^{(i)}) \overset{iid}{\sim} P_{XY}$. Our action space $\mathcal{A} = \mathcal{Y}^\mathcal{X}$, the set of functions $f: \mathcal{X}\mapsto \mathcal{Y}$. Hence \(\delta(D)\) is a \textbf{Learning Algorithm} which learns a function i.e. $\delta(D) = \hat{f}$. 
 
@@ -280,14 +331,69 @@ We can evaluate the performance of $f$ using a \emph{prediction loss} $l: \mathc
 L(P,f) = \mathbb{E}_{(X,Y)\sim P_{XY}}\{l(Y,f(X)) \}
 \end{equation}
 This is often called the Risk in Machine Learning. Note that we do not know (\ref{eq:8}), but we can approximate it using the below formula. This is called \textbf{Empirical Risk Minimization}
-\begin{equation}
+\begin{equation}\label{eq:erm}
 L(P,f) = \frac{1}{n}\sum_{i=1}^n l\left(Y^{(i)},f(X^{(i)})\right)
 \end{equation}
 
+Notice that (\ref{eq:erm}) is just (\ref{eq:8}) with the empirical density substituted in place of the true, unknown one.
+
+Prediction problems are called different things depending on whether $\mathcal{Y}$ is discrete or continuous. If $\mathcal{Y}$ discrete then the problem is called \textbf{Classification}, and if $\mathcal{Y}$ is not discrete e.g. $\mathcal{Y} = \mathbb{R}$, then it is referred to as \textbf{Regression}.
+
+We previously described Prediction problems and noted that if $\mathcal{Y}$ is discrete then we refer to prediction as \textbf{Classification} and otherwise we refer to it as \textbf{Regression}. 
+
+\subsubsection{Regression}
+We look at Regression. Let $D=((X^{(1)},T^{(1)}), \cdots, (X^{(n)},T^{(n)}))$ with $X^{(i)} \in \mathcal{X}$ and $T^{(i)} \in \mathcal{T}$. Let $(X^{(i)},T^{(i)}) \overset{iid}{\sim} P_{XT}$ and $l(t, y(x)) = | t - y(x) |^2$ (the squared loss).
+We need to find a function $y: \mathcal{X} \rightarrow \mathcal{T}$ which minimizes the Generalization Error:
+\begin{align*}
+L(P,y) &= \mathbb{E}_{(X,T)\sim P_{XT}}\{| t - y(x) |^2\}\\
+&= \int \int | t - y(x) |^2 p(x, t) dx dt
+\end{align*}
+
+In this case we can find the optimal $y$ by using calculus of variations. That is to say, the problem is reduced to an optimization problem. We denote $G(y, y', x) = \int | t - y(x) |^2 p(x, t) dt$ and use the Euler Lagrange equations to get that our stationary point must occur at 
+\begin{align*}
+&\frac{\partial G(y, y', x)}{\partial y} - \frac{d}{dx}\frac{\partial G(y, y', x)}{\partial y'} = 0\\
+&\Rightarrow \frac{\partial G(y, y', x)}{\partial y}=0
+\end{align*}
+
+Since $\frac{\partial G(y, y', x)}{\partial y'}=0$ since $y'$ is not in $G$. We then solve:
+
+\begin{align*}
+\frac{\partial L(P,y)}{\partial y(x)} &= \frac{\partial}{\partial y(x)}\int | t - y(x) |^2 p(x, t) dt\\
+&=2 \int (t - y(x)) p(x, t) dt = 0\\
+\end{align*}
+
+Solving for the above we have that
+
+\begin{align*}
+\int (t - y(x)) p(x, t) dt &= \int t p(x, t) dt - \int y(x) p(x, t) dt = 0\\
+&\Rightarrow \int t p(x, t) dt =  y(x)p(x) \\
+&\Rightarrow y(x) = \int t \frac{p(x, t)}{p(x)} dt = \mathbb{E}_{t \sim p(t|x)}\{t|x\}
+\end{align*}
+
+And so our learning algorithm $\delta(D)$ simply returns $y(x) = \mathbb{E}_{t \sim p(t|x)}\{t|x\}$. Of course, we don't know $p(t|x)$, so we would have to approximate it using the Empirical Risk Minimization described before!
+
+
+The squared loss functions is a member of loss functions called the \textbf{Minkowski Loss}. This family has the following form:
+\begin{equation}
+L_q(P,y) = \int\int |t-y(x)|^q p(x,t)dxdt
+\end{equation}
+
+We solve for the optimal $y(x)$ and set this to 0:
+\begin{align}
+\frac{\partial L_q(P,y)}{\partial y(x)} &= \int q|t-y(x)|^{q-1} sgn(t-y(x)) p(x,t)dt\\
+&= \int_{y(x)}^{\infty} q|t-y(x)|^{q-1}p(x,t)dt-\int_{-\infty}^{y(x)} q|t-y(x)|^{q-1}p(x,t)dt\\
+&\Rightarrow \int_{-\infty}^{y(x)} |t-y(x)|^{q-1}p(x,t)dt = \int_{y(x)}^{\infty} |t-y(x)|^{q-1}p(x,t)dt
+\end{align}
+
+For $q=1$, we see that $y(x)$ is the conditional median of $t$.
+
+\begin{align}
+\int_{-\infty}^{y(x)} p(x,t)dt = \int_{y(x)}^{\infty} p(x,t)dt
+\end{align}
+
+Finally, as $q \rightarrow 0$, the $y(x)$ given by the Minkowski loss is the conditional mode of $t$.
 
 \newpage
-
-
 
 \section{Information Theory}
 
@@ -296,27 +402,27 @@ We want a function $I$ which measures how much information you learn from observ
 \begin{enumerate}
 	\item Highly probable $E$ have low $I(E)$ and conversely $\rightarrow$ \emph{ rare events give more information}.
 	\item $I(E) \ge 0$ $\rightarrow$\emph{ Information is non-negative}.
-	\item if $P(E)=1$ then $I(E) = 0$ $\rightarrow$\emph{ Events that always occur provide no information}.
+	\item if $p(E)=1$ then $I(E) = 0$ $\rightarrow$\emph{ Events that always occur provide no information}.
 	\item If $E_1, E_2$ are independent events then $I(E_1 \cap E_2) = I(E_1) + I(E_2)$ $\rightarrow$\emph{ information due to independent events are additive}.
 \end{enumerate}
-From 1. and 3. we see that $I$ should be a function of the probability of an events occurence, i.e. $I(E)=f(P(E))$ for some $f$. From 4., given independent events $E_1, E_2$, we have that:
+From 1. and 3. we see that $I$ should be a function of the probability of an events occurence, i.e. $I(E)=f(p(E))$ for some $f$. From 4., given independent events $E_1, E_2$, we have that:
 \begin{align}
-f(P(E_1)P(E_2)) &= f(P(E_1\cap E_2)) = f(P(E_1)) + f(P(E_2))\\
+f(p(E_1)p(E_2)) &= f(p(E_1\cap E_2)) = f(p(E_1)) + f(p(E_2))\\
 f(x\cdot y) &= f(x) + f(y)
 \end{align}
 
-If we assume that $I$ is continuous, then only $I(E) = Klog P(E)$ satisfies (11)  \cite{EntNotes}. Finally, using 2., we see that $K<0$. We can then define $I$ as:
+If we assume that $I$ is continuous, then only $I(E) = Klog p(E)$ satisfies (11)  \cite{EntNotes}. Finally, using 2., we see that $K<0$. We can then define $I$ as:
 
 \begin{equation}
-I(E) = -log P(E)
+I(E) = -log p(E)
 \end{equation}
 
-Where the choice of $K$ decides the base of the logarithm.
+Where the choice of $K$ decides the base of the logarithm. In this case we set it to $1$ for clarity.
 
 \subsection{Entropy}
 We can extend this notion to a discrete Random Variable $X\sim p$ with finite domain $\mathcal{X}$. By defining the \textbf{Shannon Entropy} $H(X)$ as the average amount of information i.e. 
 \begin{equation}
-H(X) = \mathbb{E}_{X\sim P}\{I(X)\} = \mathbb{E}_{X\sim P}\{-\log P(X)\} = -\sum_{x\in\mathcal{X}}p(x)\log p(x)
+H(X) = \mathbb{E}_{X\sim p}\{I(X)\} = \mathbb{E}_{X\sim p}\{-\log p(X)\} = -\sum_{x\in\mathcal{X}}p(x)\log p(x)
 \end{equation}
 We can also denote this as $H(p)$ where $p \sim X$ depending on what we want to emphasize. Note that WLOG we can assume that \(p(x)>0 \ \forall x\in\mathcal{X}\). This is because we can use the convention that \(0\cdot log0 = 0\) (based on continuity arguments). Hence zero probability outcomes do not contribute to $H(X)$ anyways. We can further extend this for two Random Variables $X$, $Y$ with finite domain \(\mathcal{X}\times\mathcal{Y}\) by defining the \textbf{Joint Entropy} as:
 \begin{equation}
@@ -372,50 +478,6 @@ The KL divergence has some nice properties.
 	
 \end{enumerate}
 
-The KL divergence can be used within the Decision Theoretic framework. We elaborate in the following subsections.
-
-\subsubsection{Cross Entropy as a Loss Function}
-
-Semantically, $KL(p||q)$ represents how well some distribution $q$ approximates the ``true'' $p$. Suppose we wanted to estimate a distribution $p$ which we knew belonged to a Parametric Family  $p\in \{p_{\theta}\}_{\theta\in\Theta}$. We can put this into our decision theoretic framework. Let \(\mathcal{A} = \{p_{\theta}\}_{\theta\in\Theta}\) and $\delta(D)=p_{\theta}$. We can use the Cross Entropy as a loss function.
-
-\begin{equation}\label{eq:celf}
-L(p,p_{\theta}) = \mathbb{E}_{X\sim p}\{ -\log p_{\theta}(X) \}
-\end{equation}	
-
-This is because $KL(p,p_{\theta}) = -H(p) + L(p,p_{\theta})$, and since $H(p)$ is constant, minimizing the KL is equivalent to minimizing the cross entropy. Since $KL(p,p_{\theta}) \ge 0$ we see that the minimum is attained at $L(p,p_{\theta}) = H(p)$, which occurs when $p_{\theta}=p$ i.e. when our prediction matches the ``true'' density.
-
-
-\subsubsection{Maximum Likelihood Estimation}
-
-We don't know $p$, so we cannot compute (\ref{eq:celf}). Instead, we can use in its place the empirical distribution $\hat{p}$, i.e. 
-\begin{equation}
-\hat{p}(x) = \frac{1}{n}\sum_{i=1}^n\delta(x,x^{(i)})
-\end{equation}
-
-Given $X$ discrete, it turns out that the MLE for $\theta$ is the same as $\text{arg}\,\min\limits_{\theta\in\Theta} KL(\hat{p}||p_{\theta})$. This is because:
-
-\begin{align*}
-KL(\hat{p}||p_{\theta}) &= -H(\hat{p}) + CE(\hat{p},p_{\theta}) \\
-&= -H(\hat{p}) - \sum_{x\in\mathcal{X}}\hat{p}(x)\log p_{\theta}(x)\\
-&= -H(\hat{p}) - \frac{1}{n}\sum_{x\in\mathcal{X}}\sum_{i=1}^n\delta(x,x^{(i)}) \log p_{\theta}(x)\\
-&= -H(\hat{p}) - \frac{1}{n}\sum_{i=1}^n\log p_{\theta}(x^{(i)})\\
-&= -H(\hat{p}) - \frac{1}{n}l(\theta \mid x^{(1)}, \cdots, x^{(n)})
-\end{align*}
-
-This provides a nice interpretation for the MLE - it is finding the $p\in \{p_{\theta}\}_{\theta\in\Theta}$ which minimizes the dissimilarity between the empirical distribution of the training set and itself as measured by the KL divergence. Conversly we can justify the use of the Cross Entropy loss through its equivalence to Maximum Likelihood. Because of this, the Cross Entropy loss is also known as the \textbf{Negative Log Loss}.
-
-On a final note, one may think that the quantity $KL(p_{\theta}|| \hat{p})$ could be interesting. They would be wrong. This is since $p_{\theta}(x)=0 \Rightarrow \hat{p}_{\theta}(x)=0$ but $\hat{p}_{\theta}(x)=0 \not\Rightarrow p_{\theta}(x)=0$ since $\hat{p}_{\theta}(x)=0$ only means that the particular value of $x$ wasn't observed in the sample.	
-
-\subsection{Differential Entropy}
-We can define the Entropy and the KL divergence for continuous random variables.
-
-\begin{align}
-H(p) &= -\int_{x\in\mathcal{X}}p(x)\log p(x)d\mu(x) \\
-KL(p,q) &= \mathbb{E}_{X\sim p}\left\{\log \frac{p(X)}{q(X)}\right\} = \int_{x\in\mathcal{X}}p(x)\log\frac{p(x)}{q(x)}d\mu(x)
-\end{align}
-
-In the continuous case, the properties previously described hold except that the entropy is no longer necessarily non negative.
-
 \subsection{Mutual Information}
 We can quantify the amount of information obtained about one discrete random variable $X$, through another $Y$ by defining the \textbf{Mutual Information} as:
 \begin{equation}
@@ -428,46 +490,174 @@ We again assume WLOG that \(p(x,y)>0 \ \forall (x,y)\in\mathcal{X}\times\mathcal
 	\item \(I(X,X) = H(X)\) \(\rightarrow\) Sometimes the Entropy is called the \textbf{Self Information}
 	\item $I(X,Y) = KL(p_{XY}||p_Xp_Y)$
 	\item \(I(X,Y)\ge 0\)
-	
-	PROOF: Notice that \(I(X,Y) = KL(p_{XY}||p_Xp_Y) \ge 0\) by the positiveness of \(KL(\cdot||\cdot)\).
-	
+	\begin{proof}
+		Notice that \(I(X,Y) = KL(p_{XY}||p_Xp_Y) \ge 0\) by the positiveness of \(KL(\cdot||\cdot)\)
+	\end{proof}
 	\item $I(X,Y) = H(p_X) + H(p_Y) -H(p_{XY})$
+	\begin{proof} We use property 2. of $I$ and property 4. of \(KL(\cdot||\cdot)\)
+		\begin{align*}
+		I(X,Y) &= KL(p_{XY}||p_Xp_Y) \\
+		&= -H(p_{XY}) + CE(p_{XY},p_Xp_Y) \\
+		&= -H(p_{XY}) - \sum_{x,y}p_{X,Y}(x,y)\log p_X(x)p_Y(y)\\
+		&= -H(p_{XY}) - \left(\sum_{x,y}p_{X,Y}(x,y)\log p_X(x) + \sum_{x,y}p_{X,Y}(x,y)\log p_Y(y)\right)\\
+		&=-H(p_{XY}) - \left(\sum_{x}p_{X}(x)\log p_X(x) + \sum_{y}p_{Y}(y)\log p_Y(y)\right)\\
+		&= -H(p_{XY}) + H(p_X) + H(p_Y)
+		\end{align*}
+	\end{proof}
 	
-	PROOF:
-	\begin{align*}
-	I(X,Y) &= KL(p_{XY}||p_Xp_Y) \\
-	&= -H(p_{XY}) + CE(p_{XY},p_Xp_Y) \\
-	&= -H(p_{XY}) - \sum_{x,y}p_{X,Y}(x,y)\log p_X(x)p_Y(y)\\
-	&= -H(p_{XY}) - \left(\sum_{x,y}p_{X,Y}(x,y)\log p_X(x) + \sum_{x,y}p_{X,Y}(x,y)\log p_Y(y)\right)\\
-	&=-H(p_{XY}) - \left(\sum_{x}p_{X}(x)\log p_X(x) + \sum_{y}p_{Y}(y)\log p_Y(y)\right)\\
-	&= -H(p_{XY}) + H(p_X) + H(p_Y)
-	\end{align*}
 \end{enumerate}
 
+\subsection{Differential Entropy}
+We can define the Entropy, KL divergence and Mutual Information for continuous random variables.
 
+\begin{align}
+H(p) &= -\int_{x\in\mathcal{X}}p(x)\log p(x)dx \\
+KL(p,q) &= \mathbb{E}_{X\sim p}\left\{\log \frac{p(X)}{q(X)}\right\} = \int p(x)\log\frac{p(x)}{q(x)}dx\\
+I(X,Y) &=\int\int p_{X,Y}(x,y)\log\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}dxdy
+\end{align}
 
+In the continuous case, the properties previously described hold except that the entropy is no longer necessarily non negative. For an example of this let $p = Uniform\left(\frac{1}{2},1\right)$. Then $H(p) = log(\frac{1}{2}) < 0$.
 
-\subsection{Maximum Entropy Principle}
+\subsection{Entropy and Estimation}
 
+The KL divergence can be used within the Decision Theoretic framework. Semantically, $KL(p||q)$ represents how well some distribution $q$ approximates the ``true'' $p$. Suppose we wanted to estimate a distribution $p$ which we knew belonged to a Parametric Family  $p\in \{p_{\theta}\}_{\theta\in\Theta}$. Let \(\mathcal{A} = \{p_{\theta}\}_{\theta\in\Theta}\) and $\delta(D)=p_{\theta}$. Recall that this is similar to the Estimation problem described in \ref{sec:parest} \footnote{We modify the problem to make explicit the intention of estimating the density rather then the parameter. These goals are the same provided the parametric family is \textbf{identifiable}}.  We can define the \textbf{Negative Log Loss}:
+\begin{equation}
+L(p,p_{\theta}) = -\log p_{\theta}(X)
+\end{equation}
 
-\subsubsection{Examples}
-We can show that for discrete spaces, the uniform density is the Maximum Entropy.
-Let \(X \sim p\) and $Dom(X) = \mathcal{X}$ with $k$ elements and \(q\sim Unif\) on $\mathcal{X}$. Then \(D(p||q) = -H(X) + logk\)
+This loss makes sense as $p_{\theta}(X)$ small means that the model has not taken into account $X$, and the corresponding loss will be large. The Cross Entropy is the corresponding risk function for this:
+\begin{equation}\label{eq:celf}
+R(p,p_{\theta}) = \mathbb{E}_{X\sim p}\{ -\log p_{\theta}(X) \}
+\end{equation}	
 
-PROOF: 
+This risk also makes sense. $KL(p,p_{\theta}) = -H(p) + L(p,p_{\theta})$, and since $H(p)$ is constant, minimizing the KL is equivalent to minimizing the cross entropy. Since $KL(p,p_{\theta}) \ge 0$ we see that the minimum is attained at $L(p,p_{\theta}) = H(p)$, which occurs when $p_{\theta}=p$ i.e. when our prediction matches the ``true'' density.
+
+\newpage
+
+\subsubsection{Maximum Likelihood Estimation}
+
+We don't know $p$, so we cannot compute (\ref{eq:celf}). Instead, we can use in its place the empirical density function $\hat{p}$, as defined in \ref{sec:empdist}. Given $X$ discrete, it turns out that the MLE for $\theta$ is the same as $\text{arg}\,\min\limits_{\theta\in\Theta} KL(\hat{p}||p_{\theta})$. This is because:
+
 \begin{align*}
-D(p||q)&=\sum_{x}p(x)log\frac{p(x)}{q(x)}\\
-&=\sum_{x}p(x)logp(x)-\sum_xp(x)logq(x)\\
-&= -H(X) + \sum_xp(x)logk \\
-&= -H(x) + logk
+KL(\hat{p}||p_{\theta}) &= -H(\hat{p}) + CE(\hat{p},p_{\theta}) \\
+&= -H(\hat{p}) - \sum_{x\in\mathcal{X}}\hat{p}(x)\log p_{\theta}(x)\\
+&= -H(\hat{p}) - \frac{1}{n}\sum_{x\in\mathcal{X}}\sum_{i=1}^n\delta(x,x^{(i)}) \log p_{\theta}(x)\\
+&= -H(\hat{p}) - \frac{1}{n}\sum_{i=1}^n\log p_{\theta}(x^{(i)})\\
+&= -H(\hat{p}) - \frac{1}{n}l(\theta \mid x^{(1)}, \cdots, x^{(n)})
 \end{align*}
-An upper bound for \(H(X)\) is \(logk\) since \(H(X)=logk-D(p||q) \Rightarrow H(X) \le logk \).
 
-The maximum entropy solution for Random Variables is Independence
-From the previous result we have that \(I(X_1,X_2)\ge0 \Rightarrow H(X_1) + H(X_2) \ge H(X_1,X_2) \), and so the maximal entropy of \((X_1,X_2)\) is \(H(X_1) + H(X_2)\). By definition this only occurs when \(I(X_1,X_2)=0\), which only occurs if
-\(p_{1,2}(x_1,x_2)=p_1(x_1)p_2(x_2) \ \forall x_1,x_2 \in \mathcal{X}_1\times\mathcal{X}_2\). This can be seen directly from the definition of \(I\) and using the strict positivity of \(p(x_1,x_2)\).
+This provides a nice interpretation for the MLE - it is finding the $p\in \{p_{\theta}\}_{\theta\in\Theta}$ which minimizes the dissimilarity between the empirical distribution of the training set and itself as measured by the KL divergence. Conversly we can justify the use of the Cross Entropy loss through its equivalence to Maximum Likelihood.
 
-The maximum entropy solution for continuous random variables with given mean and variance is Normal.
+On a final note, one may think that the quantity $KL(p_{\theta}|| \hat{p})$ could be interesting. They would be wrong. This is since $p_{\theta}(x)=0 \Rightarrow \hat{p}_{\theta}(x)=0$ but $\hat{p}_{\theta}(x)=0 \not\Rightarrow p_{\theta}(x)=0$ since $\hat{p}_{\theta}(x)=0$ only means that the particular value of $x$ wasn't observed in the sample.	
+
+
+\subsubsection{Maximum Entropy Principle}
+
+The \textbf{Principle of Maximum Entropy} (MaxENT) states that the probability distribution which best represents the ``current state of knowledge" is the one with the largest entropy. More specifically, given some subset of distributions on $\mathcal{X}$ denoted as $\mathcal{M}$, we want to chose as our estimated distribution:
+$$\arg\max\limits_{q \in \mathcal{M}} H(q)$$
+
+We may impose constraints to this in the form of \textbf{Testible Information}-- statements about $q$ with well-defined truth or falsity. The most basic of these is that $\int_{\mathcal{X}}^{} q(x)dx = 1$. We now show a few maximum entropy distributions. 
+
+\newpage
+
+\begin{theorem}\label{th:unifentlim}
+Let $X\sim p$ be a RV with finite support $\mathcal{X}$, $|\mathcal{X}|=k$, and $\mathcal{M} = \Delta_{k}$. The uniform density is the MaxENT density.
+\end{theorem}
+
+\begin{proof}
+	We derive the following upper bound for \(H(p)\)
+	\begin{equation}
+	H(p) \le \log k
+	\end{equation}
+	
+	To derive this inequality, let \(q\sim Uniform\) on $\mathcal{X}$. We have that:
+	\begin{align*}
+	D(p||q)&=\sum_{x}p(x)\log\frac{p(x)}{q(x)}\\
+	&=\sum_{x}p(x)\log p(x)-\sum_xp(x)\log q(x)\\
+	&= -H(p) + \sum_xp(x)\log k \\
+	&= -H(p) + \log k
+	\end{align*}
+	
+	and so \(H(p)=\log k-D(p||q) \Rightarrow H(p) \le \log k \) as needed. Since $H(q) = \log k$ we can see that equality holds iff $p \sim Uniform$.
+\end{proof}
+
+So we have that, for densities with finite support and no testible information (apart from being a valid pmf), the MaxENT solution is uniform.
+
+
+\begin{theorem}
+	The MaxENT density for Random Variables $X_1 \in \mathcal{X}_1$ and $X_2 \in \mathcal{X}_2$ with $X_1 \sim p_1$ and $X_2 \sim p_2$ is \( (X_1,X_2)\sim p_1p_2 \). i.e. higher entropy assumes independence.
+\end{theorem}
+
+\begin{proof}
+Properties 3. and 4. of $I$ gives us that \(I(X_1,X_2)\ge0 \Rightarrow H(X_1) + H(X_2) \ge H(X_1,X_2) \), and so the maximal entropy of \((X_1,X_2)\) is \(H(X_1) + H(X_2)\). By definition this only occurs when \(I(X_1,X_2)=0\), which only occurs if
+\(p_{1,2}(x_1,x_2)=p_1(x_1)p_2(x_2) \ \forall x_1,x_2 \in \mathcal{X}_1\times\mathcal{X}_2\).
+\end{proof}
+
+\begin{theorem}
+The MaxENT of $X$ with $\mathcal{X} = \mathbb{N}$ and with testible information $E(X)=\alpha$ is the Geometric Distribution $p(k)=\left(\frac{\alpha}{1+\alpha}\right)^k \frac{1}{1+\alpha}$
+\end{theorem}
+
+\begin{proof}
+We want to find the distribution which maximizes the entropy $H(p)$ satisfying the constraints $\mathbb{E}(X)=\alpha$ and $\sum_{i=0}^{\infty}p(i)=1$. We form the Lagrangian:
+
+\begin{align*}
+L(p,\nu, C)=-H(p)+\nu \left(\sum_{i=0}^{\infty} ip(i)-\alpha\right) + C\left( \sum_{i=0}^{\infty}p(i)-1 \right)
+\end{align*}
+
+Taking the derivative w.r.t. $p(k)$ we get:
+\begin{align}\label{eq:p}
+\frac{\partial}{\partial p(k)}L(p,\nu, C)&= -\log p(k) - 1 + k\nu + C\\
+&\Rightarrow p(k) = \exp\{k\nu\}\exp\{C-1\}
+\end{align}
+And using that $\sum_{i=0}^{\infty}p(i)=1$ we have that
+
+\begin{align}\label{eq:cterm}
+\sum_{i=0}^{\infty}\exp\{i\nu\}\exp\{C-1\}
+= 1 \Rightarrow \exp\{-C+1\} = \sum_{i=0}^{\infty}\exp\{i\nu\}
+\end{align}
+
+we substitute (\ref{eq:cterm}) into (\ref{eq:p}) to eliminate $C$
+
+\begin{align}\label{eq:pnoc}
+p(k)=\frac{\exp\{k\nu\}}{\sum_{i=0}^{\infty}\exp\{i\nu\}}
+\end{align}
+
+We then solve for $\alpha$
+
+\begin{align*}
+\mathbb{E}(X)&=\sum_{k=0}^{\infty}\frac{k\exp\{k\nu\}}{\sum_{i=0}^{\infty}\exp\{i\nu\}}=\alpha\\
+&\Rightarrow \sum_{k=0}^{\infty}k\exp\{k\nu\}=\alpha\sum_{i=0}^{\infty}\exp\{i\nu\}\\
+&\overset{(a)}{\Rightarrow} \frac{\exp\{\nu\}}{(1-\exp\{\nu\})^2} = \frac{\alpha}{(1-\exp\{\nu\})}\\
+&\Rightarrow \exp\{\nu\} = \frac{\alpha}{1+\alpha}
+\end{align*}
+
+Where (a) comes from the geometric series. Finally, we sub this value into (\ref{eq:pnoc}) to get the familiar formula:
+
+\begin{align}
+p(k)=\left(\frac{\alpha}{1+\alpha}\right)^k\frac{1}{1+\alpha}
+\end{align}
+\end{proof}
+
+\newpage
+
+\subsubsection{MaxENT and the Exponential Family}
+
+Let $X$ be finite with $\mathcal{X}$ and $k$ as defined before. Suppose we have feature functions $T_1(X), \cdots, T_d(X)$ and we define $\mathcal{M}$ as
+\begin{equation}
+\mathcal{M} = \Bigl\{ q: \underset{\substack{model \ expected \\ feature \ count}}{\mathbb{E}_{q}\{T_j(X)\}} = \underset{\substack{empirical \\ feature \ count}}{\mathbb{E}_{\hat{p}}\{T_j(X)\}} \ j = 1,\cdots,d \Bigr\}
+\end{equation}
+
+Where our testible information are $d$ \emph{moment constraints}. Using the relation \(H(p)=\log k-D(p||q)\) derived from theorem \ref{th:unifentlim} we have the following alternative characterization of MaxENT:
+\begin{align}
+\arg\max\limits_{q \in \mathcal{M}} H(q) = \arg\min\limits_{q \in \mathcal{M}} KL(q, Uniform)
+\end{align}
+We then pose the MaxENT problem as the following optimization problem: 
+\begin{align*}
+\text{Minimize } & \sum_{x}q(x)\log \frac{q(x)}{u(x)} \\
+\text{subject to } & q(x)\ge 0 \\
+& \sum_x q(x) = 1 \\
+& \sum_x q(x)T_j(x) = \alpha_j \ j = 1, \cdots, d
+\end{align*}
 
 \newpage
 

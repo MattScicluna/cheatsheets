@@ -10,6 +10,10 @@ B.~Vidakovic, ``The likelihood principle.'' Slides.
 \bibitem{MJordanNotes}
 M.~I. Jordan, ``260 course notes.'' Slides.
 
+\bibitem{Boyd:2004:CO:993483}
+S.~Boyd and L.~Vandenberghe, {\em Convex Optimization}.
+\newblock New York, NY, USA: Cambridge University Press, 2004.
+
 \bibitem{PHoffNotes2}
 P.~Hoff, ``Bayes estimators.'' Notes, 2013.
 
