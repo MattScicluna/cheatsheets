@@ -100,6 +100,20 @@ Finally, we notice that $\hat{f}$ and $\hat{F}$ satisfy an important relationshi
 &= \hat{F}(t)
 \end{align*}
 
+\subsubsection{Exponential Family}\label{sec:expfam}
+
+The \textbf{(Canonical) Exponential Family} is a parametric family of distributions which have the following form:
+\begin{align*}
+p(x|\eta) = \exp\{ \eta^TT(x) - A(\eta)\}h(x)
+\end{align*}
+It is defined by two quantities
+\begin{itemize}
+	\item $h(x)d\mu(x)$ $\rightarrow$ the \textbf{reference measure} on $X$
+	\item $T: \mathcal{X} \rightarrow \mathbb{R}^p$ $\rightarrow$ the \textbf{Sufficient Statistics}
+\end{itemize}
+
+$h(x)$ is called the \textbf{Reference Density}, $d\mu(x)$ is the \textbf{Base Measure} (the Counting measure for discrete $\mathcal{X}$ and the Lebesgue measure for continuous $\mathcal{X}$). $\eta$ is called the \textbf{Canonical Parameter},  and $A(\nu)$ is the \textbf{Cumulant Function}.
+
 \newpage
 \subsection{Bayesian Statistics}
 
@@ -144,17 +158,21 @@ If you have trouble accepting the Likelihood Principle, it has been shown to be 
 Of these, Sufficiency is accepted by both Frequentists and Bayesians, while the Conditionality principle is debated.
 
 \newpage
-\subsection{Optimization}
+\subsection{Optimization}\label{sec:optim}
 
-We now discuss how to solve optimization problems. This section is largly based off of \cite{Boyd:2004:CO:993483}. We want to minimize our \textbf{Objective Function} $f_0 : \mathcal{D} \rightarrow \mathbb{R}$ w.r.t some our \textbf{Optimization Variable} $x \in \mathbb{R}^n$ subject to some \textbf{Inequality Constraints} $f_i: \mathbb{R}^n \rightarrow \mathbb{R}$ and some \textbf{Equality Constraints} $h_i: \mathbb{R}^n \rightarrow \mathbb{R}$. Formally:
+We now discuss how to solve optimization problems. We want to minimize our \textbf{Objective Function} $f_0 : \mathcal{D} \rightarrow \mathbb{R}$ w.r.t some  \textbf{Optimization Variable} $x \in \mathbb{R}^n$ subject to some \textbf{Inequality Constraints} $f_i: \mathbb{R}^n \rightarrow \mathbb{R}$ and some \textbf{Equality Constraints} $h_i: \mathbb{R}^n \rightarrow \mathbb{R}$.
+We set $\mathcal{D} = \{x : f_0(x) < \infty\}$.
+Formally:
 \begin{align*}
 \text{Minimize } & f_0(x) \\
 \text{subject to } & f_i(x) \le 0 \ i = 1, \cdots, m\\
 & h_i(x) = 0 \ i = 1, \cdots, p
 \end{align*}
 
-We call a point $x$ \textbf{Feasible} if $x\in \mathcal{D}$ and satisfies the constraints. We call $x$ \textbf{Strictly Feasible} if $x\in$ int($\mathcal{D}$) and satisfies $f_1(x)<0, \cdots, f_m(x)<0$ and $h_1(x)=0, \cdots, h_p(x)=0$.
-The \textbf{Optimal Value} of this problem is $p^*=\inf\{f_0(x): \text{x satisfies constraints}\}$. We let $p* = \infty$ if there are no feasible points, and $p^*=-\infty$ is the problem is unbounded from below. If $x$ feasible and $f_0(x) = p^*$ then we call it \textbf{Optimal}.
+We call a point $x$ \textbf{Feasible} if $x\in \mathcal{D}$ and $x$ satisfies the constraints. We call $x$ \textbf{Strictly Feasible} if $x\in$ int($\mathcal{D}$) and satisfies $f_1(x)<0, \cdots, f_m(x)<0$ and $h_1(x)=0, \cdots, h_p(x)=0$. The \textbf{Optimal Value} of this problem is $p^*=\inf\{f_0(x): \text{x satisfies constraints}\}$. We let $p* = \infty$ if there are no feasible points, and $p^*=-\infty$ if the problem is unbounded from below. If $x$ feasible and $f_0(x) = p^*$ then we call it \textbf{Optimal}.
+
+\subsubsection{Convexity}
+
 
 \subsubsection{Langrangian Duality}
 We can solve the above problem using the \textbf{Lagrangian} $L: \mathbb{R}^n\times \mathbb{R}^m\times \mathbb{R}^p \rightarrow \mathbb{R} $ with domain $\mathcal{D}\times\mathbb{R}^m\times \mathbb{R}^p$
@@ -167,7 +185,7 @@ This problem may be difficult to solve. The problem can be simplified by introdu
 g(\lambda,\nu) =\inf\limits_{x\in D} L(x,\lambda,\nu)
 \end{equation}
 
-We call (\ref{eq:primal}) the \textbf{Primal Problem} and (\ref{eq:dual}) the \textbf{Dual Problem}. We note that $g$ is concave (regardless of $f_0$) and can be $-\infty$. We call $\lambda, \nu$ \textbf{Dual Feasible} if $\lambda \ge 0$ and $(\lambda, \nu) \in$ dom($g$). We denote the \textbf{Dual Optimum} (supremum) of $g$ as $d^*$. We now relate the primal and dual problems:
+We call (\ref{eq:primal}) the \textbf{Primal Problem} and (\ref{eq:dual}) the \textbf{Dual Problem}. We note that $g$ is concave (regardless of $f_0$) and can be $-\infty$. We call $(\lambda, \nu)$ \textbf{Dual Feasible} if $\lambda \ge 0$ and $(\lambda, \nu) \in$ dom($g$), where dom($g$)=$\{ (\lambda, \nu) | g(\lambda, \nu)>-\infty\}$ \footnote{We note that, we could add extra constraints to prevent $g(\lambda, \nu)=-\infty$ and this would not change anything. See Boyd section 5.2.1 \cite{Boyd:2004:CO:993483}}. We denote $d^*$ as the \textbf{Dual Optimum Value}: the infemum of $g$. We say that $(\lambda,\nu)$ is \textbf{Dual Optimum} if it is dual feasible and $g(\lambda,\nu)=d^*$. We now relate the primal and dual problems:
 \begin{theorem}[Lower Bound Property]
 	Let $\lambda \ge 0$, then $g(\lambda, \nu) \le p^*$ 
 \end{theorem}
@@ -177,11 +195,46 @@ We call (\ref{eq:primal}) the \textbf{Primal Problem} and (\ref{eq:dual}) the \t
 	and since $p^*$ is the infemum of all feasible $\tilde{x}$, it follows that $ p^* \ge g(\lambda, \nu)$
 \end{proof}
 
-Instead of minimizing $f_0$ to get $p^*$ we can maximize the lower bound $g$. This is an easier problem since $g$ is concave. It is clear that we always have \textbf{Weak Duality} $p^* \ge d^*$, although we want \textbf{Strong Duality}: $p^* = d^*$. A sufficient condition for strong duality is \textbf{Slater's Condition}
+Instead of minimizing $f_0$ to get $p^*$ we can maximize the lower bound $g$. This may be an easier problem since $g$ is always concave. It is clear that we always have \textbf{Weak Duality} $p^* \ge d^*$, although we want \textbf{Strong Duality}: $p^* = d^*$. A sufficient condition for strong duality is \textbf{Slater's Condition}. This requires the primal (\ref{eq:primal}) to be convex, meaning that $f_0, f_1, \cdots, f_m$ are convex and $h_i$ are \textbf{Affine}: $h(x) = 0$ can be written as $Ax = b$, where $A \in \mathbb{R}^{d \times n}$, $b\in\mathbb{R}^n$.
 
 \begin{theorem}[Slater's Condition]
-	Suppose we have a convex primal (i.e. $f_0, f_i$ convex and $h_i$ affine), if there exists a strictly feasible $x$ we then have strong duality
+	Suppose we have a convex primal. If there exists a strictly feasible $x$ we then have strong duality
 \end{theorem}
+\begin{proof}
+	Boyd section 5.3.2 \cite{Boyd:2004:CO:993483}
+\end{proof}
+
+\subsubsection{Saddle Point Interpretation}
+
+Given a $w^*\in W$, $z^*\in Z$ we say that $(w^*,z^*)$ is a \textbf{Saddle Point} for function $f$ with domain $W \times Z$ if $f(w^*, z) \le f(w^*, z^*) \le f(w, z^*)$ for all $(w,z) \in W \times Z$. This means that $w^*$ minimizes $f(w, z^*)$ over $W$ and $z^*$ maximizes $f(w^*, z)$ over $Z$:
+\begin{align*}
+f(w^*, z^*) = \inf_{w \in W} f(w, z^*) = \sup_{z \in Z} f(w^*, z)
+\end{align*}
+
+First we notice the following:
+\begin{align*}
+\sup\limits_{\substack{\lambda\ge0 \\ \nu}} L(x, \lambda, \nu) &= \sup\limits_{\substack{\lambda\ge0 \\ \nu}} \left( f_0(x) + \sum_{i=1}^m \lambda_if_i(x) + \sum_{i=1}^p \nu_i h_i(x) \right)\\
+&= \begin{cases}
+f_0(x) & \text{$x$ is feasible}\\
+\infty & \text{o.w.}
+\end{cases}
+\end{align*}
+
+We can show this in cases. Suppose $x$ is feasible. $h_i(x)=0$ so we can ignore them. Since $f_i(x) \le 0,\ i=1, \cdots, m$; $\lambda = 0$ would optimize $L$ since $\sum_{i=1}^m \lambda_if_i(x) \le 0$. Now suppose $x$ was infeasible and WLOG suppose that $ \exists j \ s.t.\ f_j(x) > 0$, then we can make $L$ arbitrarily large by taking $\lambda_j \rightarrow \infty$. The same reasoning works for any $h_i(x) \ne 0$. Hence the result. From this we can express $p^*$ as:
+\begin{align*}
+p^* &= \inf_x f_0(x), \text{  x feasible}\\
+&= \inf_x\sup_{\substack{\lambda\ge0 \\ \nu}}L(x, \lambda, \nu)
+\end{align*}
+
+and our dual is defined as
+\begin{align*}
+d^* = \sup_{\substack{\lambda\ge0 \\ \nu}}\inf_x L(x, \lambda, \nu)
+\end{align*}
+
+Hence strong duality can be expressed in the following way, clearly showing that $(x, \lambda, \nu)$ is a saddle point for $L$.
+\begin{align*}
+\inf_x\sup_{\substack{\lambda\ge0 \\ \nu}}L(x, \lambda, \nu) = \sup_{\substack{\lambda\ge0 \\ \nu}}\inf_x L(x, \lambda, \nu)
+\end{align*}
 
 \subsubsection{KKT Conditions}
 
@@ -218,11 +271,21 @@ We now state some conditions often used to determine whether a solution $x^*$ of
 	 Since $\lambda^*\ge0$, $L(x,\lambda^*,\nu^*)$ is convex in $x$. By the KKT conditions, $x^*$ is primal feasible and $\nabla_x L(x,\lambda^*,\nu^*)$ evaluated at $x^*$ is 0 $\Rightarrow$ $x^*$ minimizes $L(x,\lambda^*,\nu^*)$ (a). (b) follows from complementary slackness. Therefore, we have strong duality and so $x^*$ is optimal and $\lambda^*, \nu^*$ are dual optimal.
 \end{proof}
 
-So the KKT conditions are necessary for optimality under strong duality and sufficient if the primal is convex. Slater's condition can make this into an if and only if statement. 
+So the KKT conditions are necessary for optimality where $f_0,f_i,h_i$ are differentiable and there is strong duality. Likewise, if $L$ is convex and $x^*,\lambda^*,\nu^*$ satisfy KKT, then $x^*$ is optimal, $(\lambda^*,\nu^*)$ are dual optimal, and there is strong duality.
 
 \begin{theorem}
-	If Slaters condition is satisfied, then $x^*$ is optimal if and only if there exists $\lambda^*, \nu^*$ that satisfy KKT conditions.
+	If Slaters condition is satisfied, then $x^*$ is optimal if and only if there exists $\lambda^*, \nu^*$ such that $(x^*,\lambda^*, \nu^*)$ satisfy KKT conditions.
 \end{theorem}
+
+\subsubsection{Using the Dual to solve the Primal}
+
+If strong duality holds, $(\lambda^*, \nu^*)$ is a dual optimal solution and $L(x, \lambda^*, \nu^*)$ has a unique minimum value $x^*$ Then either:
+\begin{enumerate}
+	\item $x^*$ is feasible; then $x^*$ must be optimal.
+	\item $x^*$ is not feasible and no optimal can exist.
+\end{enumerate}
+
+This means that in some cases maximizing the dual is equivalent to solving the primal.
 
 \newpage
 
@@ -546,7 +609,7 @@ KL(\hat{p}||p_{\theta}) &= -H(\hat{p}) + CE(\hat{p},p_{\theta}) \\
 &= -H(\hat{p}) - \frac{1}{n}l(\theta \mid x^{(1)}, \cdots, x^{(n)})
 \end{align*}
 
-This provides a nice interpretation for the MLE - it is finding the $p\in \{p_{\theta}\}_{\theta\in\Theta}$ which minimizes the dissimilarity between the empirical distribution of the training set and itself as measured by the KL divergence. Conversly we can justify the use of the Cross Entropy loss through its equivalence to Maximum Likelihood.
+This provides a nice interpretation for the MLE - it is finding the $p\in \{p_{\theta}\}_{\theta\in\Theta}$ which minimizes the dissimilarity between the empirical distribution of the training set and itself as measured by the KL divergence. Conversly we can justify the use of the Cross Entropy loss through its equivalence to Maximum Likelihood. Note that this holds for $X$ continuous, we just have to change the sums for integrals.
 
 On a final note, one may think that the quantity $KL(p_{\theta}|| \hat{p})$ could be interesting. They would be wrong. This is since $p_{\theta}(x)=0 \Rightarrow \hat{p}_{\theta}(x)=0$ but $\hat{p}_{\theta}(x)=0 \not\Rightarrow p_{\theta}(x)=0$ since $\hat{p}_{\theta}(x)=0$ only means that the particular value of $x$ wasn't observed in the sample.	
 
@@ -642,22 +705,80 @@ p(k)=\left(\frac{\alpha}{1+\alpha}\right)^k\frac{1}{1+\alpha}
 
 \subsubsection{MaxENT and the Exponential Family}
 
-Let $X$ be finite with $\mathcal{X}$ and $k$ as defined before. Suppose we have feature functions $T_1(X), \cdots, T_d(X)$ and we define $\mathcal{M}$ as
+It turns out that if the only testible information we have about our pdf are moment constraints, then the MaxENT solution always belongs to the Exponential Family from \ref{sec:expfam}.
+
+\begin{theorem}
+	If $X_1, \cdots, X_n$ are an IID sample and $T_1(X), \cdots, T_d(X)$ are statistics, then the MaxENT estimator satisfying $\mathbb{E}_{q}\{T_j(X)\} = \mathbb{E}_{\hat{p}}\{T_j(X)\} \ j = 1,\cdots,d$ is the MLE distribution in the exponential family with sufficient statistics $T(X)$
+\end{theorem}
+
+\begin{proof}
+For simplicity let $X$ be finite with $\mathcal{X}$ and $k$ as defined before. Suppose we have statistics $T_1(X), \cdots, T_d(X)$ and we define $\mathcal{M}$ as
 \begin{equation}
 \mathcal{M} = \Bigl\{ q: \underset{\substack{model \ expected \\ feature \ count}}{\mathbb{E}_{q}\{T_j(X)\}} = \underset{\substack{empirical \\ feature \ count}}{\mathbb{E}_{\hat{p}}\{T_j(X)\}} \ j = 1,\cdots,d \Bigr\}
 \end{equation}
 
-Where our testible information are $d$ \emph{moment constraints}. Using the relation \(H(p)=\log k-D(p||q)\) derived from theorem \ref{th:unifentlim} we have the following alternative characterization of MaxENT:
+Our testible information are the $d$ \emph{moment constraints}. Using the relation \(H(p)=\log k-D(p||q)\) derived from theorem \ref{th:unifentlim} we have the following alternative characterization of MaxENT:
 \begin{align}
 \arg\max\limits_{q \in \mathcal{M}} H(q) = \arg\min\limits_{q \in \mathcal{M}} KL(q, Uniform)
 \end{align}
-We then pose the MaxENT problem as the following optimization problem: 
+We then pose the MaxENT problem as an optimization problem from \ref{sec:optim} 
 \begin{align*}
 \text{Minimize } & \sum_{x}q(x)\log \frac{q(x)}{u(x)} \\
 \text{subject to } & q(x)\ge 0 \\
 & \sum_x q(x) = 1 \\
 & \sum_x q(x)T_j(x) = \alpha_j \ j = 1, \cdots, d
 \end{align*}
+
+Where $u(x) = \frac{1}{k} \ \forall x\in \mathcal{X}$. Our Lagrangian is:
+\begin{align*}
+L(q, \lambda, \nu) &= \sum_{x}q(x)\log \frac{q(x)}{u(x)} + \sum_{j=1}^d \lambda_j \left( \alpha_j - \sum_x q(x)T_j(x) \right) + \nu\left(1 - \sum_x q(x) \right)\\
+&= \mathbb{E}_{q}\left\{ \log \frac{q(x)}{u(x)} \right\} + \alpha^T\lambda - \mathbb{E}_{q}\left\{\lambda^TT(x)\right\} + \nu - \mathbb{E}_{q}\{\nu\}
+\end{align*}
+
+We find the dual function (\ref{eq:dual}). First we find the $q$ which minimizes $L$:
+\begin{align*}
+\frac{\partial L(q| \lambda, \nu)}{\partial q(x)} &= 1 + \log \frac{q(x)}{u(x)} -  \lambda^TT(x) - \nu = 0\\
+&\Rightarrow q^*(x| \nu, \lambda) = u(x)\exp\{ \lambda^TT(x) + \nu -1\}
+\end{align*}
+We then compute the dual:
+\begin{align*}
+g(\lambda, \nu) &=\min\limits_{q\in \mathcal{M}} L(q^*(x| \nu, \lambda),\lambda,\nu)\\
+&= L(q^*(x| \nu, \lambda),\lambda,\nu)\\
+&= \mathbb{E}_{q^*}\left\{ \lambda^TT(x) + \nu -1 \right\} +  \alpha^T\lambda - \mathbb{E}_{q*}\left\{\lambda^TT(x)\right\} + \nu - \mathbb{E}_{q^*}\{\nu\}\\
+&=\alpha^T\lambda + \nu - \mathbb{E}_{q^*}\left\{1\right\}\\
+&=\alpha^T\lambda + \nu - \underbrace{\sum_x u(x)\exp\{ \lambda^TT(x)\}}_{=Z(\lambda)}e^{\nu -1}
+\end{align*}
+
+From Slaters condition and the convexity of $L$, if $\exists q \in \mathcal{M}$ s.t. $q(x)>0 \ \forall x$ we get strong duality. We can assume WLOG that such a $q$ exists since, if it didn't, we could just restrict our domain to $\mathcal{X} \setminus \{ x | q(x) = 0 \}$. We solve the dual problem. We first maximize w.r.t $\nu$
+\begin{align*}
+\frac{\partial  g(\lambda, \nu)}{\partial \nu } &= 1 - Z(\lambda)e^{\nu -1} = 0\\
+&\Rightarrow  e^{\nu^*-1} = \frac{1}{Z(\lambda)}
+\end{align*}
+
+And we substitute our optimum $\nu^*$:
+\begin{align*}
+\max\limits_{\nu \in \mathbb{R}} L(q^*(x| \nu, \lambda),\lambda,\nu) &= L(q^*(x| \nu^*, \lambda),\lambda,\nu^*)\\
+&= \alpha^T\lambda + \nu - \underbrace{Z(\lambda)e^{\nu^* -1}}_{=1}\\
+&= \alpha^T\lambda + \underbrace{\nu - 1}_{-\log Z(\lambda)}
+\end{align*}
+
+Finally, we use that $\alpha_j = \mathbb{E}_{\hat{p}}\{T_j(X)\}$
+\begin{align*}
+L(q^*(x| \nu^*, \lambda),\lambda,\nu^*) &= \alpha^T\lambda -\log Z(\lambda)\\
+&= \mathbb{E}_{\hat{p}}\{T(X)\}^T\lambda - \log Z(\lambda)\\
+&= \frac{1}{n}\sum_{i=1}^n \left( T(X_i)^T\lambda - \log Z(\lambda) \right)
+\end{align*}
+
+Let  $p(X_i | \lambda) = q^*(X_i \mid \nu^*, \lambda) = u(x)\exp\{ \lambda^TT(x) - \log Z(\lambda)\}$. This is a pdf belonging to the Exponential family. We see the correspondence between maximizing the dual and maximum likelihood on the Exponential family since:
+\begin{align*}
+L(q^*,\lambda,\nu^*) &\propto \frac{1}{n}\sum_{i=1}^n \Bigl( \log p(X_i \mid \lambda) \Bigr) \\
+&=\frac{1}{n}\mathcal{L}(X_1, \cdots, X_n | \lambda)
+\end{align*}
+\end{proof}
+
+Supposing we solved the MLE problem above, we then have that 
+$$q^*(x)=u(x)\exp\{ (\lambda^*)^TT(x) - \log Z(\lambda^*)\}$$
+Since we have strong duality and $(\lambda^*, \nu^*)$ are dual optimal and $q^*$ is primal feasible (by construction it satisfies all of the constraints), it must be optimal.
 
 \newpage
 
