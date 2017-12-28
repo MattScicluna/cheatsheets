@@ -4,45 +4,45 @@ The top-level auxiliary file: Note1.aux
 The style file: ieeetr.bst
 Database file #1: Note1.bib.bib
 Warning--can't use both author and editor fields in jaynes
-You've used 6 entries,
+You've used 7 entries,
             1876 wiz_defined-function locations,
-            507 strings with 3939 characters,
-and the built_in function-call counts, 830 in all, are:
-= -- 71
-> -- 28
+            513 strings with 4158 characters,
+and the built_in function-call counts, 998 in all, are:
+= -- 87
+> -- 36
 < -- 0
-+ -- 13
-- -- 7
-* -- 36
-:= -- 126
-add.period$ -- 8
-call.type$ -- 6
++ -- 16
+- -- 9
+* -- 44
+:= -- 151
+add.period$ -- 10
+call.type$ -- 7
 change.case$ -- 4
 chr.to.int$ -- 0
-cite$ -- 7
-duplicate$ -- 34
-empty$ -- 113
-format.name$ -- 7
-if$ -- 207
+cite$ -- 8
+duplicate$ -- 43
+empty$ -- 133
+format.name$ -- 9
+if$ -- 250
 int.to.chr$ -- 0
-int.to.str$ -- 6
-missing$ -- 4
-newline$ -- 23
-num.names$ -- 6
-pop$ -- 33
+int.to.str$ -- 7
+missing$ -- 6
+newline$ -- 27
+num.names$ -- 7
+pop$ -- 37
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 23
+skip$ -- 26
 stack$ -- 0
 substring$ -- 0
-swap$ -- 3
+swap$ -- 4
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 1
-while$ -- 6
-width$ -- 7
-write$ -- 50
+while$ -- 7
+width$ -- 8
+write$ -- 60
 (There was 1 warning)

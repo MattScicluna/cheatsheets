@@ -1,5 +1,15 @@
 \begin{thebibliography}{1}
 
+\bibitem{magnus1988matrix}
+J.~Magnus and H.~Neudecker, {\em Matrix differential calculus with applications
+  in statistics and econometrics}.
+\newblock Wiley Series in Probability and Statistics - Applied Probability and
+  Statistics Section, Wiley, 1988.
+
+\bibitem{Boyd:2004:CO:993483}
+S.~Boyd and L.~Vandenberghe, {\em Convex Optimization}.
+\newblock New York, NY, USA: Cambridge University Press, 2004.
+
 \bibitem{jaynes}
 E.~T. Jaynes, {\em Probability Theory: The Logic of Science}.
 \newblock Cambridge University Press, 2003.
@@ -9,10 +19,6 @@ B.~Vidakovic, ``The likelihood principle.'' Slides.
 
 \bibitem{MJordanNotes}
 M.~I. Jordan, ``260 course notes.'' Slides.
-
-\bibitem{Boyd:2004:CO:993483}
-S.~Boyd and L.~Vandenberghe, {\em Convex Optimization}.
-\newblock New York, NY, USA: Cambridge University Press, 2004.
 
 \bibitem{PHoffNotes2}
 P.~Hoff, ``Bayes estimators.'' Notes, 2013.

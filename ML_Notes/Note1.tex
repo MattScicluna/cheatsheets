@@ -48,116 +48,115 @@
 
 \newpage
 
-\section{Statistics, Probability and Optimization Background}
+\section{Notation}
 
-We discuss the statistical background of Machine Learning and introduce the ideas that will be used throughout these notes.
-
-\subsection{Useful Statistical Ideas}
-
-\subsubsection{Empirical Distribution}\label{sec:empdist}
-
-Given some data \(x_1, \cdots x_n \sim F\) where $F$ is an unknown CDF, we want to approximate this using some mapping $\hat{F}$ called the \textbf{Empirical Distribution} of the data.
-
-\begin{equation}
-	\hat{F}(t) = \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{x_i \le t\}}
-\end{equation} 
-
-It can be shown that $\hat{F}(t) \rightarrow F(t) \ a.s.\ \forall t$, justifying its use as an approximation of $F$, provided enough data has been observed. As with $F$ we can approximate $f$. We define the \textbf{Empirical Density Function} $\hat{f}$:
-
-\begin{equation}
-	\hat{f}(t) = \frac{1}{n}\sum_{i=1}^n \delta(x_i, t)
-\end{equation}
-
-Where $\delta$ is defined differently in the continuous and discrete case. In the continuous case it is called the \textbf{Dirac Delta Function}:
-	\begin{equation}
-		\delta(x,y) = \begin{cases}
-		\infty & x=y \\
-		0 & \text{o.w.}
-	\end{cases}
-	\end{equation}
-	Additionally, we suppose that:
-	\begin{enumerate}
-		\item $\int_{-\infty}^{\infty} \delta(t,y)dt = 1$
-		\item $\int \delta(t,y) f(t) dt = f(y)$, for any $f$ with compact support that is continuous around $y$
-	\end{enumerate}
-
-This is not a function, but is called a \emph{Generalized Function}. In the discrete case things are much simpler, as we can use the simpler \textbf{Kronecker delta function}:
-\begin{equation}
-	\delta(x,y) = 
-	\begin{cases}
-		1 & x=y \\
-		0 & \text{o.w.}
-	\end{cases}
-\end{equation}
-
-Finally, we notice that $\hat{f}$ and $\hat{F}$ satisfy an important relationship that would be expected from the cdf and pdf: $\int_{-\infty}^{t}\hat{f}(y)dy = \hat{F}(t)$.
-
-\begin{align*}
-\int_{-\infty}^{t}\hat{f}(y)dy &= \int_{-\infty}^{t} \frac{1}{n}\sum_{i=1}^n \delta(x_i, y)dy\\
-&= \frac{1}{n}\sum_{i=1}^n \int_{-\infty}^{t}  \delta(x_i, y)dy\\
-&= \frac{1}{n}\sum_{i=1}^n \int_{-\infty}^{\infty} \mathbbm{1}_{\{x_i \le y\}} \delta(x_i, y)dy\\
-&= \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{x_i \le y\}}\\
-&= \hat{F}(t)
-\end{align*}
-
-\subsubsection{Exponential Family}\label{sec:expfam}
-
-The \textbf{(Canonical) Exponential Family} is a parametric family of distributions which have the following form:
-\begin{align*}
-p(x|\eta) = \exp\{ \eta^TT(x) - A(\eta)\}h(x)
-\end{align*}
-It is defined by two quantities
-\begin{itemize}
-	\item $h(x)d\mu(x)$ $\rightarrow$ the \textbf{reference measure} on $X$
-	\item $T: \mathcal{X} \rightarrow \mathbb{R}^p$ $\rightarrow$ the \textbf{Sufficient Statistics}
-\end{itemize}
-
-$h(x)$ is called the \textbf{Reference Density}, $d\mu(x)$ is the \textbf{Base Measure} (the Counting measure for discrete $\mathcal{X}$ and the Lebesgue measure for continuous $\mathcal{X}$). $\eta$ is called the \textbf{Canonical Parameter},  and $A(\nu)$ is the \textbf{Cumulant Function}.
+	\begin{center}		
+		\begin{tabular}{*2l}   
+			\toprule
+			Notation & Meaning
+			\\\midrule
+			$X$ & random variable \\
+			$x$ & instantiation of random variable\\
+			$\int f(x) d\mu(x)$ & Lebesgue integral of $f$ w.r.t. measure $\mu$\\
+			$\mathbb{R}$ & Set of real numbers\\
+			$\mathbb{R}^n$ & Set of $n$-tuples of real numbers\\
+			$\mathbb{R}^{n\times m}$ & Set of $n$ by $m$ matrices of real numbers\\
+			$\sup(A)$ & Supremum of a set $A$ \\
+			$\inf(A)$ & Infemum of a set $A$ \\
+			$\mathbbm{1}_{A}(x)$ & Indicator function of set $A$ \\
+			$\mathbb{E}_{X\sim p}\{f(X)\}$ & The expected value of $f(X)$ where $X\sim p$\\
+			$\mathbb{E}\{X|Y\}$ & The expected value of $X$ conditioned on $Y$ \\
+			$\mathcal{Y}^\mathcal{X}$ & the set of functions $f: \mathcal{X}\mapsto \mathcal{Y}$\\
+			$\frac{\partial f}{\partial x_i}$ & partial derivative of $f$ w.r.t component $x_i$\\
+			$\nabla_{x} f(x)$ & gradient of $f$ evaluated at $x$\\
+			$Hf(x)$ & Hessian of $f$ evaluated at $x$\\
+			$Jf(x)$ & Jacobian Matrix of $f$ evaluated at $x$\\
+			$[A]_{ij}$ & $i$th row and $j$th column of matrix $A$ \\
+			$B_r(x)$ & Ball of radius $r$ centred at $x$
+			\\\bottomrule
+			\hline
+		\end{tabular}
+	\end{center}
 
 \newpage
-\subsection{Bayesian Statistics}
 
-Given an Event, what does the probability of that Event \emph{mean}? There are two interpretations:
+\section{Preliminaries}
 
-\begin{enumerate}
-	\item \textbf{Frequentists}: the \emph{limiting frequency} of the event
-	\item \textbf{Bayesians}: the \emph{reasonable expectation} that the event occurs
-\end{enumerate}
+\subsection{Vector Calculus}
 
-The \emph{reasonable expectation} can be further broken down into two views. The \textbf{Objective Bayesians} view the \emph{reasonable expectation} as the \emph{state of knowledge}. They view probability as an extension of propositional logic, which is described in \cite{jaynes}. The \textbf{Subjective Bayesians} view probability as a quantification of \emph{personal belief}. The main difference between the groups is in how they choose their priors: the Subjective Bayesians use knowledge about or prior experience with model parameters, wheras the Objectivists try to introduce as little prior knowledge as possible, using noninformative priors.
-
-\subsubsection{Existence Of The Prior}
-We need a theoretical justification for why we assume the existence of a prior distribution on \(\theta\) in the first place! The justification for this requires the \textbf{Infinite Exchangeable} assumption of the data \(\{x_i\}_{i=1}^{\infty}\). This is satisfied when, given a sequence of random variables, any finite subset \(\{x_j\}_{j=1}^{n}\), and any permutation of this subset \(\pi_{1:n}\) 
-\begin{equation}
-p(x_1, \cdots, x_n) = p(x_{\pi_1}, \cdots, x_{\pi_n})
-\end{equation}
-
-It turns out the above is equivalent to assuming the existence of the prior! The following theorem makes this precise.
-
-\begin{theorem}[De Finetti Theorem]
-	A sequence is Infinite Exchangeable iff for any \(n\)
-	$$ p(x_1, \cdots x_n) = \int\prod_{i=1}^n p(x_i|\theta)P(d\theta) $$
-	for some measure \(P\) on \(\theta\). Also, if $\theta$ has a density then $P(d\theta) = p(\theta)d\theta$. Note: \(\theta\) may be infinite!
+\begin{theorem}
+Let $S \subseteq \mathbb{R}^n$ and $x_0$ an interior point of $S$ with $B_r(x_0) \subseteq S$. Given a function $f: S \rightarrow \mathbb{R}^m$ we say that $f$ is \textbf{Differentiable} at $x_0$ if there exists an $A \in \mathbb{R}^{m \times n}$ s.t. $\forall ||\Delta|| < r$
+\begin{align*}
+&f(x_0 + \Delta) - f(x_0) = A(x_0)\Delta + r_{x_0}(\Delta)\\
+&\text{where $\frac{r_{x_0}(\Delta)}{||\Delta||}\rightarrow 0$ as $\Delta \rightarrow 0$}
+\end{align*}
 \end{theorem}
+\begin{proof}
+	Magnus and Neudecker chapter 5 \cite{magnus1988matrix}
+\end{proof}
 
-This theory says that, if we assume exchangable data (and iid $\Rightarrow$ exchangeable), then there must exist a \(\theta\), \(p(x|\theta)\) and distribution \(P\) on \(\theta\)! So the idea of having a prior distribution on the parameters does have theory to back it up!
+If $f$ is differentiable at every point of an open subset $E$ of $S$, then $f$ is \textbf{Differentiable} on $E$. We call $df(x_0, \Delta) = A(x_0)\Delta \in \mathbb{R}^{m \times 1}$ the first \textbf{Differential} of $f$ at $x_0$.
 
+\begin{theorem}
+	$f$ is \textbf{Differentiable} at $x_0$ if and only if each component of f denoted as $f_i$ $i=1,\cdots, m$ is differentiable at $x_0$. In that case $[df(x_0, \Delta)]_i = df_i(x_0, \Delta)$
+\end{theorem}
+\begin{proof}
+	Magnus and Neudecker chapter 5 \cite{magnus1988matrix}
+\end{proof}
 
-\subsubsection{Likelihood Principle}
+So $f$ is only differentiable if each of its $m$ components are seperately differentiable. Let $f_i$ be the $i$th component of $f$, with $f$ and $x_0$ defined as before, $e_j$ be the $j$th unit vector of $\mathbb{R}^n$ we define the \textbf{Partial Derivative} of $f_i$ w.r.t $x_j$ as
+$$
+\frac{\partial f_i(x_0)}{\partial x_j} = \lim\limits_{t \rightarrow 0} \frac{f_i(x_0+te_j) - f_i(x_0)}{t}
+$$
 
-The \textbf{Likelihood Principle} says that all the evidence in a sample relevent to parameters \(\theta\) is contained in the likelihood function. Furthermore, two likelihood functions contain the same information about \(\theta\) if they
-are proportional to each other.\cite{slides} This principle, if you believe it, gives a good justification for Bayesianism since \(p(\theta|D) \propto P(D|\theta)P(\theta)\) (i.e. $\theta$ is being inferred from the likelihood). Frequentists do not like the Likelihood Principle as it leads to contradictions with their methodology - see the following coin tossing example \cite{MJordanNotes}.
+We define the \textbf{Jacobian Matrix} of $f$ as:
+$$ Jf(x_0) =  \begin{bmatrix}
+\frac{\partial f_1(x_0)}{\partial x_1} & \dots  & \frac{\partial f_1(x_0)}{\partial x_n} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial f_m(x_0)}{\partial x_1} & \dots  & \frac{\partial f_m(x_0)}{\partial x_n}
+\end{bmatrix}$$
 
-If you have trouble accepting the Likelihood Principle, it has been shown to be equivalent to two milder principles:
-\begin{enumerate}
-	\item \textbf{Sufficiency Principle}: If two different observations $x$, $y$ are such that $T(x) = T(y)$ for sufficient statistic $T$, then inference based on $x$ and $y$ should be the same.
-	\item \textbf{Conditionality Principle}: If an experiment concerning inference about $\theta$ is chosen from a collection of
-	possible experiments independently, then any experiment not chosen is irrelevant to the inference.
-\end{enumerate}
+It can be shown that if $f$ is differentiable, then all its partial derivatives exist, although the converse is not true! This is why Theorem 2.1 only holds in one direction. Note that the Jacobian is defined at any point where all the partial derivatives exist, even if $f$ is not differentiable at that point! When the Jacobian is square, we call its determinant the \textbf{Jacobian} of $f$.
 
-Of these, Sufficiency is accepted by both Frequentists and Bayesians, while the Conditionality principle is debated.
+\begin{theorem}
+	$[A(x_0)]_{ij} = \frac{\partial f_i(x)}{\partial x_j}\Bigr\rvert_{x=x_{0}}$
+\end{theorem} 
+\begin{proof}
+	Magnus and Neudecker chapter 5 theorem 5 \cite{magnus1988matrix}
+\end{proof}
+
+By construction, $Jf(x_0) = A(x_0)$. We call the transpose of the \textbf{Jacobian Matrix} the \textbf{Gradient}, denoted as $\nabla_x f(x_0)$. Finally, we prove an important result: the chain rule.
+\begin{theorem}[Chain Rule]
+	Let $f$,$x_0$ defined as before and $g: T \rightarrow \mathbb{R}^p$. Suppose that $T \subseteq \mathbb{R}^m$, $f(S) \subseteq T$, $f(x_0)$ is an interior point of $T$, and that $g$ is differentiable at $f(x_0)$. Then $Jg \circ f(x_0) = Jg(f(x_0))Jf(x_0)$
+\end{theorem} 
+\begin{proof}
+	Magnus and Neudecker chapter 5 theorem 8 \cite{magnus1988matrix}
+\end{proof}
+
+As a sanity check, we can see that $Jg \circ f(x_0) \in \mathbb{R}^{p \times n}$ while  $Jg(f(x_0))\in \mathbb{R}^{p \times m}$ and $Jf(x_0)\in \mathbb{R}^{m\times n}$.
+
+\subsubsection{Many to One Functions}
+
+The majority of functions we work with in machine learning are real valued, meaning they are of form $f: \mathbb{R}^n \rightarrow \mathbb{R}$. This is since they are either loss functions or probability densities. Hence we focus on this case. The most common use of vector calculus is to optimize a function by finding its stationary points (where the gradient is 0) and to check whether it is a maxima or minima by checking the Hessian. The Jacobian matrix for $f$ takes the following form: 
+$$J f(x) = \left(\frac{\partial f}{\partial x_1}, \cdots, \frac{\partial f}{\partial x_n}\right) \in \mathbb{R}^{1 \times n}$$
+The Gradient for $f$ is then: 
+$$\nabla_{x} f(x) = \left(\frac{\partial f}{\partial x_1}, \cdots, \frac{\partial f}{\partial x_n}\right)^T \in \mathbb{R}^{n \times 1}$$
+
+We define the \textbf{Second Partial Derivative} for a real valued $f$ as follows. Let $f$, $e_i$ as before. The second partial derivative of $f$ w.r.t $x_i$ and $x_j$ is:
+$$
+\frac{\partial^2 f(x_0)}{\partial x_i \partial x_j} = 
+\lim\limits_{t \rightarrow 0} \frac{ \frac{\partial f(x_0+te_i)}{\partial x_j} - \frac{\partial f(x_0)}{\partial x_j} }{t}
+$$
+
+We define the \textbf{Hessian} for real valued functions as: 
+$$H f(x_0) = \begin{bmatrix}
+\frac{\partial^2 f(x_0)}{\partial x_1^2} & \dots  & \frac{\partial^2 f(x_0)}{\partial x_n \partial x_1} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial^2 f(x_0)}{\partial x_1 \partial x_n} & \dots  & \frac{\partial^2 f(x_0)}{\partial x_n^2}
+\end{bmatrix}\in \mathbb{R}^{n \times n}$$
 
 \newpage
+
 \subsection{Optimization}\label{sec:optim}
 
 We now discuss how to solve optimization problems. We want to minimize our \textbf{Objective Function} $f_0 : \mathcal{D} \rightarrow \mathbb{R}$ w.r.t some  \textbf{Optimization Variable} $x \in \mathbb{R}^n$ subject to some \textbf{Inequality Constraints} $f_i: \mathbb{R}^n \rightarrow \mathbb{R}$ and some \textbf{Equality Constraints} $h_i: \mathbb{R}^n \rightarrow \mathbb{R}$.
@@ -173,6 +172,32 @@ We call a point $x$ \textbf{Feasible} if $x\in \mathcal{D}$ and $x$ satisfies th
 
 \subsubsection{Convexity}
 
+Convexity is a property of functions and sets which allows optimization to be exact.
+
+A set $A$ is called \textbf{Convex} if:
+\begin{align*}
+(1-\alpha)x + \alpha y \in A \\
+\forall x,y\in A \text{ and } \forall\alpha \in [0,1]
+\end{align*} 
+
+A function $f$ is \textbf{Convex} if:
+\begin{align*}
+f((1-\alpha)x + \alpha y) \le (1-\alpha)f(x) + \alpha f(y)\\
+\forall x,y\in \text{dom(f)}\text{ and } \forall\alpha \in [0,1]
+\end{align*} 
+
+If the equality is strict (i.e. $<$) then $f$ is called \textbf{Strictly Convex}. There is a relationship between convexity of a set and that of a function. We define the \textbf{Epigraph} of a function is as:
+$$\Bigl\{ (x,t): x\in \text{dom(f)}, t\ge f(x) \Bigr\}$$
+
+\begin{theorem}
+	A function $f$ is convex if and only if its epigraph is a convex set
+\end{theorem}
+
+Finally, an important statistical result relating to convexity
+
+\begin{theorem}[Jensens Inequality]
+	For a convex function $f$ $$f(\mathbb{E}\{X\})\le\mathbb{E}\{f(X)\}$$
+\end{theorem}
 
 \subsubsection{Langrangian Duality}
 We can solve the above problem using the \textbf{Lagrangian} $L: \mathbb{R}^n\times \mathbb{R}^m\times \mathbb{R}^p \rightarrow \mathbb{R} $ with domain $\mathcal{D}\times\mathbb{R}^m\times \mathbb{R}^p$
@@ -263,12 +288,12 @@ We now state some conditions often used to determine whether a solution $x^*$ of
 	If $x^*, \lambda^*, \nu^*$ satisfy the KKT conditions and the primal is convex; then $x^*$ is optimal, $\lambda^*, \nu^*$ are dual optimal and we have strong duality.
 \end{theorem}
 \begin{proof}
-		\begin{align}
-		g(\lambda^*, \nu^*) &= \inf_x \left( f_0(x) + \sum_{i=1}^m \lambda_i^*f_i(x) + \sum_{i=1}^p \nu_i^* h_i(x) \right) \\
-		&\overset{(a)}{=}f_0(x^*) + \sum_{i=1}^m \lambda_i^*f_i(x^*) + \sum_{i=1}^p \nu_i^* h_i(x^*)\\
-		&\overset{(b)}{=}f_0(x^*)
-		\end{align}
-	 Since $\lambda^*\ge0$, $L(x,\lambda^*,\nu^*)$ is convex in $x$. By the KKT conditions, $x^*$ is primal feasible and $\nabla_x L(x,\lambda^*,\nu^*)$ evaluated at $x^*$ is 0 $\Rightarrow$ $x^*$ minimizes $L(x,\lambda^*,\nu^*)$ (a). (b) follows from complementary slackness. Therefore, we have strong duality and so $x^*$ is optimal and $\lambda^*, \nu^*$ are dual optimal.
+	\begin{align}
+	g(\lambda^*, \nu^*) &= \inf_x \left( f_0(x) + \sum_{i=1}^m \lambda_i^*f_i(x) + \sum_{i=1}^p \nu_i^* h_i(x) \right) \\
+	&\overset{(a)}{=}f_0(x^*) + \sum_{i=1}^m \lambda_i^*f_i(x^*) + \sum_{i=1}^p \nu_i^* h_i(x^*)\\
+	&\overset{(b)}{=}f_0(x^*)
+	\end{align}
+	Since $\lambda^*\ge0$, $L(x,\lambda^*,\nu^*)$ is convex in $x$. By the KKT conditions, $x^*$ is primal feasible and $\nabla_x L(x,\lambda^*,\nu^*)$ evaluated at $x^*$ is 0 $\Rightarrow$ $x^*$ minimizes $L(x,\lambda^*,\nu^*)$ (a). (b) follows from complementary slackness. Therefore, we have strong duality and so $x^*$ is optimal and $\lambda^*, \nu^*$ are dual optimal.
 \end{proof}
 
 So the KKT conditions are necessary for optimality where $f_0,f_i,h_i$ are differentiable and there is strong duality. Likewise, if $L$ is convex and $x^*,\lambda^*,\nu^*$ satisfy KKT, then $x^*$ is optimal, $(\lambda^*,\nu^*)$ are dual optimal, and there is strong duality.
@@ -289,13 +314,210 @@ This means that in some cases maximizing the dual is equivalent to solving the p
 
 \newpage
 
+\section{Statistics and Probability Theory}
+
+We discuss the statistical background of Machine Learning and introduce the ideas that will be used throughout these notes.
+
+\subsection{Basic Probability}
+
+
+
+\subsection{Basic Statistics}
+
+\subsubsection{Empirical Distribution}\label{sec:empdist}
+
+Given some data \(x_1, \cdots x_n \sim F\) where $F$ is an unknown CDF, we want to approximate this using some mapping $\hat{F}$ called the \textbf{Empirical Distribution} of the data.
+
+\begin{equation}
+	\hat{F}(t) = \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{x_i \le t\}}
+\end{equation} 
+
+It can be shown that $\hat{F}(t) \rightarrow F(t) \ a.s.\ \forall t$, justifying its use as an approximation of $F$, provided enough data has been observed. As with $F$ we can approximate $f$. We define the \textbf{Empirical Density Function} $\hat{f}$:
+
+\begin{equation}
+	\hat{f}(t) = \frac{1}{n}\sum_{i=1}^n \delta(x_i, t)
+\end{equation}
+
+Where $\delta$ is defined differently in the continuous and discrete case. In the continuous case it is called the \textbf{Dirac Delta Function}:
+	\begin{equation}
+		\delta(x,y) = \begin{cases}
+		\infty & x=y \\
+		0 & \text{o.w.}
+	\end{cases}
+	\end{equation}
+	Additionally, we suppose that:
+	\begin{enumerate}
+		\item $\int_{-\infty}^{\infty} \delta(t,y)dt = 1$
+		\item $\int \delta(t,y) f(t) dt = f(y)$, for any $f$ with compact support that is continuous around $y$
+	\end{enumerate}
+
+This is not a function, but is called a \emph{Generalized Function}. In the discrete case things are much simpler, as we can use the simpler \textbf{Kronecker delta function}:
+\begin{equation}
+	\delta(x,y) = 
+	\begin{cases}
+		1 & x=y \\
+		0 & \text{o.w.}
+	\end{cases}
+\end{equation}
+
+Finally, we notice that $\hat{f}$ and $\hat{F}$ satisfy an important relationship that would be expected from the cdf and pdf: $\int_{-\infty}^{t}\hat{f}(y)dy = \hat{F}(t)$.
+
+\begin{align*}
+\int_{-\infty}^{t}\hat{f}(y)dy &= \int_{-\infty}^{t} \frac{1}{n}\sum_{i=1}^n \delta(x_i, y)dy\\
+&= \frac{1}{n}\sum_{i=1}^n \int_{-\infty}^{t}  \delta(x_i, y)dy\\
+&= \frac{1}{n}\sum_{i=1}^n \int_{-\infty}^{\infty} \mathbbm{1}_{\{x_i \le y\}} \delta(x_i, y)dy\\
+&= \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{x_i \le y\}}\\
+&= \hat{F}(t)
+\end{align*}
+
+\newpage
+\subsection{Bayesian Statistics}
+
+Given an Event, what does the probability of that Event \emph{mean}? There are two interpretations:
+
+\begin{enumerate}
+	\item \textbf{Frequentists}: the \emph{limiting frequency} of the event
+	\item \textbf{Bayesians}: the \emph{reasonable expectation} that the event occurs
+\end{enumerate}
+
+The \emph{reasonable expectation} can be further broken down into two views. The \textbf{Objective Bayesians} view the \emph{reasonable expectation} as the \emph{state of knowledge}. They view probability as an extension of propositional logic, which is described in \cite{jaynes}. The \textbf{Subjective Bayesians} view probability as a quantification of \emph{personal belief}. The main difference between the groups is in how they choose their priors: the Subjective Bayesians use knowledge about or prior experience with model parameters, wheras the Objectivists try to introduce as little prior knowledge as possible, using noninformative priors.
+
+\subsubsection{Existence Of The Prior}
+We need a theoretical justification for why we assume the existence of a prior distribution on \(\theta\) in the first place! The justification for this requires the \textbf{Infinite Exchangeable} assumption of the data \(\{x_i\}_{i=1}^{\infty}\). This is satisfied when, given a sequence of random variables, any finite subset \(\{x_j\}_{j=1}^{n}\), and any permutation of this subset \(\pi_{1:n}\) 
+\begin{equation}
+p(x_1, \cdots, x_n) = p(x_{\pi_1}, \cdots, x_{\pi_n})
+\end{equation}
+
+It turns out the above is equivalent to assuming the existence of the prior! The following theorem makes this precise.
+
+\begin{theorem}[De Finetti Theorem]
+	A sequence is Infinite Exchangeable iff for any \(n\)
+	$$ p(x_1, \cdots x_n) = \int\prod_{i=1}^n p(x_i|\theta)d\mu(\theta) $$
+	for some measure \(\mu\) on \(\theta\). Also, if $\theta$ has a density then $d\mu(\theta) = p(\theta)d\theta$. Note: \(\theta\) may be infinite!
+\end{theorem}
+
+This theory says that, if we assume exchangable data (and iid $\Rightarrow$ exchangeable), then there must exist a \(\theta\), \(p(x|\theta)\) and distribution \(\mu\) on \(\theta\)! So the idea of having a prior distribution on the parameters does have theory to back it up!
+
+\subsubsection{Likelihood Principle}
+
+The \textbf{Likelihood Principle} says that all the evidence in a sample relevent to parameters \(\theta\) is contained in the likelihood function. Furthermore, two likelihood functions contain the same information about \(\theta\) if they
+are proportional to each other\cite{slides}. This principle, if you believe it, gives a good justification for Bayesianism since \(p(\theta|D) \propto P(D|\theta)P(\theta)\) (i.e. $\theta$ is being inferred from the likelihood). Frequentists do not like the Likelihood Principle as it leads to contradictions with their methodology - see the following coin tossing example \cite{MJordanNotes}.
+
+If you have trouble accepting the Likelihood Principle, it has been shown to be equivalent to two milder principles:
+\begin{enumerate}
+	\item \textbf{Sufficiency Principle}: If two different observations $x$, $y$ are such that $T(x) = T(y)$ for sufficient statistic $T$, then inference based on $x$ and $y$ should be the same.
+	\item \textbf{Conditionality Principle}: If an experiment concerning inference about $\theta$ is chosen from a collection of
+	possible experiments independently, then any experiment not chosen is irrelevant to the inference.
+\end{enumerate}
+
+Of these, Sufficiency is accepted by both Frequentists and Bayesians, while the Conditionality principle is debated.
+
+\newpage
+
+\subsection{Exponential Family}\label{sec:expfam}
+
+The \textbf{(Canonical) Exponential Family} is a parametric family of distributions which have the following form:
+\begin{align}
+p(x|\eta) = \exp\{ \eta^TT(x) - A(\eta)\}h(x)
+\end{align}
+Where:
+\begin{enumerate}
+	\item $h(x)d\mu(x)$ is the \textbf{Reference Measure} on $X$
+	\begin{enumerate}
+		\item $h(x)$ is the \textbf{Reference Density} $\rightarrow$ defines the support and must not depend on $\eta$!
+		\item $d\mu(x)$ is the \textbf{Base Measure} 
+		\begin{itemize}
+			\item the Counting measure for discrete $\mathcal{X}$
+			\item the Lebesgue measure for continuous $\mathcal{X}$
+		\end{itemize}
+	\end{enumerate}
+	\item $T: \mathcal{X} \rightarrow \mathbb{R}^p$ $\rightarrow$ the \textbf{Sufficient Statistics} $\rightarrow$ functions of $x$ that fully summarizes $x$ within the density function
+	\item $\eta$ is called the \textbf{Canonical Parameter}
+	\item $A(\eta)$ is the \textbf{Cumulant Function} $\rightarrow$ ensures that the density sums/integrates to one
+\end{enumerate}
+
+Note that any member of the exponential family is fully specified by 1 and 2. $A(\eta)$ is dependent on the choice of 1 and 2, and so is not chosen. We can see this by the following calculation:
+
+\begin{align*}
+1 = \int_x p(x | \nu) d\mu(x) &= \int_x \exp\{ \eta^TT(x)\}e^{-A(\eta)} h(x)d\mu(x)\\
+&= e^{-A(\eta)}\int_x \exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
+&\Rightarrow A(\eta) = \log \int_x \exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
+&\Rightarrow A(\eta) = \log Z(\eta)
+\end{align*}
+Where $Z(\eta)$ is called the \textbf{Partition Function}. Since $A$ is a function of $\eta$, we must restrict $\eta$ to ensure that $p(x|\eta)$ is well defined. We let $\Omega = \{ \eta \in \mathbb{R}^p | A(\eta) < \infty\}$ and call this the \textbf{Natural Parameter Space}. Members of the Exponential family (sets of $h(x)d\mu(x)$ and $T(x)$) with non-empty, open $\Omega$ are called \textbf{Regular}. We are interested in these members since they have valid pdfs.
+\newpage
+
+We are also interested in \textbf{Minimal} exponential families. These are families which contain non-redundant $\eta$'s and $T(x)$'s. What we mean by this is that neither have any affine equality constraints:
+\begin{enumerate}
+	\item $\not\exists$ non-zero $a,b$ s.t. $a^TT(x)+b=0$ $\forall x \ s.t.\ h(x)=0$
+	\item $\not\exists$ non-zero $c,d$ s.t. $c^T\eta+d=0$ $\forall x \ s.t.\ h(x)=0$
+\end{enumerate}
+
+More generally, given an open connected subset $\Theta \in \mathbb{R}^p$ and mapping $\eta: \Theta \rightarrow \Omega$, we can write this as:
+\begin{align}
+p(x|\theta) = p(x|\eta(\theta)) = \exp\{ \eta(\theta)^TT(x) - A(\eta(\theta))\}h(x)
+\end{align}
+
+If the Jacobian of $\eta$ is not full rank, then 
+we call this a \textbf{Curved Exponential Family}.
+
+\subsubsection{Properties of Exponential Families}
+
+For canonical exponential families we have the following results:
+
+\begin{theorem}
+	$\Omega$ is a convex set and $A(\eta)$ is a convex function. If the family is minimal then $A(\eta)$ is strictly convex.
+\end{theorem}
+
+\begin{theorem}
+	$\nabla_{\eta}A(\eta) = \mathbb{E}\{T(x)\}$
+\end{theorem}
+\begin{proof}
+	\begin{align*}
+	\nabla_{\eta}A(\eta) &= \nabla_{\eta} \log \int_x \exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
+	 &= \frac{1}{Z(\eta)}\nabla_{\eta} \int_x \exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
+	 &\overset{(a)}{=} \frac{1}{Z(\eta)}\int_x \nabla_{\eta} \exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
+	 &\overset{(a)}{=} \frac{1}{Z(\eta)}\int_x T(x)^T\exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
+	 &=\int_x T(x)^T\exp\{ \eta^TT(x)-A(\eta)\}h(x)d\mu(x)\\
+	 &=\mathbb{E}\{T(x)\}
+	\end{align*}
+\end{proof}
+
+\subsubsection{Estimation in the Exponential Family}
+
+Given an IID sample $X_1, \cdots, X_n \sim p(X|\eta)$ from a Canonical Exponential Family, we have that
+\begin{align*}
+p(x_1, \cdots, x_n|\eta) &= \left(\prod_{i=1}^n h(x_i)\right) \exp\left\{ \eta^T\left(\sum_{i=1}^nT(x_i)\right) - nA(\eta)\right\}
+\end{align*}
+
+We see that this is also in the exponential family. Specifically:
+\begin{enumerate}
+	\item the new sufficient statistic is $\sum_{i=1}^nT(x_i)$
+	\item the new reference density is $\prod_{i=1}^n h(x_i)$
+	\item the new cumulant function is $nA(\eta)$
+	\item $\eta$ and $\Omega$ remain the same
+\end{enumerate}
+
+We show that the MLE estimate for an exponential family is equivalent to Moment Matching. We can compute the log likelihood of a $x_1, \cdots, x_n$ as
+\begin{align*}
+l(\eta| x_1, \cdots, x_n) = \sum_{i=1}^n \log h(x_i) +  \eta^T\left(\sum_{i=1}^nT(x_i)\right) - nA(\eta)\\
+\end{align*}
+and taking the gradient and setting to zero gives us:
+\begin{align*}
+\nabla_{\eta} l(\eta| x_1, \cdots, x_n) &= \sum_{i=1}^nT(x_i) - n\nabla_{\eta} A(\eta) = 0\\
+&\Rightarrow \frac{1}{n}\sum_{i=1}^nT(x_i) = \nabla_{\eta}A(\eta)\\
+&\Rightarrow \frac{1}{n}\sum_{i=1}^nT(x_i) = \mathbb{E}\{T(x)\}\\
+\end{align*}
+
+\newpage
+
 \section{Statistical Decision Theory}
 
 \subsection{Formal Set-Up}
 
-We need a general framework to make data-driven decisions under uncertainty. More formally, we observe some \textbf{Data} \(D \in \mathcal{D}\) which comes from some \textbf{Data Generating Distribution} \(D \sim P\). Let \(P\in \mathcal{P}\)\footnote{Often $P$ will describe an IID process, e.g. $D = (X_1,...,X_n)$ where $X_i \overset{iid}\sim P_0$. In this case, the loss is usually written w.r.t $P_0$ instead of $P$.}, where \(\mathcal{P}\) is the set of possible distributions. Let \(\mathcal{A}\) be our set of possible actions. To determine how good an action is, we define the \textbf{Loss} (cost) of doing that action as \(L: \mathcal{P} \times \mathcal{A} \mapsto \mathbb{R}\). The goal is to determine a \textbf{Decision Rule} \(\delta: \mathcal{D} \mapsto \mathcal{A}\) which, given data, produces an action.
+We need a general framework to make data-driven decisions under uncertainty. More formally, we observe some \textbf{Data} \(D \in \mathcal{D}\) which comes from some \textbf{Data Generating Distribution} \(D \sim p\). Let \(p\in \mathcal{P}\)\footnote{Often $p$ will describe an IID process, e.g. $D = (X_1,...,X_n)$ where $X_i \overset{iid}\sim P_0$. In this case, the loss is usually written w.r.t $p_0$ instead of $p$.}, where \(\mathcal{P}\) is the set of possible distributions. Let \(\mathcal{A}\) be our set of possible actions. To determine how good an action is, we define the \textbf{Loss} (cost) of doing that action as \(L: \mathcal{P} \times \mathcal{A} \mapsto \mathbb{R}\). The goal is to determine a \textbf{Decision Rule} \(\delta: \mathcal{D} \mapsto \mathcal{A}\) which, given data, produces an action.
 
-Typically we consider \(\mathcal{P}\) as a Parametric Family of distributions, and we use \(\Theta\) interchangibly with \(\mathcal{P}\), using that \(P := P_{\theta}\).
+Typically we consider \(\mathcal{P}\) as a Parametric Family of distributions, and we use \(\Theta\) interchangibly with \(\mathcal{P}\), using that \(p := p_{\theta}\).
 
 \subsection{Procedure Analysis}
 
@@ -304,24 +526,24 @@ We need a way to assign a value to any \(\delta\) and a way to compare these val
 \subsubsection{Frequentist Risk Perspective} 
 The first approach seeks to minimize the \textbf{Frequentist Risk}, which is defined as:
 \begin{equation}\label{eq:1}
-	R(P,\delta)=\mathbb{E}_{D\sim P}\{L(P,\delta(D))\}
+	R(P,\delta)=\mathbb{E}_{D\sim p}\{L(p,\delta(D))\}
 \end{equation}
 
-If we want to compare decision rules \(\delta_1, \delta_2\) using def \ref{eq:1}, we have to take into account \(P\), since \(R\) varies with both \(P\) and \(\delta\). Sometimes one decision rule \(\delta_1\) is better then another \(\delta_2\) regardless of \(P\), in which case we say \(\delta_1\) \textbf{Dominates} \(\delta_2\).
+If we want to compare decision rules \(\delta_1, \delta_2\) using def \ref{eq:1}, we have to take into account \(p\), since \(R\) varies with both \(p\) and \(\delta\). Sometimes one decision rule \(\delta_1\) is better then another \(\delta_2\) regardless of \(p\), in which case we say \(\delta_1\) \textbf{Dominates} \(\delta_2\).
 More formally:
-$$R(P,\delta_1)\leq R(P,\delta_2) \forall P \in \mathcal{P}\ and$$
-$$\exists P \in \mathcal{P},\ R(P,\delta_1) < R(P, \delta_2)$$
+$$R(p,\delta_1)\leq R(p,\delta_2) \ \forall p \in \mathcal{P}\ and$$
+$$\exists p \in \mathcal{P},\ R(p,\delta_1) < R(p, \delta_2)$$
 
 This basically means that \(\delta_1\) is a better decision rule then \(\delta_2\). Sometimes, there may be a ``best'' \(\delta\), one which isn't dominated by any other \(\delta_0\). We say \(\delta\) is \textbf{Admissible} if $\nexists \delta_0$ s.t. $\delta_0$ dominates $\delta$. Note: we should rule out inadmissible decision rules (except for simplicity or efficiency) but not necessarily accept Admissible ones!
 
-Unfortunately, different \(P\)'s usually produce different optimal \(\delta\)'s! we must take into account the unknown \(P\) when minimizing (\ref{eq:1}). One way to take this into account is to use the \textbf{Minimax Criteria}: the optimal \(\delta\) minimizes the Frequentist Risk in worst case scenerio.
+Unfortunately, different \(p\)'s usually produce different optimal \(\delta\)'s! we must take into account the unknown \(p\) when minimizing (\ref{eq:1}). One way to take this into account is to use the \textbf{Minimax Criteria}: the optimal \(\delta\) minimizes the Frequentist Risk in worst case scenerio.
 
-\begin{equation}\delta_{minimax} = \,\min\limits_{\delta}\,\max\limits_{P \in \mathcal{P}}\ R(P,\delta)
+\begin{equation}\delta_{minimax} = \,\min\limits_{\delta}\,\max\limits_{p \in \mathcal{P}}\ R(p,\delta)
 \end{equation}
 
-If \(\mathcal{P}\) is a Parameteric Family, we can handle the dependence of \(R\) on \(P\) by averaging it out, adding weights \(\pi\) over $\Theta$ to put more weight on certain $\theta$'s. We can then minimize over \(\delta\). This is called the \textbf{Bayes Risk}, even though it is Frequentist concept since it averages over $D$ via (\ref{eq:1}).
+If \(\mathcal{P}\) is a Parameteric Family, we can handle the dependence of \(R\) on \(p\) by averaging it out, adding weights \(\pi\) over $\Theta$ to put more weight on certain $\theta$'s. We can then minimize over \(\delta\). This is called the \textbf{Bayes Risk}, even though it is Frequentist concept since it averages over $D$ via (\ref{eq:1}).
 \begin{equation}\label{eq:3}
-\delta_{bayes}= \text{arg}\,\min\limits_{\delta}\,\int_{\Theta}^{}R(P_\theta,\delta)\pi(\theta)d\theta
+\delta_{bayes}= \text{arg}\,\min\limits_{\delta}\,\int_{\Theta}^{}R(p_\theta,\delta)\pi(\theta)d\theta
 \end{equation}
 
 Where $\delta_{bayes}$ is called the \textbf{Bayes Rule}. Note that the Bayes Rule may not exist, and when they do they may not be unique.
@@ -344,8 +566,8 @@ Additionally, \(\theta\) is integrated out in (\ref{eq:2}), meaning that (\ref{e
 Note that the Frequentist can still use (\ref{eq:5}) by interpreting it as (\ref{eq:3}) with \(\pi\) as the ``true'' prior for \(\Theta\).
 We would then get that:
 \begin{align*}
- \int_{\Theta}^{}R(P_\theta,\delta)\pi(\theta)d\theta &= \int_{\Theta}^{}\int_{D}L(P_\theta,\delta)P(D|\theta)P(\theta)dDd\theta \\&\overset{(a)}{=} \int_{D}^{}\int_{\Theta}L(P_\theta,\delta)P(\theta|D)P(D)d\theta dD\\
-&=\int_{D}^{}R_B(\delta|D)P(D)dD
+ \int_{\Theta}^{}R(p_\theta,\delta)\pi(\theta)d\theta &= \int_{\Theta}^{}\int_{D}L(p_\theta,\delta)p(D|\theta)p(\theta)dDd\theta \\&\overset{(a)}{=} \int_{D}^{}\int_{\Theta}L(p_\theta,\delta)p(\theta|D)p(D)d\theta dD\\
+&=\int_{D}^{}R_B(\delta|D)p(D)dD
 \end{align*}
 
 Where (a) is due to Fubini's theorem (provided the integral is finite).
@@ -356,14 +578,14 @@ It turns out that a \emph{Bayes rule} can be obtained by taking the \emph{Bayes 
 \subsection{Types of Procedures}
 
 \subsubsection{Parameter Estimation}\label{sec:parest}
-Given a Parametric Family $\{P_{\theta}\}_{\theta\in\Theta}$, typically we have data \(D=(X^{(1)}, \cdots, X^{(n)})\) where each \(X^{(i)}\overset{iid}{\sim} P_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\). The estimator should minimize the loss (more specifically the risk). One popular loss function is the \textbf{Squared Loss}: \(L(\theta,\delta(D)) = ||\theta-\delta(D)||^2\). Note that since the data are IID we use the marginal density over $X$ instead of the joint over $D$ in the loss function.
+Given a Parametric Family $\{p_{\theta}\}_{\theta\in\Theta}$, typically we have data \(D=(X^{(1)}, \cdots, X^{(n)})\) where each \(X^{(i)}\overset{iid}{\sim} p_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\). The estimator should minimize the loss (more specifically the risk). One popular loss function is the \textbf{Squared Loss}: \(L(\theta,\delta(D)) = ||\theta-\delta(D)||^2\). Note that since the data are IID we use the marginal density over $X$ instead of the joint over $D$ in the loss function.
 
 If we take the expectation of the loss function above (the frequentist risk), we can decompose it nicely into two pieces:
 
 \begin{align*}
-R(P,\delta)&=\mathbb{E}_{D\sim P}\{||\theta-\delta(D)||^2\}\\
-&=\mathbb{E}_{D\sim P}\{(\theta-\mathbb{E}_{D\sim P}\{\delta(D)\} + \mathbb{E}_{D\sim P}\{\delta(D)\} - \delta(D))^2\}\\
-&=\underbrace{(\theta-\mathbb{E}_{D\sim P}\{\delta(D)\})^2}_{Bias^2} + \underbrace{\mathbb{E}_{D\sim P}\{(\mathbb{E}_{D\sim P}\{\delta(D)\} - \delta(D))^2\}}_{Variance}
+R(P,\delta)&=\mathbb{E}_{D\sim p}\{||\theta-\delta(D)||^2\}\\
+&=\mathbb{E}_{D\sim p}\{(\theta-\mathbb{E}_{D\sim p}\{\delta(D)\} + \mathbb{E}_{D\sim p}\{\delta(D)\} - \delta(D))^2\}\\
+&=\underbrace{(\theta-\mathbb{E}_{D\sim p}\{\delta(D)\})^2}_{Bias^2} + \underbrace{\mathbb{E}_{D\sim p}\{(\mathbb{E}_{D\sim p}\{\delta(D)\} - \delta(D))^2\}}_{Variance}
 \end{align*}
 
 The above says that when we average this loss over all possible datasets, we can compare how much of the loss is due to the Bias and how much to the Variance of the estimator $\delta$. This idea works for other loss functions, but the decomposition is not nearly as clean. Finally, this is a Frequentist idea since it involves taking an expectation over the data generating distribution, an idea doesn't appeal to Bayesians since it is contrary to the conditionality principle. 
@@ -387,7 +609,7 @@ and taking the derivative and setting to 0 yields:
 \subsubsection{Prediction}
 Let $D=((X^{(1)},Y^{(1)}), \cdots, (X^{(n)},Y^{(n)}))$ where $X^{(i)} \in \mathcal{X}$ and $Y^{(i)} \in \mathcal{Y}$. 
 
-We put a density on $X$ and $Y$: $(X^{(i)},Y^{(i)}) \overset{iid}{\sim} P_{XY}$. Our action space $\mathcal{A} = \mathcal{Y}^\mathcal{X}$, the set of functions $f: \mathcal{X}\mapsto \mathcal{Y}$. Hence \(\delta(D)\) is a \textbf{Learning Algorithm} which learns a function i.e. $\delta(D) = \hat{f}$. 
+We put a density on $X$ and $Y$: $(X^{(i)},Y^{(i)}) \overset{iid}{\sim} P_{XY}$. Our action space $\mathcal{A} = \mathcal{Y}^\mathcal{X}$. Hence \(\delta(D)\) is a \textbf{Learning Algorithm} which learns a function i.e. $\delta(D) = \hat{f}$. 
 
 We can evaluate the performance of $f$ using a \emph{prediction loss} $l: \mathcal{Y} \times \mathcal{Y} \mapsto \mathbb{R}$, a measure of the distance between a given prediction and it’s associated ground truth. We define the \textbf{Generalization Error} from $l$ as:
 \begin{equation}\label{eq:8}
@@ -433,10 +655,7 @@ Solving for the above we have that
 &\Rightarrow y(x) = \int t \frac{p(x, t)}{p(x)} dt = \mathbb{E}_{t \sim p(t|x)}\{t|x\}
 \end{align*}
 
-And so our learning algorithm $\delta(D)$ simply returns $y(x) = \mathbb{E}_{t \sim p(t|x)}\{t|x\}$. Of course, we don't know $p(t|x)$, so we would have to approximate it using the Empirical Risk Minimization described before!
-
-
-The squared loss functions is a member of loss functions called the \textbf{Minkowski Loss}. This family has the following form:
+And so our learning algorithm $\delta(D)$ simply returns $y(x) = \mathbb{E}_{t \sim p(t|x)}\{t|x\}$. Keep in mind that we don't know $p(t|x)$ yet! We now look at a generalization of squared loss function -- a family of loss functions called the \textbf{Minkowski Loss}. This family has the following form:
 \begin{equation}
 L_q(P,y) = \int\int |t-y(x)|^q p(x,t)dxdt
 \end{equation}
@@ -454,7 +673,7 @@ For $q=1$, we see that $y(x)$ is the conditional median of $t$.
 \int_{-\infty}^{y(x)} p(x,t)dt = \int_{y(x)}^{\infty} p(x,t)dt
 \end{align}
 
-Finally, as $q \rightarrow 0$, the $y(x)$ given by the Minkowski loss is the conditional mode of $t$.
+Finally, as $q \rightarrow 0$, the $y(x)$ given by the Minkowski loss is the conditional mode of $t$. Notice again we need to know the underlying data generating pdf i.e. $p(x, t)$. Determining this is called \textbf{Inference} and will be dealt with later.
 
 \newpage
 
@@ -469,12 +688,12 @@ We want a function $I$ which measures how much information you learn from observ
 	\item If $E_1, E_2$ are independent events then $I(E_1 \cap E_2) = I(E_1) + I(E_2)$ $\rightarrow$\emph{ information due to independent events are additive}.
 \end{enumerate}
 From 1. and 3. we see that $I$ should be a function of the probability of an events occurence, i.e. $I(E)=f(p(E))$ for some $f$. From 4., given independent events $E_1, E_2$, we have that:
-\begin{align}
+\begin{align}\label{eq:entnec}
 f(p(E_1)p(E_2)) &= f(p(E_1\cap E_2)) = f(p(E_1)) + f(p(E_2))\\
 f(x\cdot y) &= f(x) + f(y)
 \end{align}
 
-If we assume that $I$ is continuous, then only $I(E) = Klog p(E)$ satisfies (11)  \cite{EntNotes}. Finally, using 2., we see that $K<0$. We can then define $I$ as:
+If we assume that $I$ is continuous, then only $I(E) = Klog p(E)$ satisfies (\ref{eq:entnec})  \cite{EntNotes}. Finally, using 2., we see that $K<0$. We can then define $I$ as:
 
 \begin{equation}
 I(E) = -log p(E)
@@ -574,9 +793,9 @@ We again assume WLOG that \(p(x,y)>0 \ \forall (x,y)\in\mathcal{X}\times\mathcal
 We can define the Entropy, KL divergence and Mutual Information for continuous random variables.
 
 \begin{align}
-H(p) &= -\int_{x\in\mathcal{X}}p(x)\log p(x)dx \\
-KL(p,q) &= \mathbb{E}_{X\sim p}\left\{\log \frac{p(X)}{q(X)}\right\} = \int p(x)\log\frac{p(x)}{q(x)}dx\\
-I(X,Y) &=\int\int p_{X,Y}(x,y)\log\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}dxdy
+H(p) &= -\int_{x\in\mathcal{X}}p(x)\log p(x)d\mu(x) \\
+KL(p,q) &= \mathbb{E}_{X\sim p}\left\{\log \frac{p(X)}{q(X)}\right\} = \int p(x)\log\frac{p(x)}{q(x)}d\mu(x)\\
+I(X,Y) &=\int\int p_{X,Y}(x,y)\log\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}d\mu(x)d\mu(y)
 \end{align}
 
 In the continuous case, the properties previously described hold except that the entropy is no longer necessarily non negative. For an example of this let $p = Uniform\left(\frac{1}{2},1\right)$. Then $H(p) = log(\frac{1}{2}) < 0$.
@@ -657,48 +876,48 @@ Properties 3. and 4. of $I$ gives us that \(I(X_1,X_2)\ge0 \Rightarrow H(X_1) + 
 \end{proof}
 
 \begin{theorem}
-The MaxENT of $X$ with $\mathcal{X} = \mathbb{N}$ and with testible information $E(X)=\alpha$ is the Geometric Distribution $p(k)=\left(\frac{\alpha}{1+\alpha}\right)^k \frac{1}{1+\alpha}$
+	The MaxENT of $X$ with $\mathcal{X} = \mathbb{N}$ and with testible information $E(X)=\alpha$ is the Geometric Distribution $p(k)=\left(\frac{\alpha}{1+\alpha}\right)^k \frac{1}{1+\alpha}$
 \end{theorem}
 
 \begin{proof}
-We want to find the distribution which maximizes the entropy $H(p)$ satisfying the constraints $\mathbb{E}(X)=\alpha$ and $\sum_{i=0}^{\infty}p(i)=1$. We form the Lagrangian:
-
-\begin{align*}
-L(p,\nu, C)=-H(p)+\nu \left(\sum_{i=0}^{\infty} ip(i)-\alpha\right) + C\left( \sum_{i=0}^{\infty}p(i)-1 \right)
-\end{align*}
-
-Taking the derivative w.r.t. $p(k)$ we get:
-\begin{align}\label{eq:p}
-\frac{\partial}{\partial p(k)}L(p,\nu, C)&= -\log p(k) - 1 + k\nu + C\\
-&\Rightarrow p(k) = \exp\{k\nu\}\exp\{C-1\}
-\end{align}
-And using that $\sum_{i=0}^{\infty}p(i)=1$ we have that
-
-\begin{align}\label{eq:cterm}
-\sum_{i=0}^{\infty}\exp\{i\nu\}\exp\{C-1\}
-= 1 \Rightarrow \exp\{-C+1\} = \sum_{i=0}^{\infty}\exp\{i\nu\}
-\end{align}
-
-we substitute (\ref{eq:cterm}) into (\ref{eq:p}) to eliminate $C$
-
-\begin{align}\label{eq:pnoc}
-p(k)=\frac{\exp\{k\nu\}}{\sum_{i=0}^{\infty}\exp\{i\nu\}}
-\end{align}
-
-We then solve for $\alpha$
-
-\begin{align*}
-\mathbb{E}(X)&=\sum_{k=0}^{\infty}\frac{k\exp\{k\nu\}}{\sum_{i=0}^{\infty}\exp\{i\nu\}}=\alpha\\
-&\Rightarrow \sum_{k=0}^{\infty}k\exp\{k\nu\}=\alpha\sum_{i=0}^{\infty}\exp\{i\nu\}\\
-&\overset{(a)}{\Rightarrow} \frac{\exp\{\nu\}}{(1-\exp\{\nu\})^2} = \frac{\alpha}{(1-\exp\{\nu\})}\\
-&\Rightarrow \exp\{\nu\} = \frac{\alpha}{1+\alpha}
-\end{align*}
-
-Where (a) comes from the geometric series. Finally, we sub this value into (\ref{eq:pnoc}) to get the familiar formula:
-
-\begin{align}
-p(k)=\left(\frac{\alpha}{1+\alpha}\right)^k\frac{1}{1+\alpha}
-\end{align}
+	We want to find the distribution which maximizes the entropy $H(p)$ satisfying the constraints $\mathbb{E}(X)=\alpha$ and $\sum_{i=0}^{\infty}p(i)=1$. We form the Lagrangian:
+	
+	\begin{align*}
+	L(p,\nu, C)=-H(p)+\nu \left(\sum_{i=0}^{\infty} ip(i)-\alpha\right) + C\left( \sum_{i=0}^{\infty}p(i)-1 \right)
+	\end{align*}
+	
+	Taking the derivative w.r.t. $p(k)$ we get:
+	\begin{align}\label{eq:p}
+	\frac{\partial}{\partial p(k)}L(p,\nu, C)&= -\log p(k) - 1 + k\nu + C\\
+	&\Rightarrow p(k) = \exp\{k\nu\}\exp\{C-1\}
+	\end{align}
+	And using that $\sum_{i=0}^{\infty}p(i)=1$ we have that
+	
+	\begin{align}\label{eq:cterm}
+	\sum_{i=0}^{\infty}\exp\{i\nu\}\exp\{C-1\}
+	= 1 \Rightarrow \exp\{-C+1\} = \sum_{i=0}^{\infty}\exp\{i\nu\}
+	\end{align}
+	
+	we substitute (\ref{eq:cterm}) into (\ref{eq:p}) to eliminate $C$
+	
+	\begin{align}\label{eq:pnoc}
+	p(k)=\frac{\exp\{k\nu\}}{\sum_{i=0}^{\infty}\exp\{i\nu\}}
+	\end{align}
+	
+	We then solve for $\alpha$
+	
+	\begin{align*}
+	\mathbb{E}(X)&=\sum_{k=0}^{\infty}\frac{k\exp\{k\nu\}}{\sum_{i=0}^{\infty}\exp\{i\nu\}}=\alpha\\
+	&\Rightarrow \sum_{k=0}^{\infty}k\exp\{k\nu\}=\alpha\sum_{i=0}^{\infty}\exp\{i\nu\}\\
+	&\overset{(a)}{\Rightarrow} \frac{\exp\{\nu\}}{(1-\exp\{\nu\})^2} = \frac{\alpha}{(1-\exp\{\nu\})}\\
+	&\Rightarrow \exp\{\nu\} = \frac{\alpha}{1+\alpha}
+	\end{align*}
+	
+	Where (a) comes from the geometric series. Finally, we sub this value into (\ref{eq:pnoc}) to get the familiar formula:
+	
+	\begin{align}
+	p(k)=\left(\frac{\alpha}{1+\alpha}\right)^k\frac{1}{1+\alpha}
+	\end{align}
 \end{proof}
 
 \newpage
@@ -772,13 +991,13 @@ L(q^*(x| \nu^*, \lambda),\lambda,\nu^*) &= \alpha^T\lambda -\log Z(\lambda)\\
 Let  $p(X_i | \lambda) = q^*(X_i \mid \nu^*, \lambda) = u(x)\exp\{ \lambda^TT(x) - \log Z(\lambda)\}$. This is a pdf belonging to the Exponential family. We see the correspondence between maximizing the dual and maximum likelihood on the Exponential family since:
 \begin{align*}
 L(q^*,\lambda,\nu^*) &\propto \frac{1}{n}\sum_{i=1}^n \Bigl( \log p(X_i \mid \lambda) \Bigr) \\
-&=\frac{1}{n}\mathcal{L}(X_1, \cdots, X_n | \lambda)
+&=\frac{1}{n}l(X_1, \cdots, X_n | \lambda)
 \end{align*}
 \end{proof}
 
-Supposing we solved the MLE problem above, we then have that 
+Supposing we solved the MLE problem above, we then have that:
 $$q^*(x)=u(x)\exp\{ (\lambda^*)^TT(x) - \log Z(\lambda^*)\}$$
-Since we have strong duality and $(\lambda^*, \nu^*)$ are dual optimal and $q^*$ is primal feasible (by construction it satisfies all of the constraints), it must be optimal.
+Since we have strong duality and $(\lambda^*, \nu^*)$ are dual optimal and $q^*$ is primal feasible (by construction it satisfies all of the constraints), it must be optimal. What this means is that, given only Moment constraints and no other restrictions, the distribution with the most ``Randomness" is precisely the distribution from the exponential family with matching moments.
 
 \newpage
 
