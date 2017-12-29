@@ -1,38 +1,39 @@
 \contentsline {section}{\numberline {1}Notation}{3}{section.1}
 \contentsline {section}{\numberline {2}Preliminaries}{4}{section.2}
 \contentsline {subsection}{\numberline {2.1}Vector Calculus}{4}{subsection.2.1}
-\contentsline {subsubsection}{\numberline {2.1.1}Many to One Functions}{5}{subsubsection.2.1.1}
-\contentsline {subsection}{\numberline {2.2}Optimization}{6}{subsection.2.2}
-\contentsline {subsubsection}{\numberline {2.2.1}Convexity}{6}{subsubsection.2.2.1}
-\contentsline {subsubsection}{\numberline {2.2.2}Langrangian Duality}{7}{subsubsection.2.2.2}
-\contentsline {subsubsection}{\numberline {2.2.3}Saddle Point Interpretation}{7}{subsubsection.2.2.3}
-\contentsline {subsubsection}{\numberline {2.2.4}KKT Conditions}{8}{subsubsection.2.2.4}
-\contentsline {subsubsection}{\numberline {2.2.5}Using the Dual to solve the Primal}{10}{subsubsection.2.2.5}
-\contentsline {section}{\numberline {3}Statistics and Probability Theory}{11}{section.3}
-\contentsline {subsection}{\numberline {3.1}Basic Probability}{11}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Basic Statistics}{11}{subsection.3.2}
-\contentsline {subsubsection}{\numberline {3.2.1}Empirical Distribution}{11}{subsubsection.3.2.1}
-\contentsline {subsection}{\numberline {3.3}Bayesian Statistics}{13}{subsection.3.3}
-\contentsline {subsubsection}{\numberline {3.3.1}Existence Of The Prior}{13}{subsubsection.3.3.1}
-\contentsline {subsubsection}{\numberline {3.3.2}Likelihood Principle}{13}{subsubsection.3.3.2}
-\contentsline {subsection}{\numberline {3.4}Exponential Family}{15}{subsection.3.4}
-\contentsline {subsubsection}{\numberline {3.4.1}Properties of Exponential Families}{16}{subsubsection.3.4.1}
-\contentsline {subsubsection}{\numberline {3.4.2}Estimation in the Exponential Family}{16}{subsubsection.3.4.2}
-\contentsline {section}{\numberline {4}Statistical Decision Theory}{18}{section.4}
-\contentsline {subsection}{\numberline {4.1}Formal Set-Up}{18}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Procedure Analysis}{18}{subsection.4.2}
-\contentsline {subsubsection}{\numberline {4.2.1}Frequentist Risk Perspective}{18}{subsubsection.4.2.1}
-\contentsline {subsubsection}{\numberline {4.2.2}Bayesian Risk Perspective}{19}{subsubsection.4.2.2}
-\contentsline {subsection}{\numberline {4.3}Types of Procedures}{20}{subsection.4.3}
-\contentsline {subsubsection}{\numberline {4.3.1}Parameter Estimation}{20}{subsubsection.4.3.1}
-\contentsline {subsubsection}{\numberline {4.3.2}Prediction}{21}{subsubsection.4.3.2}
-\contentsline {subsubsection}{\numberline {4.3.3}Regression}{21}{subsubsection.4.3.3}
-\contentsline {section}{\numberline {5}Information Theory}{23}{section.5}
-\contentsline {subsection}{\numberline {5.1}Entropy}{23}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}KL Divergence}{24}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Mutual Information}{25}{subsection.5.3}
-\contentsline {subsection}{\numberline {5.4}Differential Entropy}{26}{subsection.5.4}
-\contentsline {subsection}{\numberline {5.5}Entropy and Estimation}{26}{subsection.5.5}
-\contentsline {subsubsection}{\numberline {5.5.1}Maximum Likelihood Estimation}{27}{subsubsection.5.5.1}
-\contentsline {subsubsection}{\numberline {5.5.2}Maximum Entropy Principle}{27}{subsubsection.5.5.2}
-\contentsline {subsubsection}{\numberline {5.5.3}MaxENT and the Exponential Family}{30}{subsubsection.5.5.3}
+\contentsline {subsubsection}{\numberline {2.1.1}Many to One Functions and the Hessian}{5}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}Some Important Examples}{6}{subsubsection.2.1.2}
+\contentsline {subsection}{\numberline {2.2}Optimization}{8}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Convexity}{8}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}Langrangian Duality}{9}{subsubsection.2.2.2}
+\contentsline {subsubsection}{\numberline {2.2.3}Saddle Point Interpretation}{9}{subsubsection.2.2.3}
+\contentsline {subsubsection}{\numberline {2.2.4}KKT Conditions}{10}{subsubsection.2.2.4}
+\contentsline {subsubsection}{\numberline {2.2.5}Using the Dual to solve the Primal}{12}{subsubsection.2.2.5}
+\contentsline {section}{\numberline {3}Statistics and Probability Theory}{13}{section.3}
+\contentsline {subsection}{\numberline {3.1}Basic Probability}{13}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Basic Statistics}{13}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Empirical Distribution}{13}{subsubsection.3.2.1}
+\contentsline {subsection}{\numberline {3.3}Bayesian Statistics}{15}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Existence Of The Prior}{15}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}Likelihood Principle}{15}{subsubsection.3.3.2}
+\contentsline {subsection}{\numberline {3.4}Exponential Family}{17}{subsection.3.4}
+\contentsline {subsubsection}{\numberline {3.4.1}Properties of Exponential Families}{18}{subsubsection.3.4.1}
+\contentsline {subsubsection}{\numberline {3.4.2}Estimation in the Exponential Family}{18}{subsubsection.3.4.2}
+\contentsline {section}{\numberline {4}Statistical Decision Theory}{20}{section.4}
+\contentsline {subsection}{\numberline {4.1}Formal Set-Up}{20}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Procedure Analysis}{20}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Frequentist Risk Perspective}{20}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Bayesian Risk Perspective}{21}{subsubsection.4.2.2}
+\contentsline {subsection}{\numberline {4.3}Types of Procedures}{22}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {4.3.1}Parameter Estimation}{22}{subsubsection.4.3.1}
+\contentsline {subsubsection}{\numberline {4.3.2}Prediction}{23}{subsubsection.4.3.2}
+\contentsline {subsubsection}{\numberline {4.3.3}Regression}{23}{subsubsection.4.3.3}
+\contentsline {section}{\numberline {5}Information Theory}{25}{section.5}
+\contentsline {subsection}{\numberline {5.1}Entropy}{25}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}KL Divergence}{26}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Mutual Information}{27}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Differential Entropy}{28}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.5}Entropy and Estimation}{28}{subsection.5.5}
+\contentsline {subsubsection}{\numberline {5.5.1}Maximum Likelihood Estimation}{29}{subsubsection.5.5.1}
+\contentsline {subsubsection}{\numberline {5.5.2}Maximum Entropy Principle}{29}{subsubsection.5.5.2}
+\contentsline {subsubsection}{\numberline {5.5.3}MaxENT and the Exponential Family}{32}{subsubsection.5.5.3}

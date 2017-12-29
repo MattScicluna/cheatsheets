@@ -84,16 +84,12 @@
 
 \subsection{Vector Calculus}
 
-\begin{theorem}
-Let $S \subseteq \mathbb{R}^n$ and $x_0$ an interior point of $S$ with $B_r(x_0) \subseteq S$. Given a function $f: S \rightarrow \mathbb{R}^m$ we say that $f$ is \textbf{Differentiable} at $x_0$ if there exists an $A \in \mathbb{R}^{m \times n}$ s.t. $\forall ||\Delta|| < r$
+Let $S \subseteq \mathbb{R}^n$ and $x_0$ an interior point of $S$ with $B_r(x_0) \subseteq S$. Given a function $f: S \rightarrow \mathbb{R}^m$ we say that $f$ is \textbf{Differentiable} at $x_0$ if there exists an $A \in \mathbb{R}^{m \times n}$ depending only on $x_0$ s.t. $\forall ||\Delta|| < r$
 \begin{align*}
 &f(x_0 + \Delta) - f(x_0) = A(x_0)\Delta + r_{x_0}(\Delta)\\
 &\text{where $\frac{r_{x_0}(\Delta)}{||\Delta||}\rightarrow 0$ as $\Delta \rightarrow 0$}
 \end{align*}
-\end{theorem}
-\begin{proof}
-	Magnus and Neudecker chapter 5 \cite{magnus1988matrix}
-\end{proof}
+
 
 If $f$ is differentiable at every point of an open subset $E$ of $S$, then $f$ is \textbf{Differentiable} on $E$. We call $df(x_0, \Delta) = A(x_0)\Delta \in \mathbb{R}^{m \times 1}$ the first \textbf{Differential} of $f$ at $x_0$.
 
@@ -125,7 +121,7 @@ It can be shown that if $f$ is differentiable, then all its partial derivatives 
 	Magnus and Neudecker chapter 5 theorem 5 \cite{magnus1988matrix}
 \end{proof}
 
-By construction, $Jf(x_0) = A(x_0)$. We call the transpose of the \textbf{Jacobian Matrix} the \textbf{Gradient}, denoted as $\nabla_x f(x_0)$. Finally, we prove an important result: the chain rule.
+By construction, $Jf(x_0) = A(x_0)$. We call the transpose of the Jacobian Matrix the \textbf{Gradient} and denote it as $\nabla_x f(x_0)$. Finally, we give an important result: the chain rule.
 \begin{theorem}[Chain Rule]
 	Let $f$,$x_0$ defined as before and $g: T \rightarrow \mathbb{R}^p$. Suppose that $T \subseteq \mathbb{R}^m$, $f(S) \subseteq T$, $f(x_0)$ is an interior point of $T$, and that $g$ is differentiable at $f(x_0)$. Then $Jg \circ f(x_0) = Jg(f(x_0))Jf(x_0)$
 \end{theorem} 
@@ -135,9 +131,15 @@ By construction, $Jf(x_0) = A(x_0)$. We call the transpose of the \textbf{Jacobi
 
 As a sanity check, we can see that $Jg \circ f(x_0) \in \mathbb{R}^{p \times n}$ while  $Jg(f(x_0))\in \mathbb{R}^{p \times m}$ and $Jf(x_0)\in \mathbb{R}^{m\times n}$.
 
-\subsubsection{Many to One Functions}
+\subsubsection{Many to One Functions and the Hessian}
 
-The majority of functions we work with in machine learning are real valued, meaning they are of form $f: \mathbb{R}^n \rightarrow \mathbb{R}$. This is since they are either loss functions or probability densities. Hence we focus on this case. The most common use of vector calculus is to optimize a function by finding its stationary points (where the gradient is 0) and to check whether it is a maxima or minima by checking the Hessian. The Jacobian matrix for $f$ takes the following form: 
+The majority of functions we work with in machine learning are real valued, meaning they are of form $f: \mathbb{R}^n \rightarrow \mathbb{R}$. This is since they are either loss functions or probability densities. Hence we focus on this case. The most common use of vector calculus is to optimize a function by finding its stationary points (where the gradient is 0) and to check whether it is a maxima or minima by checking the Hessian. First we present a simpler version of the chain rule for gradients.
+ 
+\begin{theorem}[Simplified Chain Rule]
+If we consider only functions $g$ with $p=1$ then the gradient is: $$\nabla_x g \circ f(x) = Jf(x)^T\nabla_{x}g(f(x))$$
+\end{theorem} 
+
+The Jacobian matrix for $f$ takes the following form: 
 $$J f(x) = \left(\frac{\partial f}{\partial x_1}, \cdots, \frac{\partial f}{\partial x_n}\right) \in \mathbb{R}^{1 \times n}$$
 The Gradient for $f$ is then: 
 $$\nabla_{x} f(x) = \left(\frac{\partial f}{\partial x_1}, \cdots, \frac{\partial f}{\partial x_n}\right)^T \in \mathbb{R}^{n \times 1}$$
@@ -154,6 +156,78 @@ $$H f(x_0) = \begin{bmatrix}
 \vdots & \ddots & \vdots \\
 \frac{\partial^2 f(x_0)}{\partial x_1 \partial x_n} & \dots  & \frac{\partial^2 f(x_0)}{\partial x_n^2}
 \end{bmatrix}\in \mathbb{R}^{n \times n}$$
+
+\newpage
+
+\subsubsection{Some Important Examples}
+
+We now get to the payoff, some important results which will appear often in these notes. Let $b \in \mathbb{R}^n$, $B \in \mathbb{R}^{n \times n}$
+
+\begin{theorem}
+	$\nabla_{x} x^TBx = x^T(B^T+B)$
+\end{theorem}
+\begin{proof}
+	Notice 
+	\begin{align*}
+	(x+\Delta)^TB(x+\Delta) - x^TBx &= \Delta^TBx + x^TB\Delta + \Delta^TB\Delta\\
+	&= x^T(B + B^T)\Delta + \Delta^TB\Delta\\
+	&= A(x)\Delta + r_{x}(\Delta)\\
+	\end{align*}
+	Where $r_{x}=\Delta^TB\Delta$ and $A(x)=x^T(B + B^T)$. We see that $r_{x}\in O(||\Delta||)$, and so the differential is $x^T(B + B^T)\Delta$. Therefore, $\nabla_x x^TBx = (B + B^T)x$, the transpose.
+\end{proof}
+
+\begin{theorem}
+	$\nabla_{\mu} (x-b)^TB(x-b) = (x-b)^T(B+B^T)$
+\end{theorem}
+\begin{proof}
+	We use the chain rule where $f(x)=x-b$ and $g(y)=y^TBy$.
+	\begin{align*}
+	&\nabla_{y}g(y) = (B + B^T)y\\
+	&Jf(x) = I \\
+	&\nabla_{x} g \circ f(x) = (B + B^T)(x-b)
+	\end{align*}
+\end{proof}
+
+For the final example, we must refine our definition of differentiability to include matrices. That's right, you can actually do that. First we define the norm of a matrix $A$ as:
+$$ ||A|| = tr(A^TA)^{\frac{1}{2}} $$
+
+Let $S \subseteq \mathbb{R}^{n \times m}$ and $x_0$ an interior point of $S$ with $B_r(x_0) \subseteq S$. Given a function $f: S \rightarrow \mathbb{R}$ we say that $f$ is \textbf{Differentiable} at $x_0$ if there exists an $A \in \mathbb{R}^{n \times m}$ depending only on $x_0$ s.t. $\forall ||\Delta|| < r$
+\begin{align*}
+&f(x_0 + \Delta) - f(x_0) = tr(A(x_0)^T\Delta) + r_{x_0}(\Delta)\\
+&\text{where $\frac{r_{x_0}(\Delta)}{||\Delta||}\rightarrow 0$ as $\Delta \rightarrow 0$}
+\end{align*}
+
+We define the Jacobian and Gradient in terms of $A(x_0)$ in the same way that we did for vector valued functions.
+
+\newpage
+
+\begin{theorem}
+	$\nabla_{B} \log \det B = B^{-1}$ for $B$ symmetric, invertible
+\end{theorem}
+\begin{proof}
+	First notice the following decomposition
+\begin{align*}
+\log \det (B + \Delta) &= \log \det\left(B^{\frac{1}{2}}\left(I + B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right)B^{\frac{1}{2}}\right)\\
+&= \log\left(\det\left( B^{\frac{1}{2}}\right) \det\left(I + B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right) \det\left(B^{\frac{1}{2}}\right) \right)\\
+&=\log\det\left(I + B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right)+\log\det B
+\end{align*}
+
+We try to find our differential in the same way we did in the first example:
+\begin{align*}
+\log \det (B + \Delta) - \log\det B &= \log\det\left(I + B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right)\\
+&\overset{(a)}{=} \sum_{i} \log\left(1 + \lambda\left(B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right)\right)\\
+&\overset{(b)}{=} \sum_{i}\lambda\left(B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right) + O(||\Delta||)\\
+&\overset{(c)}{=} \text{tr}\left(B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right) + O(||\Delta||)\\
+&= \text{tr}(B^{-1}\Delta) + O(||\Delta||)
+\end{align*}
+And so $\nabla_B \log\det B = B^{-1}$
+\end{proof}
+
+Finally, we mention in passing some other useful identities.
+\begin{itemize}
+	\item $\nabla_{x} b^Tx = \nabla_{x} x^Tb= b$
+	\item $\nabla_{B} x^TBx = xx^T$
+\end{itemize}
 
 \newpage
 
@@ -320,8 +394,6 @@ We discuss the statistical background of Machine Learning and introduce the idea
 
 \subsection{Basic Probability}
 
-
-
 \subsection{Basic Statistics}
 
 \subsubsection{Empirical Distribution}\label{sec:empdist}
@@ -477,10 +549,11 @@ For canonical exponential families we have the following results:
 	\nabla_{\eta}A(\eta) &= \nabla_{\eta} \log \int_x \exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
 	 &= \frac{1}{Z(\eta)}\nabla_{\eta} \int_x \exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
 	 &\overset{(a)}{=} \frac{1}{Z(\eta)}\int_x \nabla_{\eta} \exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
-	 &\overset{(a)}{=} \frac{1}{Z(\eta)}\int_x T(x)^T\exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
-	 &=\int_x T(x)^T\exp\{ \eta^TT(x)-A(\eta)\}h(x)d\mu(x)\\
+	 &= \frac{1}{Z(\eta)}\int_x T(x)\exp\{ \eta^TT(x)\}h(x)d\mu(x)\\
+	 &\overset{(b)}{=}\int_x T(x)\exp\{ \eta^TT(x)-A(\eta)\}h(x)d\mu(x)\\
 	 &=\mathbb{E}\{T(x)\}
 	\end{align*}
+	Where (a) follows from the Dominated Convergence Theorem and (b) follows from the defintion of $A(\eta)$
 \end{proof}
 
 \subsubsection{Estimation in the Exponential Family}
