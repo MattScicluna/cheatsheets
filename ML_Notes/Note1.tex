@@ -220,7 +220,8 @@ We try to find our differential in the same way we did in the first example:
 &\overset{(c)}{=} \text{tr}\left(B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right) + O(||\Delta||)\\
 &= \text{tr}(B^{-1}\Delta) + O(||\Delta||)
 \end{align*}
-And so $\nabla_B \log\det B = B^{-1}$
+Where (a) follows since $\det A = \prod_i \lambda_i(A)$; (b) using $\log(1+x)=x+O(x^2)$ for $|x|<1$; and (c) using tr($A$)$=\sum_i \lambda_i(A)$. 
+We use the characterization of the gradient for functions of matrices to get that $\nabla_B \log\det B = B^{-1}$.
 \end{proof}
 
 Finally, we mention in passing some other useful identities.
@@ -234,19 +235,21 @@ Finally, we mention in passing some other useful identities.
 \subsection{Optimization}\label{sec:optim}
 
 We now discuss how to solve optimization problems. We want to minimize our \textbf{Objective Function} $f_0 : \mathcal{D} \rightarrow \mathbb{R}$ w.r.t some  \textbf{Optimization Variable} $x \in \mathbb{R}^n$ subject to some \textbf{Inequality Constraints} $f_i: \mathbb{R}^n \rightarrow \mathbb{R}$ and some \textbf{Equality Constraints} $h_i: \mathbb{R}^n \rightarrow \mathbb{R}$.
-We set $\mathcal{D} = \{x : f_0(x) < \infty\}$.
-Formally:
+We set $f_0(x) = \infty$ for $x \notin$dom($f_0$).
+Formally, our optimization problem can be written as:
 \begin{align*}
 \text{Minimize } & f_0(x) \\
 \text{subject to } & f_i(x) \le 0 \ i = 1, \cdots, m\\
 & h_i(x) = 0 \ i = 1, \cdots, p
 \end{align*}
 
-We call a point $x$ \textbf{Feasible} if $x\in \mathcal{D}$ and $x$ satisfies the constraints. We call $x$ \textbf{Strictly Feasible} if $x\in$ int($\mathcal{D}$) and satisfies $f_1(x)<0, \cdots, f_m(x)<0$ and $h_1(x)=0, \cdots, h_p(x)=0$. The \textbf{Optimal Value} of this problem is $p^*=\inf\{f_0(x): \text{x satisfies constraints}\}$. We let $p* = \infty$ if there are no feasible points, and $p^*=-\infty$ if the problem is unbounded from below. If $x$ feasible and $f_0(x) = p^*$ then we call it \textbf{Optimal}.
+We denote the intersection of the domains of $f_0$, the $f_i$'s and the $h_i$'s as $\mathcal{D}$. We call a point $x$ \textbf{Feasible} if $x\in \mathcal{D}$ and $x$ satisfies the constraints. We call $x$ \textbf{Strictly Feasible} if $x\in$ relint($\mathcal{D}$) and satisfies $f_1(x)<0, \cdots, f_m(x)<0$ and $h_1(x)=0, \cdots, h_p(x)=0$. The \textbf{Optimal Value} of this problem is $p^*=\inf\{f_0(x): \text{x satisfies constraints}\}$. We let $p* = \infty$ if there are no feasible points, and $p^*=-\infty$ if the problem is unbounded from below. If $x$ feasible and $f_0(x) = p^*$ then we call it an \textbf{Optimal Point}. The set of Optimal Points is called the \textbf{Optimal Set}.
+
+Often we will find points which minimize $f_0$ only over points within some radius. Such points are called \textbf{Locally Optimal}.
 
 \subsubsection{Convexity}
 
-Convexity is a property of functions and sets which allows optimization to be exact.
+We describe a highly desirable property of functions we are optimizing over: Convexity. If a function is convex then any locally optimal point is globally optimal.
 
 A set $A$ is called \textbf{Convex} if:
 \begin{align*}
@@ -266,12 +269,41 @@ $$\Bigl\{ (x,t): x\in \text{dom(f)}, t\ge f(x) \Bigr\}$$
 \begin{theorem}
 	A function $f$ is convex if and only if its epigraph is a convex set
 \end{theorem}
+\begin{proof}
+	Boyd \cite{Boyd:2004:CO:993483} 
+\end{proof}
 
-Finally, an important statistical result relating to convexity
-
-\begin{theorem}[Jensens Inequality]
-	For a convex function $f$ $$f(\mathbb{E}\{X\})\le\mathbb{E}\{f(X)\}$$
+We present some examples of Convex functions.
+\begin{itemize}
+	\item $\exp{ax}, -\log x$
+	\item Any norm over $\mathbb{R}^n$
+	\item non-negative weighted sums of convex functions $f_i$'s
+	\item Let $f$ be convex with domain $\mathcal{X} \times \mathcal{Y}$. If for each $y \in \mathcal{Y}$ we have that $f(x,y)$ is convex in $x$; then $$ g(x) = \sup_{y \in \mathcal{Y}} f(x,y) \ \text{is convex in $x$}$$ 
+\end{itemize}
+To check for convexity, we present first and second order necessary conditions.
+\begin{theorem}
+	A function $f$ is convex if and only if dom($f$) is convex and $\forall x,y \in$dom($f$)
+	$$ f(y) \ge f(x) + \nabla f(x)^T(y-x)$$
 \end{theorem}
+\begin{proof}
+	Boyd section 3.1.3 \cite{Boyd:2004:CO:993483} 
+\end{proof}
+This is a significant result since this demonstrates how local information from a convex function (i.e. its derivative) can yield global information about it (the inequality holds across its entire domain)!
+\begin{theorem}
+	A function $f$ is convex if and only if dom($f$) is convex and $\forall x \in$dom($f$) $Hf(x)$ is positive semi definite.
+\end{theorem}
+\begin{proof}
+	Boyd section 3.1.4 \cite{Boyd:2004:CO:993483} 
+\end{proof}
+
+
+Finally, we call an optimization problem convex if $f_0, f_1, \cdots, f_m$ are convex and $h_i$ are \textbf{Affine}: $h(x) = 0$ can be written as $Ax = b$, where $A \in \mathbb{R}^{d \times n}$, $b\in\mathbb{R}^n$. These problems have a very appealing property: 
+\begin{theorem}
+	For any convex optimization problem, any locally optimal point is optimal.
+\end{theorem}
+\begin{proof}
+	Boyd section 4.2.2 \cite{Boyd:2004:CO:993483} 
+\end{proof}
 
 \subsubsection{Langrangian Duality}
 We can solve the above problem using the \textbf{Lagrangian} $L: \mathbb{R}^n\times \mathbb{R}^m\times \mathbb{R}^p \rightarrow \mathbb{R} $ with domain $\mathcal{D}\times\mathbb{R}^m\times \mathbb{R}^p$
@@ -294,7 +326,7 @@ We call (\ref{eq:primal}) the \textbf{Primal Problem} and (\ref{eq:dual}) the \t
 	and since $p^*$ is the infemum of all feasible $\tilde{x}$, it follows that $ p^* \ge g(\lambda, \nu)$
 \end{proof}
 
-Instead of minimizing $f_0$ to get $p^*$ we can maximize the lower bound $g$. This may be an easier problem since $g$ is always concave. It is clear that we always have \textbf{Weak Duality} $p^* \ge d^*$, although we want \textbf{Strong Duality}: $p^* = d^*$. A sufficient condition for strong duality is \textbf{Slater's Condition}. This requires the primal (\ref{eq:primal}) to be convex, meaning that $f_0, f_1, \cdots, f_m$ are convex and $h_i$ are \textbf{Affine}: $h(x) = 0$ can be written as $Ax = b$, where $A \in \mathbb{R}^{d \times n}$, $b\in\mathbb{R}^n$.
+Instead of minimizing $f_0$ to get $p^*$ we can maximize the lower bound $g$. This may be an easier problem since $g$ is always concave. It is clear that we always have \textbf{Weak Duality} $p^* \ge d^*$, although we want \textbf{Strong Duality}: $p^* = d^*$. A sufficient condition for strong duality is \textbf{Slater's Condition}. This requires the primal (\ref{eq:primal}) to be convex.
 
 \begin{theorem}[Slater's Condition]
 	Suppose we have a convex primal. If there exists a strictly feasible $x$ we then have strong duality
@@ -395,6 +427,12 @@ We discuss the statistical background of Machine Learning and introduce the idea
 \subsection{Basic Probability}
 
 \subsection{Basic Statistics}
+
+An important statistical result relating to convexity:
+
+\begin{theorem}[Jensens Inequality]
+	For a convex function $f$ $$f(\mathbb{E}\{X\})\le\mathbb{E}\{f(X)\}$$
+\end{theorem}
 
 \subsubsection{Empirical Distribution}\label{sec:empdist}
 
@@ -538,10 +576,6 @@ we call this a \textbf{Curved Exponential Family}.
 For canonical exponential families we have the following results:
 
 \begin{theorem}
-	$\Omega$ is a convex set and $A(\eta)$ is a convex function. If the family is minimal then $A(\eta)$ is strictly convex.
-\end{theorem}
-
-\begin{theorem}
 	$\nabla_{\eta}A(\eta) = \mathbb{E}\{T(x)\}$
 \end{theorem}
 \begin{proof}
@@ -554,6 +588,31 @@ For canonical exponential families we have the following results:
 	 &=\mathbb{E}\{T(x)\}
 	\end{align*}
 	Where (a) follows from the Dominated Convergence Theorem and (b) follows from the defintion of $A(\eta)$
+\end{proof}
+
+\begin{theorem}
+	$\frac{\partial^2}{\partial \eta_i \partial \eta_j}A(\eta) = Cov\{T_i(x),T_j(x)\}$ and so $HA(\eta)=Cov\{T(x)\}$
+\end{theorem}
+\begin{proof}
+	\begin{align*}
+	\frac{\partial^2}{\partial \eta_i \partial \eta_j}A(\eta) &= \frac{\partial}{\partial \eta_i}\int_x T_j(x)\exp\{ \eta^TT(x)-A(\eta)\}h(x)d\mu(x)\\
+	&= \int_x T_j(x)\frac{\partial}{\partial \eta_i}\exp\{ \eta^TT(x)-A(\eta)\}h(x)d\mu(x)\\
+	&= \int_x T_j(x)\exp\{ \eta^TT(x)-A(\eta)\}\left( T_i(x) - \frac{\partial}{\partial \eta_i}A(\eta) \right)h(x)d\mu(x)\\
+	&= \int_x T_j(x)p(x|\eta)\left( T_i(x) - \mathbb{E}\{T_i(x)\} \right) d\mu(x)\\
+	&= \int_x T_j(x)T_i(x)p(x|\eta) - T_j(x)p(x|\eta)\mathbb{E}\{T_i(x)\} d\mu(x)\\
+	&= \mathbb{E}\{T_j(x)T_i(x)\} - \mathbb{E}\{T_j(x)\}\mathbb{E}\{T_i(x)\}\\
+	&= Cov\{T_i(x), T_j(x)\}
+	\end{align*}
+\end{proof}
+
+\begin{theorem}
+	$\Omega$ is a convex set and $A(\eta)$ is a convex function. If the family is minimal then $A(\eta)$ is strictly convex.
+\end{theorem}
+\begin{proof}
+	Since $HA(\eta)=Cov\{T(x)\}$ is always positive semi-definite, we have that $A(\eta)$ is convex. Since $\Omega$ is the epigraph of $A$, it follows that $\Omega$ is a convex set. Lastly, we show strict convexity whenever an exponential family is minimal. This follows since, for any $a\ne0$ $a^TT(x)$ is not constant, and so $Cov\{a^TT(x)\}\ne0$. Since $Cov\{a^TT(x)\}\ge 0$ from positive semi definiteness, we have that $Cov\{a^TT(x)\}>0$.
+	Then:
+	$$Cov\{a^TT(x)\}=a^TCov\{T(x)\}a=a^THA(\eta)a>0$$
+	And so $HA(\eta)$ positive definite and therefore is strictly convex.
 \end{proof}
 
 \subsubsection{Estimation in the Exponential Family}
@@ -571,17 +630,34 @@ We see that this is also in the exponential family. Specifically:
 	\item $\eta$ and $\Omega$ remain the same
 \end{enumerate}
 
-We show that the MLE estimate for an exponential family is equivalent to Moment Matching. We can compute the log likelihood of a $x_1, \cdots, x_n$ as
+Notice that the sufficient statistics of this new density are simply sums of the sufficient statistics from $p(x_i|\eta)$ (i.e. $T \in \mathbb{R}^p$ regardless of $n$). We can compute the log likelihood of $x_1, \cdots, x_n$ as
 \begin{align*}
 l(\eta| x_1, \cdots, x_n) = \sum_{i=1}^n \log h(x_i) +  \eta^T\left(\sum_{i=1}^nT(x_i)\right) - nA(\eta)\\
 \end{align*}
-and taking the gradient and setting to zero gives us:
+Notice that this is a concave funtion, and so it has a global maximum. We show that the MLE estimate for an exponential family is equivalent to Moment Matching. We take the gradient and set it to zero:
+
 \begin{align*}
 \nabla_{\eta} l(\eta| x_1, \cdots, x_n) &= \sum_{i=1}^nT(x_i) - n\nabla_{\eta} A(\eta) = 0\\
 &\Rightarrow \frac{1}{n}\sum_{i=1}^nT(x_i) = \nabla_{\eta}A(\eta)\\
 &\Rightarrow \frac{1}{n}\sum_{i=1}^nT(x_i) = \mathbb{E}\{T(x)\}\\
-\end{align*}
+\end{align*} 
 
+\subsubsection{Conjugate Priors of the Exponential Family}
+
+We note that the exponential family is closed under multiplication but not closed under marginalization. Because of closure under multiplication we can deduce; for every member of the exponential family, a conjugate prior. The prior has the form:
+$$ p(\eta | \tau, n_0) = \exp\{ \tau^T\eta - n_0A(\eta)\}g(\tau,n_0)$$  
+and the corresponding posterior is:
+\begin{align*}
+p( \eta | x_1, \cdots, x_n) &= p(x_1, \cdots, x_n | \eta)p(\eta| \tau, n_0)\\
+&\propto\exp\left\{\eta^T\left(\tau + \sum_{i=1}^nT(x_i)\right) - (n + n_0)A(\eta)\right\}
+\end{align*}
+\begin{theorem}
+$\mathbb{E}_{\eta \sim p(\cdot| \tau, n_0)}\{\mathbb{E}_{\eta}\{ T(x)\}\} = \kappa \frac{\tau}{n_0} + (1-\kappa)\frac{\sum_{i=1}^nT(x_i)}{n}$\\
+Where $\kappa = \frac{n_0}{n_0 + n}$
+\end{theorem}
+\begin{proof}
+	Jordan course notes, lecture 4 page 4 \cite{MJordanNotes}.
+\end{proof}
 \newpage
 
 \section{Statistical Decision Theory}

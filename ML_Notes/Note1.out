@@ -19,21 +19,22 @@
 \BOOKMARK [2][-]{subsection.3.4}{Exponential Family}{section.3}% 19
 \BOOKMARK [3][-]{subsubsection.3.4.1}{Properties of Exponential Families}{subsection.3.4}% 20
 \BOOKMARK [3][-]{subsubsection.3.4.2}{Estimation in the Exponential Family}{subsection.3.4}% 21
-\BOOKMARK [1][-]{section.4}{Statistical Decision Theory}{}% 22
-\BOOKMARK [2][-]{subsection.4.1}{Formal Set-Up}{section.4}% 23
-\BOOKMARK [2][-]{subsection.4.2}{Procedure Analysis}{section.4}% 24
-\BOOKMARK [3][-]{subsubsection.4.2.1}{Frequentist Risk Perspective}{subsection.4.2}% 25
-\BOOKMARK [3][-]{subsubsection.4.2.2}{Bayesian Risk Perspective}{subsection.4.2}% 26
-\BOOKMARK [2][-]{subsection.4.3}{Types of Procedures}{section.4}% 27
-\BOOKMARK [3][-]{subsubsection.4.3.1}{Parameter Estimation}{subsection.4.3}% 28
-\BOOKMARK [3][-]{subsubsection.4.3.2}{Prediction}{subsection.4.3}% 29
-\BOOKMARK [3][-]{subsubsection.4.3.3}{Regression}{subsection.4.3}% 30
-\BOOKMARK [1][-]{section.5}{Information Theory}{}% 31
-\BOOKMARK [2][-]{subsection.5.1}{Entropy}{section.5}% 32
-\BOOKMARK [2][-]{subsection.5.2}{KL Divergence}{section.5}% 33
-\BOOKMARK [2][-]{subsection.5.3}{Mutual Information}{section.5}% 34
-\BOOKMARK [2][-]{subsection.5.4}{Differential Entropy}{section.5}% 35
-\BOOKMARK [2][-]{subsection.5.5}{Entropy and Estimation}{section.5}% 36
-\BOOKMARK [3][-]{subsubsection.5.5.1}{Maximum Likelihood Estimation}{subsection.5.5}% 37
-\BOOKMARK [3][-]{subsubsection.5.5.2}{Maximum Entropy Principle}{subsection.5.5}% 38
-\BOOKMARK [3][-]{subsubsection.5.5.3}{MaxENT and the Exponential Family}{subsection.5.5}% 39
+\BOOKMARK [3][-]{subsubsection.3.4.3}{Conjugate Priors of the Exponential Family}{subsection.3.4}% 22
+\BOOKMARK [1][-]{section.4}{Statistical Decision Theory}{}% 23
+\BOOKMARK [2][-]{subsection.4.1}{Formal Set-Up}{section.4}% 24
+\BOOKMARK [2][-]{subsection.4.2}{Procedure Analysis}{section.4}% 25
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Frequentist Risk Perspective}{subsection.4.2}% 26
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Bayesian Risk Perspective}{subsection.4.2}% 27
+\BOOKMARK [2][-]{subsection.4.3}{Types of Procedures}{section.4}% 28
+\BOOKMARK [3][-]{subsubsection.4.3.1}{Parameter Estimation}{subsection.4.3}% 29
+\BOOKMARK [3][-]{subsubsection.4.3.2}{Prediction}{subsection.4.3}% 30
+\BOOKMARK [3][-]{subsubsection.4.3.3}{Regression}{subsection.4.3}% 31
+\BOOKMARK [1][-]{section.5}{Information Theory}{}% 32
+\BOOKMARK [2][-]{subsection.5.1}{Entropy}{section.5}% 33
+\BOOKMARK [2][-]{subsection.5.2}{KL Divergence}{section.5}% 34
+\BOOKMARK [2][-]{subsection.5.3}{Mutual Information}{section.5}% 35
+\BOOKMARK [2][-]{subsection.5.4}{Differential Entropy}{section.5}% 36
+\BOOKMARK [2][-]{subsection.5.5}{Entropy and Estimation}{section.5}% 37
+\BOOKMARK [3][-]{subsubsection.5.5.1}{Maximum Likelihood Estimation}{subsection.5.5}% 38
+\BOOKMARK [3][-]{subsubsection.5.5.2}{Maximum Entropy Principle}{subsection.5.5}% 39
+\BOOKMARK [3][-]{subsubsection.5.5.3}{MaxENT and the Exponential Family}{subsection.5.5}% 40
