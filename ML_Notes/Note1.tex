@@ -72,7 +72,9 @@
 			$Hf(x)$ & Hessian of $f$ evaluated at $x$\\
 			$Jf(x)$ & Jacobian Matrix of $f$ evaluated at $x$\\
 			$[A]_{ij}$ & $i$th row and $j$th column of matrix $A$ \\
-			$B_r(x)$ & Ball of radius $r$ centred at $x$
+			$B_r(x)$ & Ball of radius $r$ centred at $x$ \\
+			int($A$) & Interior points of set $A$ \\
+			bd($A$) & Boundary points of set $A$
 			\\\bottomrule
 			\hline
 		\end{tabular}
@@ -89,7 +91,6 @@ Let $S \subseteq \mathbb{R}^n$ and $x_0$ an interior point of $S$ with $B_r(x_0)
 &f(x_0 + \Delta) - f(x_0) = A(x_0)\Delta + r_{x_0}(\Delta)\\
 &\text{where $\frac{r_{x_0}(\Delta)}{||\Delta||}\rightarrow 0$ as $\Delta \rightarrow 0$}
 \end{align*}
-
 
 If $f$ is differentiable at every point of an open subset $E$ of $S$, then $f$ is \textbf{Differentiable} on $E$. We call $df(x_0, \Delta) = A(x_0)\Delta \in \mathbb{R}^{m \times 1}$ the first \textbf{Differential} of $f$ at $x_0$.
 
@@ -234,8 +235,7 @@ Finally, we mention in passing some other useful identities.
 
 \subsection{Optimization}\label{sec:optim}
 
-We now discuss how to solve optimization problems. We want to minimize our \textbf{Objective Function} $f_0 : \mathcal{D} \rightarrow \mathbb{R}$ w.r.t some  \textbf{Optimization Variable} $x \in \mathbb{R}^n$ subject to some \textbf{Inequality Constraints} $f_i: \mathbb{R}^n \rightarrow \mathbb{R}$ and some \textbf{Equality Constraints} $h_i: \mathbb{R}^n \rightarrow \mathbb{R}$.
-We set $f_0(x) = \infty$ for $x \notin$dom($f_0$).
+We now discuss how to solve optimization problems. We want to minimize our \textbf{Objective Function} $f_0 : \mathbb{R}^n \rightarrow \mathbb{R}$ w.r.t some  \textbf{Optimization Variable} $x \in \mathbb{R}^n$ subject to some \textbf{Inequality Constraints} $f_i: \mathbb{R}^n \rightarrow \mathbb{R}$ and some \textbf{Equality Constraints} $h_i: \mathbb{R}^n \rightarrow \mathbb{R}$. If there are no constraints (i.e.) $m=p=0$ then we call the problem \textbf{Unconstrained}. We set $f_0(x) = \infty$ for $x \notin$dom($f_0$).
 Formally, our optimization problem can be written as:
 \begin{align*}
 \text{Minimize } & f_0(x) \\
@@ -243,44 +243,46 @@ Formally, our optimization problem can be written as:
 & h_i(x) = 0 \ i = 1, \cdots, p
 \end{align*}
 
-We denote the intersection of the domains of $f_0$, the $f_i$'s and the $h_i$'s as $\mathcal{D}$. We call a point $x$ \textbf{Feasible} if $x\in \mathcal{D}$ and $x$ satisfies the constraints. We call $x$ \textbf{Strictly Feasible} if $x\in$ relint($\mathcal{D}$) and satisfies $f_1(x)<0, \cdots, f_m(x)<0$ and $h_1(x)=0, \cdots, h_p(x)=0$. The \textbf{Optimal Value} of this problem is $p^*=\inf\{f_0(x): \text{x satisfies constraints}\}$. We let $p* = \infty$ if there are no feasible points, and $p^*=-\infty$ if the problem is unbounded from below. If $x$ feasible and $f_0(x) = p^*$ then we call it an \textbf{Optimal Point}. The set of Optimal Points is called the \textbf{Optimal Set}.
+We denote the intersection of the domains of $f_0$, the $f_i$'s and the $h_i$'s as $\mathcal{D}$. We call a point $x$ \textbf{Feasible} if $x\in \mathcal{D}$ and $x$ satisfies the constraints. The \textbf{Optimal Value} of this problem is $p^*=\inf\{f_0(x): \text{x feasible}\}$. If $x$ feasible and $f_0(x) = p^*$ then we call it an \textbf{Optimal Point}. The set of Optimal Points is called the \textbf{Optimal Set}. Often we will find points which minimize $f_0$ only over points within some radius. Such points are called \textbf{Locally Optimal}.
+We note two degenerate cases to be careful for:
+\begin{itemize}
+	\item the problem has no feasible points, so we set $p^*=\infty$
+	\item the problem has arbitrarily small optimal values, $p^*=-\infty$
+\end{itemize}
 
-Often we will find points which minimize $f_0$ only over points within some radius. Such points are called \textbf{Locally Optimal}.
-
-\subsubsection{Convexity}
+\subsubsection{Convex Sets and Functions}
 
 We describe a highly desirable property of functions we are optimizing over: Convexity. If a function is convex then any locally optimal point is globally optimal.
-
 A set $A$ is called \textbf{Convex} if:
 \begin{align*}
 (1-\alpha)x + \alpha y \in A \\
 \forall x,y\in A \text{ and } \forall\alpha \in [0,1]
 \end{align*} 
-
 A function $f$ is \textbf{Convex} if:
 \begin{align*}
 f((1-\alpha)x + \alpha y) \le (1-\alpha)f(x) + \alpha f(y)\\
 \forall x,y\in \text{dom(f)}\text{ and } \forall\alpha \in [0,1]
 \end{align*} 
 
-If the equality is strict (i.e. $<$) then $f$ is called \textbf{Strictly Convex}. There is a relationship between convexity of a set and that of a function. We define the \textbf{Epigraph} of a function is as:
+If the equality is strict (i.e. $<$) then $f$ is called \textbf{Strictly Convex}. We call a function \textbf{Concave} if $-f$ is convex. There is a relationship between convexity of a set and that of a function. We define the \textbf{Epigraph} of a function is as:
 $$\Bigl\{ (x,t): x\in \text{dom(f)}, t\ge f(x) \Bigr\}$$
-
 \begin{theorem}
 	A function $f$ is convex if and only if its epigraph is a convex set
 \end{theorem}
 \begin{proof}
 	Boyd \cite{Boyd:2004:CO:993483} 
 \end{proof}
+\newpage
 
 We present some examples of Convex functions.
 \begin{itemize}
 	\item $\exp{ax}, -\log x$
 	\item Any norm over $\mathbb{R}^n$
 	\item non-negative weighted sums of convex functions $f_i$'s
-	\item Let $f$ be convex with domain $\mathcal{X} \times \mathcal{Y}$. If for each $y \in \mathcal{Y}$ we have that $f(x,y)$ is convex in $x$; then $$ g(x) = \sup_{y \in \mathcal{Y}} f(x,y) \ \text{is convex in $x$}$$ 
+	\item Let $f$ be convex with domain $\mathcal{X} \times \mathcal{Y}$. If for each $y \in \mathcal{Y}$ we have that $f(x,y)$ is convex in $x$; then $$ g(x) = \sup_{y \in \mathcal{Y}} f(x,y) \ \text{is convex in $x$}$$
 \end{itemize}
-To check for convexity, we present first and second order necessary conditions.
+
+To check for convexity, we present first and second order conditions which are both necessary and sufficient:
 \begin{theorem}
 	A function $f$ is convex if and only if dom($f$) is convex and $\forall x,y \in$dom($f$)
 	$$ f(y) \ge f(x) + \nabla f(x)^T(y-x)$$
@@ -289,6 +291,7 @@ To check for convexity, we present first and second order necessary conditions.
 	Boyd section 3.1.3 \cite{Boyd:2004:CO:993483} 
 \end{proof}
 This is a significant result since this demonstrates how local information from a convex function (i.e. its derivative) can yield global information about it (the inequality holds across its entire domain)!
+
 \begin{theorem}
 	A function $f$ is convex if and only if dom($f$) is convex and $\forall x \in$dom($f$) $Hf(x)$ is positive semi definite.
 \end{theorem}
@@ -296,8 +299,7 @@ This is a significant result since this demonstrates how local information from 
 	Boyd section 3.1.4 \cite{Boyd:2004:CO:993483} 
 \end{proof}
 
-
-Finally, we call an optimization problem convex if $f_0, f_1, \cdots, f_m$ are convex and $h_i$ are \textbf{Affine}: $h(x) = 0$ can be written as $Ax = b$, where $A \in \mathbb{R}^{d \times n}$, $b\in\mathbb{R}^n$. These problems have a very appealing property: 
+We can strengthen the result. If dom($f$) is convex and $Hf(x)$ is positive definite, then $f$ is strictly convex. The converse, however, does not hold. A \textbf{Convex Optimization Problem} is an optimization problem where $f_0, f_1, \cdots, f_m$ are convex and $h_i$ are \textbf{Affine}: $h(x) = 0$ can be written as $Ax = b$, where $A \in \mathbb{R}^{d \times n}$, $b\in\mathbb{R}^n$. These problems have a very appealing property: 
 \begin{theorem}
 	For any convex optimization problem, any locally optimal point is optimal.
 \end{theorem}
@@ -305,18 +307,25 @@ Finally, we call an optimization problem convex if $f_0, f_1, \cdots, f_m$ are c
 	Boyd section 4.2.2 \cite{Boyd:2004:CO:993483} 
 \end{proof}
 
+\subsubsection{Unconstrained Optimization}
+
+For unconstrained problems it is easy to verify whether a point is a local optima as these points have clear first and second order necessary and sufficent conditions. If $x^*$ is a local minima of $f_0$ and $f_0$ is twice continuously differentiable and $x^* \in$int($\mathcal{D}$); then the following are necessary:
+$\nabla_{x}f_0(x^*)=0$ and $Hf_{0}(x^*)$ positive semi-definite. The following are sufficient: $\nabla_{x}f_0(x^*)=0$ and $Hf_{0}(x^*)$ is positive definite.
+
+If $f_0$ is convex then the local minima is the optimal point. If $f_0$ is not convex the procedure becomes more complicated. We must compare the points satisfying the sufficient conditions (or just the necessary ones if none satisfy the sufficient ones) along with any points in bd($\mathcal{D}$) to find the minima.
+
 \subsubsection{Langrangian Duality}
-We can solve the above problem using the \textbf{Lagrangian} $L: \mathbb{R}^n\times \mathbb{R}^m\times \mathbb{R}^p \rightarrow \mathbb{R} $ with domain $\mathcal{D}\times\mathbb{R}^m\times \mathbb{R}^p$
+We can solve our optimization problem using the \textbf{Lagrangian} $L: \mathbb{R}^n\times \mathbb{R}^m\times \mathbb{R}^p \rightarrow \mathbb{R} $ with domain $\mathcal{D}\times\mathbb{R}^m\times \mathbb{R}^p$
 \begin{equation}\label{eq:primal}
 L(x,\lambda,\nu) = f_0(x) + \sum_{i=1}^m \lambda_if_i(x) + \sum_{i=1}^p \nu_i h_i(x)
 \end{equation}
 
-This problem may be difficult to solve. The problem can be simplified by introducing the \textbf{Lagrange dual function} $g: \mathbb{R}^m\times \mathbb{R}^p \rightarrow \mathbb{R}$
+The Langrangian itself may be difficult to minimize. The problem can be simplified by introducing the \textbf{Lagrange dual function} $g: \mathbb{R}^m\times \mathbb{R}^p \rightarrow \mathbb{R}$
 \begin{equation}\label{eq:dual}
 g(\lambda,\nu) =\inf\limits_{x\in D} L(x,\lambda,\nu)
 \end{equation}
 
-We call (\ref{eq:primal}) the \textbf{Primal Problem} and (\ref{eq:dual}) the \textbf{Dual Problem}. We note that $g$ is concave (regardless of $f_0$) and can be $-\infty$. We call $(\lambda, \nu)$ \textbf{Dual Feasible} if $\lambda \ge 0$ and $(\lambda, \nu) \in$ dom($g$), where dom($g$)=$\{ (\lambda, \nu) | g(\lambda, \nu)>-\infty\}$ \footnote{We note that, we could add extra constraints to prevent $g(\lambda, \nu)=-\infty$ and this would not change anything. See Boyd section 5.2.1 \cite{Boyd:2004:CO:993483}}. We denote $d^*$ as the \textbf{Dual Optimum Value}: the infemum of $g$. We say that $(\lambda,\nu)$ is \textbf{Dual Optimum} if it is dual feasible and $g(\lambda,\nu)=d^*$. We now relate the primal and dual problems:
+We call (\ref{eq:primal}) the \textbf{Primal Problem} and (\ref{eq:dual}) the \textbf{Dual Problem}. We note that $g$ is concave (regardless of $f_0$) and can be $-\infty$. We call $(\lambda, \nu)$ \textbf{Dual Feasible} if $\lambda \ge 0$ and $(\lambda, \nu) \in$ dom($g$), where dom($g$)=$\{ (\lambda, \nu) | g(\lambda, \nu)>-\infty\}$ \footnote{We note that we could add extra constraints to prevent $g(\lambda, \nu)=-\infty$ and this would not change anything. See Boyd section 5.2.1 \cite{Boyd:2004:CO:993483}}. We denote $d^*$ as the \textbf{Dual Optimum Value}: the infemum of $g$. We say that $(\lambda,\nu)$ is \textbf{Dual Optimum} if it is dual feasible and $g(\lambda,\nu)=d^*$. We now relate the primal and dual problems:
 \begin{theorem}[Lower Bound Property]
 	Let $\lambda \ge 0$, then $g(\lambda, \nu) \le p^*$ 
 \end{theorem}
@@ -326,10 +335,10 @@ We call (\ref{eq:primal}) the \textbf{Primal Problem} and (\ref{eq:dual}) the \t
 	and since $p^*$ is the infemum of all feasible $\tilde{x}$, it follows that $ p^* \ge g(\lambda, \nu)$
 \end{proof}
 
-Instead of minimizing $f_0$ to get $p^*$ we can maximize the lower bound $g$. This may be an easier problem since $g$ is always concave. It is clear that we always have \textbf{Weak Duality} $p^* \ge d^*$, although we want \textbf{Strong Duality}: $p^* = d^*$. A sufficient condition for strong duality is \textbf{Slater's Condition}. This requires the primal (\ref{eq:primal}) to be convex.
+Instead of minimizing $f_0$ using the primal we can maximize the lower bound $g$. This may be an easier problem since $g$ is always concave. It is clear that we always have \textbf{Weak Duality} $p^* \ge d^*$, although we want \textbf{Strong Duality}: $p^* = d^*$. A sufficient condition for strong duality is \textbf{Slater's Condition}.
 
 \begin{theorem}[Slater's Condition]
-	Suppose we have a convex primal. If there exists a strictly feasible $x$ we then have strong duality
+	Suppose we have a convex primal, and that int($\mathcal{D}$) is non empty. If $\exists x \in$int($\mathcal{D}$) satisfying $f_1(x)<0, \cdots, f_m(x)<0$ and $h_1(x)=0, \cdots, h_p(x)=0$, we have strong duality. If any $f_i$ are affine, we only need them to satisfy $f_i(x)=0$.
 \end{theorem}
 \begin{proof}
 	Boyd section 5.3.2 \cite{Boyd:2004:CO:993483}
@@ -367,12 +376,14 @@ Hence strong duality can be expressed in the following way, clearly showing that
 \inf_x\sup_{\substack{\lambda\ge0 \\ \nu}}L(x, \lambda, \nu) = \sup_{\substack{\lambda\ge0 \\ \nu}}\inf_x L(x, \lambda, \nu)
 \end{align*}
 
+\newpage
+
 \subsubsection{KKT Conditions}
 
 We now state some conditions often used to determine whether a solution $x^*$ of $f$ is optimal. These are the \textbf{KKT Conditions}.
 
 \begin{theorem}[KKT Conditions]
-	Let $f_0, f_i, h_i$ be differentiable. If $x^*$ is optimal and $(\lambda^*, \nu^*)$ are dual optimal and we have strong duality; then the following Conditions must be satisfied:
+	Let $f_0, f_i, h_i$ be differentiable (and so they have open domains). If $x^*$ is optimal and $(\lambda^*, \nu^*)$ are dual optimal and we have strong duality; then the following Conditions must be satisfied:
 	\begin{itemize}
 		\item $\nabla_x f_0(x^*) + \sum_{i=1}^m \lambda_i^* \nabla_x f_i(x^*) + \sum_{i=1}^p \nu_i^* \nabla_x h_i(x^*) = 0$ $\rightarrow$ Stationarity
 		\item $\lambda_i^* f_i(x^*)=0 \rightarrow$ Complementary Slackness
@@ -402,72 +413,198 @@ We now state some conditions often used to determine whether a solution $x^*$ of
 	Since $\lambda^*\ge0$, $L(x,\lambda^*,\nu^*)$ is convex in $x$. By the KKT conditions, $x^*$ is primal feasible and $\nabla_x L(x,\lambda^*,\nu^*)$ evaluated at $x^*$ is 0 $\Rightarrow$ $x^*$ minimizes $L(x,\lambda^*,\nu^*)$ (a). (b) follows from complementary slackness. Therefore, we have strong duality and so $x^*$ is optimal and $\lambda^*, \nu^*$ are dual optimal.
 \end{proof}
 
-So the KKT conditions are necessary for optimality where $f_0,f_i,h_i$ are differentiable and there is strong duality. Likewise, if $L$ is convex and $x^*,\lambda^*,\nu^*$ satisfy KKT, then $x^*$ is optimal, $(\lambda^*,\nu^*)$ are dual optimal, and there is strong duality.
+%So the KKT conditions are necessary for optimality where $f_0,f_i,h_i$ are %differentiable and there is strong duality. Likewise, if $L$ is convex and %$x^*,\lambda^*,\nu^*$ satisfy KKT, then $x^*$ is optimal, $(\lambda^*,\nu^*)$ are %dual optimal, and there is strong duality.
 
-\begin{theorem}
-	If Slaters condition is satisfied, then $x^*$ is optimal if and only if there exists $\lambda^*, \nu^*$ such that $(x^*,\lambda^*, \nu^*)$ satisfy KKT conditions.
-\end{theorem}
+%\begin{theorem}
+%	If Slaters condition is satisfied, then $x^*$ is optimal if and only if there exists $\lambda^*, \nu^*$ such that $(x^*,\lambda^*, \nu^*)$ satisfy KKT conditions.
+%\end{theorem}
+%\begin{proof}
+%	Boyd section 5 \cite{Boyd:2004:CO:993483}
+%\end{proof}
 
-\subsubsection{Using the Dual to solve the Primal}
+%\subsubsection{Finding Optimal Points}
 
-If strong duality holds, $(\lambda^*, \nu^*)$ is a dual optimal solution and $L(x, \lambda^*, \nu^*)$ has a unique minimum value $x^*$ Then either:
+In some cases we can find optimal points by using the Dual to solve the Primal. Specifically; if:
 \begin{enumerate}
-	\item $x^*$ is feasible; then $x^*$ must be optimal.
+	\item strong duality holds
+	\item $(\lambda^*, \nu^*)$ is a dual optimal solution
+	\item $L(x, \lambda^*, \nu^*)$ has a unique minimum value (e.g. $L(x, \lambda^*, \nu^*)$ is strictly convex in $x$)
+\end{enumerate}
+Let $x^*$ be the unique optima, then either:
+\begin{enumerate}
+	\item $x^*$ is feasible; and so $x^*$ must be optimal.
 	\item $x^*$ is not feasible and no optimal can exist.
 \end{enumerate}
 
-This means that in some cases maximizing the dual is equivalent to solving the primal.
-
 \newpage
-
-\section{Statistics and Probability Theory}
-
-We discuss the statistical background of Machine Learning and introduce the ideas that will be used throughout these notes.
 
 \subsection{Basic Probability}
 
-\subsection{Basic Statistics}
+We now discuss the requisite probability theory needed for Machine Learning. First, some definitions: \textbf{Probability} quantifies uncertainty of data given a model. Probabilistic questions are usually well-formed mathematical problems. \textbf{Statistics} is the inverse problem: given data, how likely is model? These questions tend to be ill-formed since many models can generate the same data! See figure for a picture of this.
 
-An important statistical result relating to convexity:
+\begin{figure}
+	\begin{center}
+		\begin{tikzpicture}[scale=2.5]\label
+		\node [blue] at (0.75, 0.4) {Probability Theory};
+		\node [red] at (0.75, -0.9) {Statistics (ill-defined)};
+		\draw [->,ultra thick,blue] (0,0) to [bend left=40] (1.5,0);
+		\draw [->,ultra thick,red] (1.5,-0.5) to [bend left=40] (0,-0.5) ;
+		\node at (0,-0.2) {\huge{$ \theta $}};
+		\node at (1.5,-0.2) {\huge{$ X $}};
+		\node at (0,-0.4) {model};
+		\node at (1.5,-0.4) {data};
+		\end{tikzpicture}
+	\end{center}
+\end{figure}
 
-\begin{theorem}[Jensens Inequality]
-	For a convex function $f$ $$f(\mathbb{E}\{X\})\le\mathbb{E}\{f(X)\}$$
+
+
+We now give the basic notions in probability theory.
+
+\subsubsection{Probability Space}
+A \textbf{Probability Space}: a triple \( (\Omega, F, \mu)\) consisting of \( \Omega \) the \textbf{Sample Space}, \( F \subseteq 2^{\Omega}\) a \textbf{\(\sigma\)-algebra} on \(\Omega\)  and a \textbf{Probability Measure} \(\mu\): \(F \mapsto [0,1] \). We can compute Probabilities of Events Conditioned on other Events. We define the \textbf{Conditional Probability} of event \(A\) on event \(B\) with \(\mu(B) > 0\) as:
+\begin{align*}
+\mu(A \mid B) = \frac{\mu(A \cap B)}{\mu(B)} = \frac{\mu(B \mid A)\mu(A)}{\mu(B)}
+\end{align*}
+
+A set of events \(\{A_i\}\) are \textbf{Mutually Independent} if, for any subset of \(\{A_j\}_{j\in k}\):
+\begin{align*}
+\mu \left( \bigcap_{j\in k} A_j \right) = \prod_{j\in k}\mu(A_j) 
+\end{align*}
+
+Finally we have the \textbf{Law of Total Probability}: Given Events \(A\) and \textbf{Partition} \(\{B_i\}\) (i.e. where \(\bigsqcup_{i=1}^{\infty} B_i = \Omega \) )
+\begin{align*}
+\mu(A) = \sum_{i=1}^{\infty} \mu(A \mid B_i)\mu(B_i)
+\end{align*}
+
+\subsubsection{Random Variables and Vectors}
+
+A \textbf{Random Variable} is a \(\mathbb{B}\)-Measurable function  \(X: (\Omega, F) \mapsto (\mathbb{R},\mathbb{B}) \). For \( A \in \mathbb{B}\) we can compute \( \mu(X \in A)\) as:
+$$\mu(X \in A) := \mu(X^{-1}(A)) = \mu(\{ \omega \in \Omega : X(\omega) \in A \})$$
+
+Where \( \mu(X^{-1}(\cdot)) := \mu_X(\cdot)\) is called the \textbf{Push-Forward Measure} of \(P\) by \(X\) on \( \mathbb{R}\). Hence \( X\) induces a new Probability Space \((\mathbb{R}, \mathbb{B}, \mu_X) \) from the original \( (\Omega, F, \mu)\)
+
+\begin{tikzpicture}[scale=0.5]
+%% \draw[help lines] (0,0) grid (12,6);
+%% \node [align=center, red] at (1, 1.5) {bla \\ bla} ;
+%% \draw [blue, thick] (6,5) rectangle (10,10);
+\draw (0,0) circle (2cm);
+\node[above] at (0,2) {$\Omega$};
+\node (o) at (0.1,.4) {};
+\draw (o) circle[radius=2pt] node[above] {$\omega$};
+\fill (o) circle[radius=2pt];
+\node at (-1,-2.8) {\emph{\small ``world of possibilities''}};
+
+\draw [->] (3,1) -- (7,1) node[right]{$\mathbb{R}$};
+\node (x) at (4.1,1) {};
+\draw (x) circle[radius=2pt] node[below] {$X(\omega)$};
+\fill (x) circle[radius=3pt];
+\draw [->, black!70!black] (o) to [bend left=30] node[midway, above, red] {$X$} (x);
+
+\draw [->] (3,-1) -- (7,-1) node[right]{$\mathbb{R}$};
+\node (y) at (6.2,-1) {};
+\draw (y) circle[radius=2pt] node[above] {$Y(\omega)$};
+\fill (y) circle[radius=3pt];
+\draw [->, thin] (o) to [bend right=40] (y);
+\node at (6,-2.5) {\emph{\small ``measurements''}};
+\end{tikzpicture}
+
+Random Variables can be uniquely determined by their \textbf{CDF}:
+\( F_X(t) := \mu_X\left((-\infty,t]\right) = \mu(X \le t) \). They always satisfy the folling properties:
+\begin{enumerate}
+	\item Right Continuous
+	\item Non-Negative
+	\item \(\lim\limits_{t \to \infty} F_X(t) = 1, \lim\limits_{t \to -\infty} F_X(t) = 0\)
+\end{enumerate}
+Additionally, any function satisfying above properties is the CDF for some random variable. Random Variables studied are usually either \textbf{Continuous} or \textbf{Discrete} (although they can also be \textbf{Singular} or \textbf{Mixed}).
+
+We say that $F$ is \textbf{Absolutely Continuous} if it is differentiable a.e. and $\exists f(x)$ s.t. $F_X(x) = \int_{-\infty}^{x} f(u) du$ If \( F_X\) absolutely continuous then we call \(X\) Continuous RV. We have that $\frac{d}{dx}F_X(x) = f(x)$ wherever $F$ is differentiable, and we call \(f\) the \textbf{PDF}. Notice that $f$ is unique a.e. (not everywhere)!
+
+If \(X(\Omega)\) is countable then we call \(X\) Discrete. Unlike in the continuous case, \(f(x):=\mu(\{X=x\})\) and is called the \textbf{PMF}. The CDF is defined as $F_{X}(t) = \sum_{i=0}^{t}f(i)$. We can define a probability density over a vector of random variables (we consider only cases where every RV is continous or every RV is discrete). We define the \textbf{Joint CDF} for \( X = (X_1, X_2, ..., X_n)\) as: 
+$$F(t_1,...,t_n)=\mu(X_1 \le t_1, ..., X_n \le t_n)$$
+The \textbf{Marginal PDF} of \(X_{1:p} = (X_{1}, \cdots X_{p})\) is:
+	\begin{align*}
+	f_{X_{1:p}}\left(t_{1:p}\right) = \int_{X_{(p+1):n}}f_{X}\left(t_{1:p}, X_{(p+1):n}\right)dX_{(p+1):n}
+	\end{align*}
+The \textbf{Conditional PDF} on \(X_{1:p}\) given \(X_{(p+1):n}=t_{(p+1):n}\) is:
+	\begin{align*}
+	f_{X_{1:p} | X_{(p+1):n}}\left(t_{1:p}, t_{(p+1):n}\right) =\frac{f_{X}\left(t_{1:p}, t_{(p+1):n}\right)}{f_{X_{(p+1):n}}\left(t_{(p+1):n}\right)}
+	\end{align*}
+
+We can define these analogously for the discrete case by replacing the integral with the appropriate sum.
+
+\subsubsection{Moments of a Random Variable}
+We denote \(\mathbb{E}_X(X^r) := \mathbb{E}(X^r)\) as the \textbf{rth Moment} of \(X\) under the distribution of \(X\). Note that moments need not exist (i.e. \(E(|X^r|)=\pm\infty\) ). We define the first moment as \(\mathbb{E}(X) = \int_0^\infty 1 - F_X(t)\,dt - \int_{-\infty}^0 F_X(t)\,dt\). If \(X\) Continuous, then this simplifies to \(\mathbb{E}(X) = \int_{-\infty}^{\infty} t \cdot f_X(t)\,dt\). If $X$ discrete, we just replace the integral with a sum. We now state two important and surprising results:
+
+\begin{theorem}[Law of the Unconscious Statistician]
+$$\mathbb{E}(g(X)) = \int_{-\infty}^{\infty} g(t) \cdot f_X(t)\,dt$$
 \end{theorem}
 
-\subsubsection{Empirical Distribution}\label{sec:empdist}
+\begin{theorem}[Jensens Inequality]
+	For a convex function $g$ $$g(\mathbb{E}\{X\})\le\mathbb{E}\{g(X)\}$$
+\end{theorem}
 
-Given some data \(x_1, \cdots x_n \sim F\) where $F$ is an unknown CDF, we want to approximate this using some mapping $\hat{F}$ called the \textbf{Empirical Distribution} of the data.
+We can generate Moments using the \textbf{MGF} of \(X\): \( M_X(t) = \mathbb{E} \left(\exp(Xt) \right) \), which exists when \( \exists \epsilon >0 \) s.t. \( \forall |t| < \epsilon\),  \(M_X(t) < \infty \). We present some results:
+\begin{enumerate}
+	\item \( \exists \epsilon >0 \) s.t. \( \forall |t| < \epsilon\),  \(M_X(t) = M_Y(t) \Rightarrow X\) and \(Y\) have same distribution
+	\item \(\mathbb{E}(|X^r|) = \left.\frac{\partial^r}{\partial^r t}M_X(t)\right\rvert_{t=0}\), if \(M_X\) exists.
+	\item If \(\{ X_i\}\) independent RVs, then \( M_{\sum X_i} (t) = \prod M_{X_i}(t)\)
+\end{enumerate}
+The two moments most commonly analyzed are:
+\begin{enumerate}
+	\item \textbf{Mean} of \(X\): \(\mathbb{E}(X):=\mu_X\)
+	\item \textbf{Variance} of \(X\): \(Var(X)=\mathbb{E}((X-\mu_{X})^2)=\sigma^2_{X}\)
+\end{enumerate}
+For random vectors \(X\) we have:
+\begin{enumerate}
+	\item \(\mathbb{E}\{X\} = \begin{bmatrix}
+	\mathbb{E}\{X_1\} \\
+	\vdots \\
+	\mathbb{E}\{X_n\}
+	\end{bmatrix}=\mu\)
+	\item \(Cov(X)= \mathbb{E}[(X-\mu)(X-\mu)^T] = \Sigma\)
+\end{enumerate}
 
-\begin{equation}
-	\hat{F}(t) = \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{x_i \le t\}}
+\newpage
+
+\subsection{Basic Statistics}
+
+We now describe the basic notions of Statistics. Instead of having a well defined model 
+
+\subsubsection{The Empirical Density Function}
+
+Suppose we are given some data \(x_1, \cdots x_n \sim F\) from an unknown distribution $F$, which we want to approximate. We define the \textbf{Empirical Distribution} $\hat{F}$ of the data as:
+
+\begin{equation}\label{sec:empdist}
+\hat{F}(t) = \frac{1}{n}\sum_{i=1}^n \mathbbm{1}_{\{x_i \le t\}}
 \end{equation} 
 
 It can be shown that $\hat{F}(t) \rightarrow F(t) \ a.s.\ \forall t$, justifying its use as an approximation of $F$, provided enough data has been observed. As with $F$ we can approximate $f$. We define the \textbf{Empirical Density Function} $\hat{f}$:
 
 \begin{equation}
-	\hat{f}(t) = \frac{1}{n}\sum_{i=1}^n \delta(x_i, t)
+\hat{f}(t) = \frac{1}{n}\sum_{i=1}^n \delta(x_i, t)
 \end{equation}
 
 Where $\delta$ is defined differently in the continuous and discrete case. In the continuous case it is called the \textbf{Dirac Delta Function}:
-	\begin{equation}
-		\delta(x,y) = \begin{cases}
-		\infty & x=y \\
-		0 & \text{o.w.}
-	\end{cases}
-	\end{equation}
-	Additionally, we suppose that:
-	\begin{enumerate}
-		\item $\int_{-\infty}^{\infty} \delta(t,y)dt = 1$
-		\item $\int \delta(t,y) f(t) dt = f(y)$, for any $f$ with compact support that is continuous around $y$
-	\end{enumerate}
+\begin{equation}
+\delta(x,y) = \begin{cases}
+\infty & x=y \\
+0 & \text{o.w.}
+\end{cases}
+\end{equation}
+Additionally, we suppose that:
+\begin{enumerate}
+	\item $\int_{-\infty}^{\infty} \delta(t,y)dt = 1$
+	\item $\int \delta(t,y) f(t) dt = f(y)$, for any $f$ with compact support that is continuous around $y$
+\end{enumerate}
 
 This is not a function, but is called a \emph{Generalized Function}. In the discrete case things are much simpler, as we can use the simpler \textbf{Kronecker delta function}:
 \begin{equation}
-	\delta(x,y) = 
-	\begin{cases}
-		1 & x=y \\
-		0 & \text{o.w.}
-	\end{cases}
+\delta(x,y) = 
+\begin{cases}
+1 & x=y \\
+0 & \text{o.w.}
+\end{cases}
 \end{equation}
 
 Finally, we notice that $\hat{f}$ and $\hat{F}$ satisfy an important relationship that would be expected from the cdf and pdf: $\int_{-\infty}^{t}\hat{f}(y)dy = \hat{F}(t)$.
@@ -480,8 +617,16 @@ Finally, we notice that $\hat{f}$ and $\hat{F}$ satisfy an important relationshi
 &= \hat{F}(t)
 \end{align*}
 
-\newpage
-\subsection{Bayesian Statistics}
+We now turn our attention to a common problem in Statistics
+
+\subsubsection{Parametric Families and the Maximum Likelihood Estimate}
+
+We define a \textbf{Parametric Family} $\{p_{\theta}\}_{\theta\in\Theta}$ as a set of densities
+
+Given a Parametric Family $\{p_{\theta}\}_{\theta\in\Theta}$, typically we have data \(D=(X^{(1)}, \cdots, X^{(n)})\) where each \(X^{(i)}\overset{iid}{\sim} p_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\).
+
+
+\subsection{Frequentist vs Bayesian Statistics}
 
 Given an Event, what does the probability of that Event \emph{mean}? There are two interpretations:
 
@@ -1117,7 +1262,9 @@ g(\lambda, \nu) &=\min\limits_{q\in \mathcal{M}} L(q^*(x| \nu, \lambda),\lambda,
 &=\alpha^T\lambda + \nu - \underbrace{\sum_x u(x)\exp\{ \lambda^TT(x)\}}_{=Z(\lambda)}e^{\nu -1}
 \end{align*}
 
-From Slaters condition and the convexity of $L$, if $\exists q \in \mathcal{M}$ s.t. $q(x)>0 \ \forall x$ we get strong duality. We can assume WLOG that such a $q$ exists since, if it didn't, we could just restrict our domain to $\mathcal{X} \setminus \{ x | q(x) = 0 \}$. We solve the dual problem. We first maximize w.r.t $\nu$
+We claim that Slaters condition is satisfied. We see that $L$ is convex since $f_0$ is the KL divergence, which is convex in $q$, and the constraints are all linear. We claim that $\exists q \in$ int($\mathcal{M}$) s.t. $q(x)>0 \ \forall x$. We claim that int($\mathcal{M}$) is nonempty and assume WLOG that such a $q$ exists since, if it didn't, we could just restrict our domain to $\mathcal{X} \setminus \{ x | q(x) = 0 \}$. Satisfying Slaters condition gives us strong duality, and so if we find a dual optimal $(\lambda^*, \nu^*)$, it will be enough to minimize the strictly convex $L(q, \lambda^*, \nu^*)$ over $q$.
+
+We first maximize w.r.t $\nu$
 \begin{align*}
 \frac{\partial  g(\lambda, \nu)}{\partial \nu } &= 1 - Z(\lambda)e^{\nu -1} = 0\\
 &\Rightarrow  e^{\nu^*-1} = \frac{1}{Z(\lambda)}
@@ -1144,9 +1291,9 @@ L(q^*,\lambda,\nu^*) &\propto \frac{1}{n}\sum_{i=1}^n \Bigl( \log p(X_i \mid \la
 \end{align*}
 \end{proof}
 
-Supposing we solved the MLE problem above, we then have that:
+Supposing we solved the MLE problem above, we then have that our optima is:
 $$q^*(x)=u(x)\exp\{ (\lambda^*)^TT(x) - \log Z(\lambda^*)\}$$
-Since we have strong duality and $(\lambda^*, \nu^*)$ are dual optimal and $q^*$ is primal feasible (by construction it satisfies all of the constraints), it must be optimal. What this means is that, given only Moment constraints and no other restrictions, the distribution with the most ``Randomness" is precisely the distribution from the exponential family with matching moments.
+What this means is that, given only Moment constraints and no other restrictions, the distribution with the most ``Randomness" is precisely the distribution from the exponential family with matching moments.
 
 \newpage
 
