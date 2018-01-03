@@ -700,6 +700,8 @@ It turns out the above is equivalent to assuming the existence of the prior! The
 
 This theory says that, if we assume exchangable data (and iid $\Rightarrow$ exchangeable), then there must exist a \(\theta\), \(p(X|\theta)\) and distribution \(\mu\) on \(\theta\)! So the idea of having a prior distribution on the parameters does have theory to back it up!
 
+\newpage
+
 \subsubsection{The Multinomial Distribution}
 
 Suppose instead of flipping a coin we were to roll a die instead. We can model the process of observing one of $K \ge 2$ possible outcomes using the \textbf{Multinoulli Distribution}. Here, $X$ is a discrete RV over $K$ choices. We encode $X$ as a \textbf{one-hot encoding}: a random vector taking values in the unit bases in $\mathbb{R}^{K}$ 
@@ -765,14 +767,6 @@ Putting this together, and assuming that the determinent of the Hessian at this 
 
 We can see that the prior adds ``pseudocounts" to the estimator, which makes it more robust in cases where the true $\pi_j$ is small. In these cases $\hat{\pi}_{j}^{\text{MLE}}$ usually is $0$, but the pseudocounts will ensure that $\hat{\pi}_{j}^{\text{MAP}}$ isn't exactly 0.
 
-\subsubsection{The Normal Distribution}
-
-The most popular model for unbounded continuous data, is the \textbf{Normal Distribution}. We say \(X \sim \mathcal{N}_p(\mu, \Sigma)\) if:
-$$p(x|\mu, \Sigma)={(2\pi)}^{-\frac{p}{2}}\det \Sigma^{-\frac{1}{2}}\exp{ \left\{-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu) \right\} } $$
-
-For \(x, \mu\in\mathbb{R}^p\), and \(\Sigma \in \mathbb{R}^{p \times p}\) Symmetric and Positive Definite.
-
-
 \subsubsection{The Empirical Density Function}
 
 We now describe a the simplest representation of our data. Suppose we are given some data \(x_1, \cdots x_n \sim F\) from an unknown distribution $F$, which we want to approximate. We define the \textbf{Empirical Distribution} $\hat{F}$ of the data as:
@@ -823,7 +817,7 @@ Finally, we notice that $\hat{f}$ and $\hat{F}$ satisfy an important relationshi
 
 \subsection{Statistical Decision Theory}
 
-In the next chapter we will describe a general framework for how to make data-driven decisions under uncertainty: \textbf{Statistical Decision Theory}.
+We now describe a general framework for how to make data-driven decisions under uncertainty: \textbf{Statistical Decision Theory}.
 
 We observe some \textbf{Data} \(D \in \mathcal{D}\), which comes from some \textbf{Data Generating Distribution} \(D \sim p\). Let \(p\in \mathcal{P}\)\footnote{Often $p$ will describe an IID process, e.g. $D = (X_1,...,X_n)$ where $X_i \overset{iid}\sim P_0$. In this case, the loss is usually written w.r.t $p_0$ instead of $p$.}, where \(\mathcal{P}\) is the set of possible distributions. Let \(\mathcal{A}\) be our set of possible actions. To determine how good an action is, we define the \textbf{Loss} (cost) of doing that action as \(L: \mathcal{P} \times \mathcal{A} \mapsto \mathbb{R}\). The goal is to determine a \textbf{Decision Rule} \(\delta: \mathcal{D} \mapsto \mathcal{A}\) which, given data, produces an action.
 
@@ -883,7 +877,7 @@ It turns out that a \emph{Bayes rule} can be obtained by taking the \emph{Bayes 
 
 \subsection{Types of Procedures}
 
-\subsubsection{Parameter Estimation}\label{sec:parest}
+\subsubsection{Point Estimation Revisited}\label{sec:parest}
 Given a Parametric Family $\{p_{\theta}\}_{\theta\in\Theta}$, typically we have data \(D=(X^{(1)}, \cdots, X^{(n)})\) where each \(X^{(i)}\overset{iid}{\sim} p_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\). The estimator should minimize the loss (more specifically the risk). One popular loss function is the \textbf{Squared Loss}: \(L(\theta,\delta(D)) = ||\theta-\delta(D)||^2\). Note that since the data are IID we use the marginal density over $X$ instead of the joint over $D$ in the loss function.
 
 If we take the expectation of the loss function above (the frequentist risk), we can decompose it nicely into two pieces:
@@ -983,9 +977,16 @@ Finally, as $q \rightarrow 0$, the $y(x)$ given by the Minkowski loss is the con
 
 \newpage
 
-\section{Representation}
+\section{Exponential Family}
 
-\subsection{Exponential Family}\label{sec:expfam}
+\subsubsection{The Normal Distribution}
+
+The most popular model for unbounded continuous data, is the \textbf{Normal Distribution}. We say \(X \sim \mathcal{N}_p(\mu, \Sigma)\) if:
+$$p(x|\mu, \Sigma)={(2\pi)}^{-\frac{p}{2}}\det \Sigma^{-\frac{1}{2}}\exp{ \left\{-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu) \right\} } $$
+
+For \(x, \mu\in\mathbb{R}^p\), and \(\Sigma \in \mathbb{R}^{p \times p}\) Symmetric and Positive Definite.
+
+\subsection{General Exponential Family}\label{sec:expfam}
 
 The \textbf{(Canonical) Exponential Family} is a parametric family of distributions which have the following form:
 \begin{align}
