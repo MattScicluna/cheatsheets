@@ -10,18 +10,19 @@ J.~Magnus and H.~Neudecker, {\em Matrix differential calculus with applications
 S.~Boyd and L.~Vandenberghe, {\em Convex Optimization}.
 \newblock New York, NY, USA: Cambridge University Press, 2004.
 
+\bibitem{rosenthalbook}
+J.~Seth~Rosenthal, {\em A First Look at Rigorous Probability Theory}.
+\newblock 01 2006.
+
 \bibitem{jaynes}
 E.~T. Jaynes, {\em Probability Theory: The Logic of Science}.
 \newblock Cambridge University Press, 2003.
 
-\bibitem{slides}
-B.~Vidakovic, ``The likelihood principle.'' Slides.
+\bibitem{PHoffNotes2}
+P.~Hoff, ``Bayes estimators.'' Notes, 2013.
 
 \bibitem{MJordanNotes}
 M.~I. Jordan, ``260 course notes.'' Slides.
-
-\bibitem{PHoffNotes2}
-P.~Hoff, ``Bayes estimators.'' Notes, 2013.
 
 \bibitem{EntNotes}
 T.~Carter, ``An introduction to information theory and entropy.'' Slides, 2004.
