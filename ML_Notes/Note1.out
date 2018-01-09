@@ -9,33 +9,41 @@
 \BOOKMARK [3][-]{subsubsection.2.2.3}{Langrangian Duality}{subsection.2.2}% 9
 \BOOKMARK [3][-]{subsubsection.2.2.4}{Saddle Point Interpretation}{subsection.2.2}% 10
 \BOOKMARK [3][-]{subsubsection.2.2.5}{KKT Conditions}{subsection.2.2}% 11
-\BOOKMARK [2][-]{subsection.2.3}{Basic Probability}{section.2}% 12
+\BOOKMARK [2][-]{subsection.2.3}{Probability}{section.2}% 12
 \BOOKMARK [3][-]{subsubsection.2.3.1}{Random Variables and Vectors}{subsection.2.3}% 13
 \BOOKMARK [3][-]{subsubsection.2.3.2}{Moments of a Random Variable}{subsection.2.3}% 14
 \BOOKMARK [3][-]{subsubsection.2.3.3}{Frequentistism vs Bayesianism}{subsection.2.3}% 15
-\BOOKMARK [2][-]{subsection.2.4}{Basic Statistics}{section.2}% 16
-\BOOKMARK [3][-]{subsubsection.2.4.1}{Point Estimation}{subsection.2.4}% 17
-\BOOKMARK [3][-]{subsubsection.2.4.2}{The Multinomial Distribution}{subsection.2.4}% 18
-\BOOKMARK [3][-]{subsubsection.2.4.3}{The Empirical Density Function}{subsection.2.4}% 19
-\BOOKMARK [2][-]{subsection.2.5}{Statistical Decision Theory}{section.2}% 20
-\BOOKMARK [3][-]{subsubsection.2.5.1}{Frequentist Risk Perspective}{subsection.2.5}% 21
-\BOOKMARK [3][-]{subsubsection.2.5.2}{Bayesian Risk Perspective}{subsection.2.5}% 22
-\BOOKMARK [2][-]{subsection.2.6}{Types of Procedures}{section.2}% 23
-\BOOKMARK [3][-]{subsubsection.2.6.1}{Point Estimation Revisited}{subsection.2.6}% 24
-\BOOKMARK [3][-]{subsubsection.2.6.2}{Prediction}{subsection.2.6}% 25
-\BOOKMARK [3][-]{subsubsection.2.6.3}{Regression}{subsection.2.6}% 26
-\BOOKMARK [1][-]{section.3}{Exponential Family}{}% 27
-\BOOKMARK [2][-]{subsubsection.3.0.1}{The Normal Distribution}{section.3}% 28
-\BOOKMARK [2][-]{subsection.3.1}{General Exponential Family}{section.3}% 29
-\BOOKMARK [3][-]{subsubsection.3.1.1}{Properties of Exponential Families}{subsection.3.1}% 30
-\BOOKMARK [3][-]{subsubsection.3.1.2}{Estimation in the Exponential Family}{subsection.3.1}% 31
-\BOOKMARK [3][-]{subsubsection.3.1.3}{Conjugate Priors of the Exponential Family}{subsection.3.1}% 32
-\BOOKMARK [1][-]{section.4}{Information Theory}{}% 33
-\BOOKMARK [2][-]{subsection.4.1}{Entropy}{section.4}% 34
-\BOOKMARK [2][-]{subsection.4.2}{KL Divergence}{section.4}% 35
-\BOOKMARK [2][-]{subsection.4.3}{Mutual Information}{section.4}% 36
-\BOOKMARK [2][-]{subsection.4.4}{Differential Entropy}{section.4}% 37
-\BOOKMARK [2][-]{subsection.4.5}{Entropy and Estimation}{section.4}% 38
-\BOOKMARK [3][-]{subsubsection.4.5.1}{Maximum Likelihood Estimation}{subsection.4.5}% 39
-\BOOKMARK [3][-]{subsubsection.4.5.2}{Maximum Entropy Principle}{subsection.4.5}% 40
-\BOOKMARK [3][-]{subsubsection.4.5.3}{MaxENT and the Exponential Family}{subsection.4.5}% 41
+\BOOKMARK [2][-]{subsection.2.4}{Statistics}{section.2}% 16
+\BOOKMARK [3][-]{subsubsection.2.4.1}{Statistical Inference}{subsection.2.4}% 17
+\BOOKMARK [3][-]{subsubsection.2.4.2}{Maximum Likelihood Estimation}{subsection.2.4}% 18
+\BOOKMARK [3][-]{subsubsection.2.4.3}{MAP Estimation and Method of Moments}{subsection.2.4}% 19
+\BOOKMARK [3][-]{subsubsection.2.4.4}{The Multinomial Distribution}{subsection.2.4}% 20
+\BOOKMARK [3][-]{subsubsection.2.4.5}{The Empirical Density Function}{subsection.2.4}% 21
+\BOOKMARK [2][-]{subsection.2.5}{Statistical Decision Theory}{section.2}% 22
+\BOOKMARK [3][-]{subsubsection.2.5.1}{Frequentist Risk Perspective}{subsection.2.5}% 23
+\BOOKMARK [3][-]{subsubsection.2.5.2}{Bayesian Risk Perspective}{subsection.2.5}% 24
+\BOOKMARK [3][-]{subsubsection.2.5.3}{Properties of Estimators}{subsection.2.5}% 25
+\BOOKMARK [2][-]{subsection.2.6}{The Exponential Family}{section.2}% 26
+\BOOKMARK [3][-]{subsubsection.2.6.1}{Properties of Exponential Families}{subsection.2.6}% 27
+\BOOKMARK [3][-]{subsubsection.2.6.2}{Estimation in the Exponential Family}{subsection.2.6}% 28
+\BOOKMARK [3][-]{subsubsection.2.6.3}{Conjugate Priors of the Exponential Family}{subsection.2.6}% 29
+\BOOKMARK [3][-]{subsubsection.2.6.4}{The Gaussian Distribution}{subsection.2.6}% 30
+\BOOKMARK [1][-]{section.3}{Information Theory}{}% 31
+\BOOKMARK [2][-]{subsection.3.1}{Basic Concepts}{section.3}% 32
+\BOOKMARK [3][-]{subsubsection.3.1.1}{KL Divergence}{subsection.3.1}% 33
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Mutual Information}{subsection.3.1}% 34
+\BOOKMARK [3][-]{subsubsection.3.1.3}{Differential Entropy}{subsection.3.1}% 35
+\BOOKMARK [2][-]{subsection.3.2}{Entropy and Estimation}{section.3}% 36
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Maximum Likelihood Estimation}{subsection.3.2}% 37
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Maximum Entropy Principle}{subsection.3.2}% 38
+\BOOKMARK [3][-]{subsubsection.3.2.3}{MaxENT and the Exponential Family}{subsection.3.2}% 39
+\BOOKMARK [1][-]{section.4}{Prediction}{}% 40
+\BOOKMARK [2][-]{subsection.4.1}{Prediction as a Decision Theoretic Problem}{section.4}% 41
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Regression}{subsection.4.1}% 42
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Classification}{subsection.4.1}% 43
+\BOOKMARK [2][-]{subsection.4.2}{Generative and Discriminative Learning}{section.4}% 44
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Linear Regression}{subsection.4.2}% 45
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Logistic Regression}{subsection.4.2}% 46
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Generalized Linear Models}{subsection.4.2}% 47
+\BOOKMARK [2][-]{subsection.4.3}{Predictive Distributions}{section.4}% 48
+\BOOKMARK [1][-]{section.5}{Bayesian Inference}{}% 49
