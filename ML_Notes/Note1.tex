@@ -75,7 +75,7 @@
 			$\mathbb{N}$ & Set of natural numbers \\
 			$:=$ & equals by definition \\
 			$\sup(A)$ & Supremum of a set $A$ \\
-			$\inf(A)$ & Infemum of a set $A$ \\
+			$\inf(A)$ & Infimum of a set $A$ \\
 			$\mathbbm{1}_{A}(x)$ & Indicator function of set $A$ \\
 			$\mathbb{E}_{X\sim p}\{f(X)\}$ & The expected value of $f(X)$ where $X\sim p$\\
 			$\mathbb{E}\{X|Y\}$ & The expected value of $X$ conditioned on $Y$ \\
@@ -88,7 +88,8 @@
 			$B_r(x)$ & Ball of radius $r$ centred at $x$ \\
 			int($A$) & Interior points of set $A$ \\
 			bd($A$) & Boundary points of set $A$ \\
-			dom($f$) & Domain of function $f$
+			dom($f$) & Domain of function $f$ \\
+			im($f$) & Image of function $f$
 			\\\bottomrule
 			\hline
 		\end{tabular}
@@ -97,6 +98,10 @@
 \newpage
 
 \section{Preliminaries}
+
+\subsection{Linear Algebra}
+
+TODO: norms, Singular Value Decomposition, Eigen-Decomposition, Change of Basis and Spectral Radius vs Operator Norm.
 
 \subsection{Vector Calculus}
 
@@ -149,22 +154,18 @@ As a sanity check, we can see that $Jg \circ f(x_0) \in \mathbb{R}^{p \times n}$
 \subsubsection{Many to One Functions and the Hessian}
 
 The majority of functions we work with in machine learning are real valued, meaning they are of form $f: \mathbb{R}^n \rightarrow \mathbb{R}$. This is since they are either loss functions or probability densities. Hence we focus on this case. The most common use of vector calculus is to optimize a function by finding its stationary points (where the gradient is 0) and to check whether it is a maxima or minima by checking the Hessian. First we present a simpler version of the chain rule for gradients.
- 
 \begin{theorem}[Simplified Chain Rule]
 If we consider only functions $g$ with $p=1$ then the gradient is: $$\nabla_x g \circ f(x) = Jf(x)^T\nabla_{x}g(f(x))$$
 \end{theorem} 
-
-The Jacobian matrix for $f$ takes the following form: 
+For a many to one function $f$, the Jacobian matrix takes the following form: 
 $$J f(x) = \left(\frac{\partial f}{\partial x_1}, \cdots, \frac{\partial f}{\partial x_n}\right) \in \mathbb{R}^{1 \times n}$$
 The Gradient for $f$ is then: 
 $$\nabla_{x} f(x) = \left(\frac{\partial f}{\partial x_1}, \cdots, \frac{\partial f}{\partial x_n}\right)^T \in \mathbb{R}^{n \times 1}$$
-
 We define the \textbf{Second Partial Derivative} for a real valued $f$ as follows. Let $f$, $e_i$ as before. The second partial derivative of $f$ w.r.t $x_i$ and $x_j$ is:
 $$
 \frac{\partial^2 f(x_0)}{\partial x_i \partial x_j} := 
 \lim\limits_{t \rightarrow 0} \frac{ \frac{\partial f(x_0+te_i)}{\partial x_j} - \frac{\partial f(x_0)}{\partial x_j} }{t}
 $$
-
 We define the \textbf{Hessian} for real valued functions as: 
 $$H f(x_0) := \begin{bmatrix}
 \frac{\partial^2 f(x_0)}{\partial x_1^2} & \dots  & \frac{\partial^2 f(x_0)}{\partial x_n \partial x_1} \\
@@ -174,9 +175,20 @@ $$H f(x_0) := \begin{bmatrix}
 
 \newpage
 
-\subsubsection{Some Important Examples}
+\subsubsection{Vector Derivatives}
 
-We now get to the payoff, some important results which will appear often in these notes. Let $b \in \mathbb{R}^n$, $B \in \mathbb{R}^{n \times n}$
+We now get to the payoff, some important results which will appear often in these notes. Let $b,x \in \mathbb{R}^n$, $B \in \mathbb{R}^{n \times n}$. We prove some useful results:
+
+\begin{theorem}
+	$\nabla_{x} b^Tx = \nabla_{x} x^Tb= b$
+\end{theorem}
+\begin{proof}
+	Notice 
+	\begin{align*}
+	(x+\Delta)^Tb - x^Tb &= \Delta^Tb
+	\end{align*}
+	And the result immediately follows
+\end{proof}
 
 \begin{theorem}
 	$\nabla_{x} x^TBx = x^T(B^T+B)$
@@ -203,8 +215,10 @@ We now get to the payoff, some important results which will appear often in thes
 	\end{align*}
 \end{proof}
 
-For the final example, we must refine our definition of differentiability to include matrices. That's right, you can actually do that. First we define the norm of a matrix $A$ as:
-$$ ||A|| = tr(A^TA)^{\frac{1}{2}} $$
+\subsubsection{Matrix Derivatives}
+We can refine our definition of differentiability to include matrices. That's right, you can actually do that. First we define the \textbf{Frobenius Norm} of matrix $X \in \mathbb{R}^{n \times n}$ as:
+$$ ||X|| = tr(X^TX)^{\frac{1}{2}} $$
+Notice that this norm is just the usual Euclidean norm treating $X$ as a vector of size $mn$. 
 
 Let $S \subseteq \mathbb{R}^{n \times m}$ and $x_0$ an interior point of $S$ with $B_r(x_0) \subseteq S$. Given a function $f: S \rightarrow \mathbb{R}$ we say that $f$ is \textbf{Differentiable} at $x_0$ if there exists an $A \in \mathbb{R}^{n \times m}$ depending only on $x_0$ s.t. $\forall ||\Delta|| < r$
 \begin{align*}
@@ -214,36 +228,49 @@ Let $S \subseteq \mathbb{R}^{n \times m}$ and $x_0$ an interior point of $S$ wit
 
 We define the Jacobian and Gradient in terms of $A(x_0)$ in the same way that we did for vector valued functions.
 
-\newpage
+\begin{theorem}
+	$\nabla_{X} tr(BX) = B^T$
+\end{theorem}
+\begin{proof}
+	The result is immediate since
+	$$tr(B(X+\Delta)) - tr(BX) = tr(B\Delta)$$
+\end{proof}
 
 \begin{theorem}
-	$\nabla_{B} \log \det B = B^{-1}$ for $B$ symmetric, invertible
+	$\nabla_{X} \log \det X = X^{-1}$ for $X$ symmetric, invertible
 \end{theorem}
 \begin{proof}
 	First notice the following decomposition
 \begin{align*}
-\log \det (B + \Delta) &= \log \det\left(B^{\frac{1}{2}}\left(I + B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right)B^{\frac{1}{2}}\right)\\
-&= \log\left(\det\left( B^{\frac{1}{2}}\right) \det\left(I + B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right) \det\left(B^{\frac{1}{2}}\right) \right)\\
-&=\log\det\left(I + B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right)+\log\det B
+\log \det (X + \Delta) &= \log \det\left(X^{\frac{1}{2}}\left(I + X^{-\frac{1}{2}}\Delta X^{-\frac{1}{2}}\right)X^{\frac{1}{2}}\right)\\
+&= \log\left(\det\left( X^{\frac{1}{2}}\right) \det\left(I + B^{-\frac{1}{2}}\Delta X^{-\frac{1}{2}}\right) \det\left(X^{\frac{1}{2}}\right) \right)\\
+&=\log\det\left(I + X^{-\frac{1}{2}}\Delta X^{-\frac{1}{2}}\right)+\log\det X
 \end{align*}
 
 We try to find our differential in the same way we did in the first example:
 \begin{align*}
-\log \det (B + \Delta) - \log\det B &= \log\det\left(I + B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right)\\
-&\overset{(a)}{=} \sum_{i} \log\left(1 + \lambda\left(B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right)\right)\\
-&\overset{(b)}{=} \sum_{i}\lambda\left(B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right) + O(||\Delta||)\\
-&\overset{(c)}{=} \text{tr}\left(B^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right) + O(||\Delta||)\\
-&= \text{tr}(B^{-1}\Delta) + O(||\Delta||)
+\log \det (X + \Delta) - \log\det X &= \log\det\left(I + X^{-\frac{1}{2}}\Delta B^{-\frac{1}{2}}\right)\\
+&\overset{(a)}{=} \sum_{i} \log\left(1 + \lambda\left(X^{-\frac{1}{2}}\Delta X^{-\frac{1}{2}}\right)\right)\\
+&\overset{(b)}{=} \sum_{i}\lambda\left(X^{-\frac{1}{2}}\Delta X^{-\frac{1}{2}}\right) + O(||\Delta||)\\
+&\overset{(c)}{=} \text{tr}\left(X^{-\frac{1}{2}}\Delta X^{-\frac{1}{2}}\right) + O(||\Delta||)\\
+&= \text{tr}(X^{-1}\Delta) + O(||\Delta||)
 \end{align*}
-Where (a) follows since $\det A = \prod_i \lambda_i(A)$; (b) using $\log(1+x)=x+O(x^2)$ for $|x|<1$; and (c) using tr($A$)$=\sum_i \lambda_i(A)$. 
-We use the characterization of the gradient for functions of matrices to get that $\nabla_B \log\det B = B^{-1}$.
+Where (a) follows since $\det X = \prod_i \lambda_i(X)$; (b) using $\log(1+x)=x+O(x^2)$ for $|x|<1$; and (c) using tr($X$)$=\sum_i \lambda_i(X)$. 
+We use the characterization of the gradient for functions of matrices to get that $\nabla_X \log\det X = X^{-1}$.
+\end{proof}
+Finally, we use a previous result to compute a useful identity.
+\begin{theorem}
+	$\nabla_{X} b^TXb = bb^T$
+\end{theorem}
+\begin{proof}
+	Notice that
+	\begin{align*}
+	\nabla_{X} b^TXb &= \nabla_{X} tr(b^TXb)\\
+	&= \nabla_{X} tr(bb^TX)\\
+	&= bb^T
+	\end{align*}
 \end{proof}
 
-Finally, we mention in passing some other useful identities.
-\begin{itemize}
-	\item $\nabla_{x} b^Tx = \nabla_{x} x^Tb= b$
-	\item $\nabla_{B} x^TBx = xx^T$
-\end{itemize}
 
 \newpage
 
@@ -526,38 +553,38 @@ Where \( P(X^{-1}(\cdot)) := \mu(\cdot)\) is called the \textbf{Distribution} of
 	\end{tikzpicture}
 \end{center}
 We define the \textbf{CDF} for an RV as:
-$$ F_X(t) := \mu\left((-\infty,t]\right) = P(X \le t) $$
+$$ F_X(x) := \mu\left((-\infty,x]\right) = P(X \le x) $$
 They always satisfy the folling properties:
 \begin{enumerate}
 	\item Right Continuous
 	\item Non-Negative
-	\item \(\lim\limits_{t \to \infty} F_X(t) = 1, \lim\limits_{t \to -\infty} F_X(t) = 0\)
+	\item \(\lim\limits_{x \to \infty} F_X(x) = 1, \lim\limits_{x \to -\infty} F_X(x) = 0\)
 \end{enumerate}
 The RV \(X\) is actually completely specified by $F_X$! Furthermore, any function satisfying the above axioms is the CDF for some RV. This means that, for any such $F_X$, \((\mathbb{R}, \mathbb{B}, F_X)\) is a probability triple.
 
-If $F_X$ is \textbf{Absolutely Continuous}: it is differentiable a.e. and $\exists f_X(x)$ s.t. $F_X(x) = \int_{-\infty}^{x} f_X(u) du$; then we call \(X\) a \textbf{Continuous} RV. We have that $\frac{d}{dx}F_X(x) = f_X(x)$ wherever $F_X$ is differentiable, and we call \(f_X\) the \textbf{PDF}. If \(X(\Omega)\) is countable then we call \(X\) Discrete. Unlike in the continuous case, \(f_X(x):=P(\{X=x\})\) and is called the \textbf{PMF}. We often just write \(p(x):=f_X(x)\) in this case. The CDF here would be $F_{X}(t) = \sum_{i=0}^{t}f_X(i)$\footnote{RVs can be either Continuous, Discrete, Mixed or Singular}.
+We say that $F_X$ is \textbf{Absolutely Continuous}: it is differentiable a.e. and $\exists f_X(x)$ s.t. $F_X(x) = \int_{-\infty}^{x} f_X(u) du$. If $F_X$ is absolutely continuous then we call \(X\) a \textbf{Continuous} RV. We have that $\frac{d}{dx}F_X(x) = f_X(x)$ wherever $F_X$ is differentiable, and we call \(f_X\) the \textbf{PDF}. If im($X$) is countable then we call \(X\) \textbf{Discrete}\footnote{RVs can be either Continuous, Discrete, Mixed or Singular}. Unlike in the continuous case, \(f_X(x)=P(X=x)\) and is called the \textbf{PMF}. Note that in either case, we usually just write $p(x):=f_{X}(x)$. We will use this convention throughout these notes.
 
 We can define a probability density over a vector of random variables too (we consider only cases where every RV is continous or every RV is discrete). We define the \textbf{Joint CDF} for \( X = (X_1, X_2, ..., X_n)\) as: 
-$$F_X(t_1,...,t_n) := P(X_1 \le t_1, ..., X_n \le t_n)$$
-The \textbf{Marginal PDF} of \(X_{1:p} = (X_{1}, \cdots X_{p})\) is:
+$$F_X(x_1,...,x_n) := P(X_1 \le x_1, ..., X_n \le x_n)$$
+Let $A\in\{1,\cdots, n\}$ and let $X_A := \{X_i: i \in A\}$ and $X_{\neg A} := \{X_i: i \not\in A\}$. The \textbf{Marginal PDF} of \(X_A\) is:
 	\begin{align*}
-	f_{X_{1:p}}\left(t_{1:p}\right) := \int_{X_{(p+1):n}}f_{X}\left(t_{1:p}, X_{(p+1):n}\right)dX_{(p+1):n}
+	p(x_A) := \int_{X_{\neg A}}p\left(x_A, X_{\neg A}\right)dX_{\neg A}
 	\end{align*}
-The \textbf{Conditional PDF} on \(X_{1:p}\) given \(X_{(p+1):n}=t_{(p+1):n}\) is:
+The \textbf{Conditional PDF} on \(X_{A}\) given \(x_{\neg A}\) is:
 	\begin{align*}
-	&f_{X_{1:p} | X_{(p+1):n}}\left(t_{1:p}, t_{(p+1):n}\right) :=\frac{f_{X}\left(t_{1:p}, t_{(p+1):n}\right)}{f_{X_{(p+1):n}}\left(t_{(p+1):n}\right)}\\
-	&\text{Where $f_{X_{(p+1):n}}\left(t_{(p+1):n}\right) > 0$}
+	&p\left(x_A|x_{\neg A}\right) :=\frac{p\left(x_A, x_{\neg A}\right)}{p(x_{\neg A})}\\
+	&\text{Where $p(x_{\neg A}) > 0$}
 	\end{align*}
 We can define these analogously for the discrete case by replacing the integral with the appropriate sum.
 
 \newpage
 
 Random Variables can be independent too. For continuous or discrete RVs $X,Y, Z$ we say that $X$ is \textbf{Independent} of $Y$: $X \perp Y$ iff
-$$ f_{X,Y}(x,y) = f_X(x)f_Y(y) \ \forall x,y$$
+$$ p(x,y) = p(x)p(y) \ \forall x,y$$
 We note a useful property of RVs, the \textbf{Chain Rule}:
-$$f_{X_1,\cdots,X_n}(x_1, \cdots, x_n) = \prod_{i=1}^{n}f_{X_i|X_1, \cdots, X_{i-1}}(x_i|x_1, \cdots, x_{i-1})$$
+$$p(x_1, \cdots, x_n) = \prod_{i=1}^{n}p(x_i|x_1, \cdots, x_{i-1})$$
 We say that $X$ is \textbf{Conditionally Independent} of $Y$ given $Z$: $X 	\perp Y \mid Z$ iff 
-$$f_{X,Y| Z}(x,y|z) = f_{X|Z}(x \mid z)f_{Y|Z}(y \mid z) \ \forall x,y,z$$
+$$p(x,y|z) = p(x \mid z)p(y \mid z) \ \forall x,y,z$$
 For continuous or discrete RVs $X,Y,Z,W$, we have the following useful properties:
 
 \begin{itemize}
@@ -581,9 +608,9 @@ For continuous or discrete RVs $X,Y,Z,W$, we have the following useful propertie
 \end{itemize}
 
 \subsubsection{Moments of a Random Variable}
-We denote \(\mathbb{E}_X(X^r) := \mathbb{E}(X^r)\) as the \textbf{rth Moment} of \(X\) under the distribution of \(X\). Note that moments need not exist (i.e. \(E(|X^r|)=\pm\infty\) ). We define the first moment as \(\mathbb{E}(X) = \int_0^\infty 1 - F_X(t)\,dt - \int_{-\infty}^0 F_X(t)\,dt\). If \(X\) Continuous, then this simplifies to \(\mathbb{E}(X) = \int_{-\infty}^{\infty} t \cdot f_X(t)\,dt\). If $X$ discrete, we just replace the integral with a sum. We now state two important and surprising results:
+We denote \(\mathbb{E}_X(X^r) := \mathbb{E}(X^r)\) as the \textbf{rth Moment} of \(X\) under the distribution of \(X\). Note that moments need not exist (i.e. \(E(|X^r|)=\pm\infty\) ). We define the first moment as \(\mathbb{E}(X) = \int_0^\infty 1 - F_X(x)\,dx - \int_{-\infty}^0 F_X(x)\,dx\). If \(X\) Continuous, then this simplifies to \(\mathbb{E}(X) = \int_{-\infty}^{\infty} x \cdot p(x)\,dx\). If $X$ discrete, we just replace the integral with a sum. We now state two important and surprising results:
 \begin{theorem}[Law of the Unconscious Statistician]
-$$\mathbb{E}(g(X)) = \int_{-\infty}^{\infty} g(t) \cdot f_X(t)\,dt$$
+$$\mathbb{E}(g(X)) = \int_{-\infty}^{\infty} g(x) \cdot p(x)\,dx$$
 \end{theorem}
 \begin{theorem}[Jensens Inequality]
 	For a convex function $g$ $$g(\mathbb{E}\{X\})\le\mathbb{E}\{g(X)\}$$
@@ -598,7 +625,7 @@ We present some results:
 \begin{enumerate}
 	\item \( \exists \epsilon >0 \) s.t. \( \forall |t| < \epsilon\),  \(M_X(t) = M_Y(t) \Rightarrow X\) and \(Y\) have same distribution
 	\item \(\mathbb{E}(|X^r|) = \left.\frac{\partial^r}{\partial^r t}M_X(t)\right\rvert_{t=0}\), if \(M_X\) exists.
-	\item If \(\{ X_i\}\) independent RVs, then \( M_{\sum X_i} (t) = \prod M_{X_i}(t)\)
+	\item If \(\{ X_i\}\) are independent RVs, then \( M_{\sum X_i} (t) = \prod M_{X_i}(t)\)
 \end{enumerate}
 The two moments most commonly analyzed are:
 \begin{enumerate}
@@ -630,7 +657,7 @@ The \emph{reasonable expectation} can be further broken down into two views. The
 
 \subsection{Statistics}\label{sec:statschap}
 
-Before we describe the requisite Statistical ideas needed for Machine Learning, we will provide some definitions. We say \textbf{Probability} quantifies uncertainty of data given a model. We have seen that probabilistic questions are fairly well-formed mathematical problems. \textbf{Statistics} is the inverse problem: given data, how likely is model? Unlike with Probability theory, these questions tend to be ill-formed since many models can generate the same data!
+Before we describe the requisite Statistical ideas needed for Machine Learning, we will provide some definitions. We say \textbf{Probability} quantifies uncertainty of data given a model. We have seen that probabilistic questions are fairly well-formed mathematical problems. \textbf{Statistics} is the inverse problem: given data, what is the most likely model? Unlike with Probability theory, these questions tend to be ill-formed since many models can generate the same data!
 
 \begin{center}
 	\begin{tikzpicture}[scale=2.5]
@@ -645,9 +672,11 @@ Before we describe the requisite Statistical ideas needed for Machine Learning, 
 	\end{tikzpicture}
 \end{center}
 
+In addition, Statistical techniques can be seperated based on 
+
 \subsubsection{Statistical Inference}
 
-\textbf{Statistical Inference}  is the process of making propositions about the underlying PDF/PMF using data. The problem begins by determining the general form of the PDF/PMF. This is challenging since there are infinitely many! 
+\textbf{Statistical Inference}  is the process of making propositions about the underlying PDF/PMF using data. The problem begins by determining the general form of the PDF/PMF. This is challenging since there are infinitely many possible ones! 
 Often we break this problem up by first choosing a \textbf{Parametric Family}: $\{p_{\theta}\}_{\theta\in\Theta}$\footnote{where $p_{\theta} = f_X(\cdot|\theta)$ and we write as $p(\cdot|\theta)$ for clarity}. This is a set of PDFs/PMFs indexed by some parameter(s) $\theta$. We call $\Theta$ the \textbf{Parametric Space} and require for it to be finite dimensional\footnote{If $\Theta$ is infinite dimensional, we call the corresponding model \textbf{Non Parametric}}. For a concrete example, lets recall the coin tossing scenerio. We could model this using the \textbf{Binomial Distribution}. We write $X\sim Bin(N, \theta)$ if:
 \begin{align*}
 &p(x|\theta) := {N \choose x}\theta^x(1-\theta)^{N-x}\\
@@ -665,7 +694,7 @@ We want to use data $X$ to estimate an unknown parameter $\theta$. We define a \
 	$T$ is sufficient for $\theta$ if and only if $$f(X|\theta) = g(T(X),\theta)h(X)$$
 \end{theorem}
 
-We next describe a general principle which will allow us to estimate $\theta$ from some data! The \textbf{Likelihood Principle} says that all the evidence in a sample relevent to parameters \(\theta\) is contained in the likelihood function. The likelihood is defined as follows:
+We describe a general principle which will allow us to estimate $\theta$ from some data! The \textbf{Likelihood Principle} says that all the evidence in a sample relevent to parameters \(\theta\) is contained in the likelihood function. The likelihood is defined as follows:
 $$ \mathcal{L}(\theta | X) = P(X | \theta)$$
 
 If you have trouble accepting the Likelihood Principle, it has been shown to be equivalent to two milder principles:
@@ -677,7 +706,7 @@ If you have trouble accepting the Likelihood Principle, it has been shown to be 
 
 Of these principles, Sufficiency is accepted by both Frequentists and Bayesians, while the Conditionality principle is debated. 
 
-This principle is the guiding idea behind \textbf{Maximum Likelihood Estimation} (MLE). The basic idea is as follows: Since the likelihood contains all information relevent to $\theta$, we can find the most probable $\theta$ simply by maximizing the likelihood using the optimization techniques described in \ref{sec:optim}. 
+Th likelihood principle is the guiding idea behind \textbf{Maximum Likelihood Estimation} (MLE). The basic idea is as follows: Since the likelihood contains all information relevent to $\theta$, we can find the most probable $\theta$ simply by maximizing the likelihood using the optimization techniques described in \ref{sec:optim}. 
 
 \newpage
 \subsubsection{MAP Estimation and Method of Moments}
@@ -873,8 +902,8 @@ It turns out that a \emph{Bayes rule} can be obtained by taking the \emph{Bayes 
 
 \newpage
 
-\subsubsection{Properties of Estimators}
-We now describe how we can use Statistical Decision theory to solve recurring problems throughout these notes. Lets return to the problem of estimating the parameters from a model in a chosen Parametric Family $\{p_{\theta}\}_{\theta\in\Theta}$. Typically we have data \(D=(X^{(1)}, \cdots, X^{(n)})\) where each \(X^{(i)}\overset{iid}{\sim} p_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\). The estimator should minimize the loss (more specifically the risk). One popular loss function is the \textbf{Squared Loss}: 
+\subsubsection{Frequentist Decisition Theory and Estimation}
+We now describe how we can use Statistical Decision theory as a Frequentist to solve recurring problems throughout these notes. Lets return to the problem of estimating the parameters from a model in a chosen Parametric Family $\{p_{\theta}\}_{\theta\in\Theta}$. Typically we have data \(D=(X_1, \cdots, X_n)\) where each \(X_i\overset{iid}{\sim} p_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\). The estimator should minimize the frequentist risk. One popular loss function is the \textbf{Squared Loss}: 
 $$L(\theta,\delta(D)) = ||\theta-\delta(D)||^2$$
 Note that since the data are IID we use the marginal density over $X$ instead of the joint over $D$ in the loss function. If we take the expectation of the loss function above (the frequentist risk), we can decompose it nicely into two pieces:
 \begin{align*}
@@ -882,11 +911,20 @@ R(P,\delta)&=\mathbb{E}_{D\sim p}\{||\theta-\delta(D)||^2\}\\
 &=\mathbb{E}_{D\sim p}\{(\theta-\mathbb{E}_{D\sim p}\{\delta(D)\} + \mathbb{E}_{D\sim p}\{\delta(D)\} - \delta(D))^2\}\\
 &=\underbrace{(\theta-\mathbb{E}_{D\sim p}\{\delta(D)\})^2}_{Bias^2} + \underbrace{\mathbb{E}_{D\sim p}\{(\mathbb{E}_{D\sim p}\{\delta(D)\} - \delta(D))^2\}}_{Variance}
 \end{align*}
-The above says that when we average this loss over all possible datasets, we can compare how much of the loss is due to the Bias and how much to the Variance of the estimator $\delta$. This idea works for other loss functions, but the decomposition is not nearly as clean. This is a Frequentist idea since it involves taking an expectation over the data generating distribution, an idea doesn't appeal to Bayesians since it is contrary to the conditionality principle.
+The above says that when we average this loss over all possible datasets, we can compare how much of the loss is due to the Bias and how much to the Variance of the estimator $\delta$. This idea works for other loss functions, but the decomposition is not nearly as clean. Notice that Bayesians do not accept this idea since it involves taking an expectation over the data generating distribution, which is contrary to the conditionality principle.
 
-The Bias and Variance of an Estimator are examples of Properties of Estimators. We have already seen a number of estimators: the MLE, MoM and MAP. How can we decide which is best? Bayesians always use the Bayes action; but since Frequentists reject the conditionality principle they must consider the effect that unobserved data would have on their estimators. For frequentists, deciding upon an estimator is often a matter of choosing which estimator has the most desirable properties. A desirable property for an estimator to have is consistency. We say an estimator $\hat{\theta}$ is \textbf{Consistent} if $\hat{\theta} \overset{p}{\rightarrow} \theta$.
+The Bias and Variance of an Estimator are examples of Properties of Estimators. We have already seen a number of estimators: the MLE, MoM and MAP. How can we decide which is best? For frequentists, deciding upon an estimator is often a matter of choosing which estimator has the most desirable properties. One such property for an estimator is consistency. We say an estimator $\hat{\theta}$ is \textbf{Consistent} if $\hat{\theta} \overset{p}{\rightarrow} \theta$.
 
-Notice the situation is very different for a Bayesian. A Bayesian would approach Parameter estimation by choosing the Bayes action. We now show that, for the squared loss, the Bayes action is:
+The MLE has many desirable properties, which is why it is a favorite for Frequentists. Under regularity conditions on $\Theta$, we have that:
+\begin{itemize}
+	\item the MLE is Consistent
+	\item the MLE invariant under reparameterization
+	\item Cramer-Rao lower bound
+\end{itemize}
+
+\newpage
+\subsubsection{Bayesian Decisition Theory and Estimation}\label{bayeslosspred}
+Notice the situation is very different for a Bayesian. A Bayesian would approach Parameter estimation by choosing the Bayes action. We derive the Bayes action for the squared loss:
 $$\delta_{post}(D) = \mathbb{E}\{\theta|D\}$$
 We distribute the terms in the square:
 \begin{align*}
@@ -905,13 +943,6 @@ And so
 \boxed{\delta_{post}(D) =\frac{n_j + \alpha_j}{\sum_{j=1}^{k} n_j + \alpha_j} }
 \end{align*}
 Notice this estimate is different then $\hat{\pi}_{j}^{\text{MLE}}$ and $\hat{\pi}_{j}^{\text{MAP}}$, which we computed earlier.
-
-We now describe some properties of the MLE, under regularity conditions on $\Theta$:
-\begin{itemize}
-	\item the MLE is Consistent
-	\item the MLE invariant under reparameterization
-	\item Cramer-Rao lower bound
-\end{itemize}
 
 \newpage
 
@@ -1058,10 +1089,11 @@ p( \eta | x_1, \cdots, x_n) &= p(x_1, \cdots, x_n | \eta)p(\eta| \tau, n_0)\\
 
 \subsubsection{The Gaussian Distribution}
 
-The most popular model for unbounded continuous data, is the \textbf{Gaussian Distribution}. We say \(X \sim \mathcal{N}_p(\mu, \Sigma)\) if:
-$$p(x|\mu, \Sigma)={(2\pi)}^{-\frac{p}{2}}\det \Sigma^{-\frac{1}{2}}\exp{ \left\{-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu) \right\} } $$
-
-For \(x, \mu\in\mathbb{R}^p\), and \(\Sigma \in \mathbb{R}^{p \times p}\) Symmetric and Positive Definite. This distribution has a very surprising role in Statistics through the following theorem:
+The most popular model for unbounded continuous data, is the \textbf{Gaussian Distribution}. We say \(X \sim \mathcal{N}_d(\mu, \Sigma)\) if:
+\begin{align}\label{eq:gaussian}
+p(x|\mu, \Sigma)&={(2\pi)}^{-\frac{d}{2}}\det \Sigma^{-\frac{1}{2}}\exp{ \left\{-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu) \right\} }
+\end{align}
+For \(x, \mu\in\mathbb{R}^p\), \(\Sigma \in \mathbb{R}^{p \times p}\) Symmetric and Positive Definite. This distribution has a very surprising role in Statistics through the following theorem:
 \begin{theorem}[Central Limit Theorem]
 	Let $X_1, \cdots X_N$ be IID RVs with finite variances, then 
 	\begin{align*}
@@ -1069,7 +1101,28 @@ For \(x, \mu\in\mathbb{R}^p\), and \(\Sigma \in \mathbb{R}^{p \times p}\) Symmet
 	&\text{Where $\mu = \mathbb{E}\{X_i\}$ and $\Sigma = Cov\{X_i\}$ }
 	\end{align*}
 \end{theorem}
-For the Gaussian distribution, $\mathbb{E}\{X\}=\mu$, $Cov\{X\}=\Sigma$. We note some surprising properties of the Gaussian:
+For the Gaussian distribution, $\mathbb{E}\{X\}=\mu$, $Cov\{X\}=\Sigma$. We can compute the Maximum likelihood estimates for these. We find any stationary points:
+\begin{align*}
+\nabla_{\mu} \ell(\mu,\Sigma|x_1,\cdots, x_n) &= \nabla_{\mu} \sum_{i=1}^n\left(-\frac{1}{2}\log\det \Sigma -\frac{1}{2}(x_i-\mu)^T\Sigma^{-1}(x_i-\mu)\right)\\
+&= \sum_{i=1}^n (x_i-\mu)^T\Sigma^{-1}=0\\
+&\Rightarrow  \mu = \frac{1}{n}\sum_{i=1}^n x_i
+\end{align*}
+\begin{align*}
+\boxed{\hat{\mu}^{\text{ML}} = \frac{1}{n}\sum_{i=1}^n x_i}
+\end{align*}
+For the covariance, we take the gradient w.r.t. $\Sigma^{-1}$ to get that:
+\begin{align*}
+\nabla_{\Sigma^{-1}} \ell(\mu,\Sigma|x_1,\cdots, x_n) &\propto\nabla_{\Sigma^{-1}} \sum_{i=1}^n\left(-\frac{1}{2}\log\det \Sigma -\frac{1}{2}(x_i-\mu)^T\Sigma^{-1}(x_i-\mu)\right)\\
+&=\nabla_{\Sigma^{-1}} \left(\frac{n}{2}\log\det \Sigma^{-1} -\frac{1}{2}\sum_{i=1}^n tr((x_i-\mu)^T\Sigma^{-1}(x_i-\mu))\right)\\
+&=\frac{n}{2}\Sigma -\frac{1}{2}\sum_{i=1}^n (x_i-\mu)(x_i-\mu)^T=0\\
+&\Rightarrow \Sigma = \frac{1}{n}\sum_{i=1}^n(x_i-\mu)(x_i-\mu)^T
+\end{align*}
+\begin{align*}
+\boxed{\hat{\Sigma}^{\text{ML}} = \frac{1}{n}\sum_{i=1}^n(x_i-\hat{\mu}^{\text{ML}})(x_i-\hat{\mu}^{\text{ML}})^T}
+\end{align*}
+Where we use that the MLE is invariant to reparameterization i.e. $(\hat{\Sigma}^{\text{ML}})^{-1} = (\hat{\Sigma}^{-1})^{\text{ML}}$. We can verify that $(\hat{\mu}^{\text{ML}}, \hat{\Sigma}^{\text{ML}})$ is an optimal point by checking the Hessian and boundary cases. Finally, notice that $\hat{\Sigma}^{-1})^{\text{ML}}$ is biased. We can compare this to the unbiased \textbf{Sample Covariance} 
+$$\frac{1}{n-1}\sum_{i=1}^n(x_i-\hat{\mu}^{\text{ML}})(x_i-\hat{\mu}^{\text{ML}})^T$$
+We note some surprising properties of the Gaussian:
 \begin{itemize}
 	\item The conditional and marginal density of a Gaussian is Gaussian
 	\item Uncorrelated Gaussians are always independant
@@ -1401,24 +1454,24 @@ What this means is that, given only Moment constraints and no other restrictions
 
 \newpage
 
-\section{Prediction}
+\section{Supervised Learning}
 
-We now describe a procedure that is crucial for Machine Learning -- \textbf{Prediction}. We define it using the Statistical Theoretic Framework we developed in \ref{sec:dectheory}. Let $D=\{(X_1,Y_1), \cdots, (X_n,Y_n)\}$ where $X_i \in \mathcal{X}$ and $Y_i \in \mathcal{Y}$ (we call $D$ the \textbf{Training Data}). We put a density on $X$ and $Y$: $(X_i,Y_i) \overset{iid}{\sim} P_{XY}$. Our action space $\mathcal{A} = \mathcal{Y}^\mathcal{X}$. We call \(\delta\) a \textbf{Learning Algorithm} which learns a function using the training data i.e. $\delta(D) = \hat{f}$. We can evaluate the performance of $f$ using a \emph{prediction loss} $l: \mathcal{Y} \times \mathcal{Y} \mapsto \mathbb{R}$, a measure of the distance between a given prediction $f(X_i)$ and it’s associated ground truth $Y_i$. We define the \textbf{Generalization Error} $l$ as:
+We now describe a procedure that is crucial for Machine Learning -- \textbf{Supervised Learning}. We define it using the Statistical Theoretic Framework we developed in \ref{sec:dectheory}. Let $D=\{(x_1,y_1), \cdots, (x_n,y_n)\}$ where $X_i \in \mathcal{X}$ and $Y_i \in \mathcal{Y}$ (we call $D$ the \textbf{Training Data}). We put a density on $X$ and $Y$: $(X_i,Y_i) \overset{iid}{\sim} P_{XY}$. Our action space is $\mathcal{A} = \mathcal{Y}^\mathcal{X}$. We call \(\delta\) a \textbf{Learning Algorithm} which learns a function using the training data i.e. $\delta(D) = f$. We can evaluate the performance of $f$ using a \emph{prediction loss} $V: \mathcal{Y} \times \mathcal{Y} \mapsto \mathbb{R}$, a measure of the distance between a given prediction $f(x_i)$ and it’s associated ground truth $y_i$. We define the \textbf{Generalization Error} of $f$ as:
 \begin{equation}\label{eq:8}
-L(f) = \mathbb{E}_{(X,Y)\sim P_{XY}}\{l(Y,f(X)) \}
+L(f) = \mathbb{E}_{(X,Y)\sim P_{XY}}\{V(Y,f(X)) \}
 \end{equation}
 This is often called the Risk in Machine Learning. Note that we do not know (\ref{eq:8}), but we can approximate it using the below formula. This is called \textbf{Empirical Risk Minimization}
 \begin{equation}\label{eq:erm}
-L(f) = \frac{1}{n}\sum_{i=1}^n l\left(Y_i,f(X_i)\right)
+L(f) = \frac{1}{n}\sum_{i=1}^n V\left(y_i,f(x_i)\right)
 \end{equation}
 
 Notice that (\ref{eq:erm}) is just (\ref{eq:8}) with the empirical density substituted in place of the true, unknown one. Prediction problems are called different things depending on whether $\mathcal{Y}$ is discrete or continuous. If $\mathcal{Y}$ discrete then the problem is called \textbf{Classification}, and if $\mathcal{Y}$ is not discrete e.g. $\mathcal{Y} = \mathbb{R}$, then it is referred to as \textbf{Regression}.  
 
-\subsection{Prediction as a Decision Theoretic Problem}
-We wish to cast Regression and Classification in terms of the decision theory described before. We begin by looking at the loss functions we could use for each of these.
+\subsection{Supervised Learning as a Decision Theoretic Problem}
+We wish to cast Regression and Classification in terms of the decision theory described before. We find the function $f$ which optimizes the Generalization error for some common loss functions, which turns out to depend on the unknown $p(x,y)$. In the subsequent subsection we find $p(x,y)$ by assuming it is from a Parametric family and using Maximum Likelihood. We begin with regression.
 
 \subsubsection{Regression}
-We first look at Regression. Using the same framework as above, we use as $l$ the squared loss defined in this context as: $$l(Y, f(X)) = | Y - f(X) |^2$$
+We use as $V$ the squared loss defined in this context as: $$V(Y, f(X)) = | Y - f(X) |^2$$
 We need to find a function $y: \mathcal{X} \rightarrow \mathcal{Y}$ which minimizes the Generalization Error:
 \begin{align*}
 L(f) &= \mathbb{E}_{(X,Y)\sim P_{XY}}\{| Y - f(X) |^2\}\\
@@ -1441,7 +1494,7 @@ Solving for the above we have that
 &\Rightarrow \int y p(x, y) dy =  f(x)p(x) \\
 &\Rightarrow f(x) = \int y \frac{p(x, y)}{p(x)} dy = \mathbb{E}_{y \sim p(y|x)}\{y|x\}
 \end{align*}
-And so our learning algorithm $\delta(D)$ simply returns $f(x) = \mathbb{E}_{y \sim p(y|x)}\{y|x\}$. Keep in mind that we don't know $p(y|x)$ yet! We now look at a generalization of squared loss function -- a family of loss functions called the \textbf{Minkowski Loss}. This family has the following form:
+And so our learning algorithm $\delta(D)$ simply returns $f(x) = \mathbb{E}_{y \sim p(y|x)}\{y|x\}$. Keep in mind that we don't know $p(y|x)$ yet! We now look at a generalization of squared loss function -- a family of loss functions called the \textbf{Minkowski Loss}. The corresponding Risk has the following form:
 \begin{equation}
 L_q(y) = \int\int |y-f(x)|^q p(x,y)dxdy
 \end{equation}
@@ -1455,25 +1508,38 @@ For $q=1$, we see that $y(x)$ is the conditional median of $y$.
 \begin{align}
 \int_{-\infty}^{f(x)} p(x,y)dy = \int_{f(x)}^{\infty} p(x,y)dy
 \end{align}
-Finally, as $q \rightarrow 0$, the $f(x)$ given by the Minkowski loss is the conditional mode of $y$. Notice again we need to know the underlying data generating pdf i.e. $p(x, y)$. We will describe two ways of doing this in the next section.
+Finally, as $q \rightarrow 0$, the $f(x)$ given by the Minkowski loss is the conditional mode of $y$. Notice again we need to know the underlying data generating pdf i.e. $p(x, y)$.
 
 \subsubsection{Classification}
 
-For Regression problems we saw that we could use the Minkowski error to yield a learning algorithm for Regression problems. Despite this we need a model for our data, which we will discuss in the next section. In this section we will explore a loss function for classification problems. Our decision problem can be expressed as finding the \textbf{Decision Region} $\mathcal{R}_j$ for each class, i.e. if $x \in \mathcal{R}_j$ then $y$ is classified as class $j$.
-Our loss function $l$ can be represented as a matrix, where $l_{ij}$ is the loss obtained when we predict $j$ but $Y=i$. We have that our risk is:
+For Regression problems we saw that we could use the Minkowski error to yield a learning algorithm for Regression problems. Despite this we need a model for our data, which we will discuss in the next section. In this section we will explore a loss function for classification problems. Our decision problem can be expressed as finding the \textbf{Decision Region} $\mathcal{R}_j$ for each class, i.e. if $x \in \mathcal{R}_j$ then $f(x)=j$ ($f$ classifies $x$ as being in class $j$).
+Our loss function $V$ can be represented as a matrix, where $[V]_{ij}$ is the loss obtained when we predict $j$ but $y=i$. We have that our risk is:
 \begin{align*}
 L(f) &= \mathbb{E}_{(X,Y)\sim P_{XY}}\{l\}\\
-&= \sum_i \sum_j \int_{\mathcal{R}_j} l_{ij} p(x, i) dx
+&= \sum_i \sum_j \int_{\mathcal{R}_j} [V]_{ij} p(x, i) dx
 \end{align*}
-Minimizing the Loss consists of finding the regions $\mathcal{R}_j$ which minimize the loss. This implies that for each $x$ we should choose the $j$ which minimizes 
-$$\sum_i l_{ij} p(x, i)\propto \sum_i l_{ij} p(i|x)$$
-We see that, as with Regression, we need $P_{XY}$ to proceed. We next discuss how we would get this.
-
-\subsection{Generative and Discriminative Learning}
-
-In the previous sections we saw that we needed to model $P_{XY}$ in each case. We discuss two ways we could model $P_{XY}$. The \textbf{Generative Approach} seeks to model $P_{XY}$ directly, and the \textbf{Discriminative Approach} seeks only to model $P_{Y|X}$. Note that since $P_{XY}=P_{Y|X}P_{X}$, the only difference in the approaches is that in the generative framework we also model $P_{X}$. The Generative approach makes more modelling assumptions and so is less robust for predictions; but one can generate samples from it. We now describe some discriminative approaches to prediction used in practice -- Linear Regression and Logistic Regression.
+Minimizing the Loss consists of finding the regions $\mathcal{R}_j$ which minimize the loss.
+We consider the Binary case with the \textbf{Zero-One} loss. Our loss function would be $$V = \begin{bmatrix}
+0 & 1 \\
+1 & 0
+\end{bmatrix}$$
+The corresponding risk is:
+\begin{align*}
+L(f)&=\int_{\mathcal{R}_0}p(x, 1) dx + \int_{\mathcal{R}_1}p(x, 0) dx\\
+&\propto \int_{\mathcal{R}_0}p(1|x) dx + \int_{\mathcal{R}_1}p(0|x) dx
+\end{align*}
+Given some $x$, we want to minimize this risk. If $p(1|x) > p(0|x)$, then $f$ should assign $x$ to class 1 (i.e. $x \in \mathcal{R}_1$). Otherwise, $f$ should assign $x$ to class 0. Formally, we can write $f$ as:
+$$f(x) = \begin{cases}
+1 & \text{if } p(1|x) > p(0|x)\\
+0 & \text{if } p(0|x) > p(1|x)
+\end{cases}$$
+We see that, as with Regression, we need $p(x,y)$ (or $p(y|x)$) to proceed.
 
 \newpage
+
+\subsection{Parametric Models}
+
+We typically choose $p(x,y)$ from a parametric family and use one of two approaches to model it. The \textbf{Generative Approach} seeks to model $p(x,y)$ directly, and the \textbf{Discriminative Approach} seeks only to model $p(y|x)$. Note that since $p(x,y)=p(y|x)p(x)$, the only difference in the approaches is that in the generative framework we also model $p(x)$. The Generative approach makes more modelling assumptions and so is less robust for predictions; but one can generate samples from it. We now describe some discriminative models for supervised learning used in practice -- Linear Regression and Logistic Regression.
 
 \subsubsection{Linear Regression}
 
@@ -1486,42 +1552,37 @@ X_n^T
 \end{bmatrix}$$
 We can estimate $\theta$ using MLE as before. Letting $Y=[y_1, \cdots, y_n]^T$ We get that:
 \begin{align*}
-\ell(Y | X) &\propto (Y - X\theta)^T(Y - X\theta)
+\ell(\theta|Y,X) &\propto (Y - X\theta)^T(Y - X\theta)
 \end{align*}
 Ingoring all the terms which don't depend on $\theta$. This is a convex optimization problem in $\theta$, so it is enough to find a stationary point. We solve for this:
 \begin{align*}
-\nabla_{\theta} \ell(Y | X) &= \nabla_{\theta}\left( Y^TY - 2X\theta^TY - \theta^TX^TX\theta \right)\\
+\nabla_{\theta} \ell(\theta|Y,X) &= \nabla_{\theta}\left( Y^TY - 2X\theta^TY - \theta^TX^TX\theta \right)\\
 &= 0 - 2X^TY + 2X^TX\theta = 0\\
 &\Rightarrow X^TX\theta = X^TY
 \end{align*}
 This is sometimes called the \textbf{Normal Equations}. If $X^TX$ is invertible then we have a unique solution for $\theta$: $ (X^TX)^{-1}X^TY$. If $X^TX$ is not invertible, then any $\theta$ satisfying the normal equations is an MLE solution.
 
+Supposing that we solved the normal equations to obtain $\hat{\theta}^{\text{MLE}}$ (and by extension $p(y|x)$) the prediction which minimizes the squared loss is: $$f(x)=\mathbb{E}_{p(y|x)}\{y|x\}=(\hat{\theta}^{\text{ML}})^Tx$$
+Where we append a $1$ to the beginning of $x$ as described earlier. 
+
 \subsubsection{Logistic Regression}
 
-We now suppose that $\mathcal{Y} = \{0,1\}$ (so this is a binary classification problem). Now we suppose only that there exists \textbf{Class Conditional Densities} $p(x|y=0)$ and $p(x|y=1)$. We then compute the conditional probablity as
+We now suppose that $\mathcal{Y} = \{0,1\}$ and $x,\theta \in \mathbb{R}^d$. Suppose that $Y|X \sim Bern(\sigma(\theta^Tx))$, then:
 \begin{align*}
-p(y=1|x) &= \frac{p(y=1, x)}{p(y=0, x)+p(y=1, x)}\\
-&= \frac{1}{1+\exp(-f(x))}
+p(y=1|\theta) &= \sigma(\theta^Tx)\\
+p(y=0|\theta) &= \sigma(-\theta^Tx)\\
+p(y|\theta) &= \sigma(\theta^Tx)^y\sigma(-\theta^Tx)^{1-y}
 \end{align*}
-Where $f(x)=\log\frac{p(y=1, x)}{p(y=0, x)}=\underbrace{\log\frac{p(x|y=1)}{p(x|y=0)}}_{\substack{class \ conditional \\ ratio}} + \underbrace{\log\frac{p(y=1)}{p(y=0)}}_{prior \ odds \ ratio}$
-
-\newpage
-In general, $p(y=1|x)=\sigma(f(x))$, where $\sigma$ is the \textbf{Sigmoid} function. 
+Where $\sigma$ is the \textbf{Sigmoid} function. 
 $$\sigma(z) = \frac{1}{1+\exp(-z)}$$
 This function has some useful properties:
 \begin{itemize}
 	\item $\sigma(-z) = 1-\sigma(z)$
 	\item $ \frac{\partial}{\partial z}\sigma(z) = \sigma(z)\sigma(-z)$
 \end{itemize}
-Suppose that $Y|X \sim Bern(\sigma(\theta^Tx))$, then:
-\begin{align*}
-p(y=1|\theta) &= \sigma(\theta^Tx)\\
-p(y=0|\theta) &= \sigma(-\theta^Tx)\\
-p(y|\theta) &= \sigma(\theta^Tx)^y\sigma(-\theta^Tx)^{1-y}
-\end{align*}
 We now look for stationary points:
 \begin{align*}
-\nabla_{\theta} \ell(y_1, \cdots, y_n | x_1, \cdots, x_n) &= \nabla_{\theta}\sum_{i=1}^n\left(y_i \log \sigma(\theta^Tx_i) + (1-y_i)\log \sigma(-\theta^Tx_i) \right)\\
+\nabla_{\theta} \ell(\theta |y_1, \cdots, y_n, x_1, \cdots, x_n) &= \nabla_{\theta}\sum_{i=1}^n\left(y_i \log \sigma(\theta^Tx_i) + (1-y_i)\log \sigma(-\theta^Tx_i) \right)\\
 &= \sum_{i=1}^n x_i\left( y_i \frac{x_i\sigma(\theta^Tx_i)\sigma(-\theta^Tx_i)}{\sigma(\theta^Tx_i)} -(1-y_i) \frac{x_i\sigma(-\theta^Tx_i)\sigma(\theta^Tx_i)}{\sigma(-\theta^Tx_i)}\right)\\
 &=\sum_{i=1}^n x_i\left( y_i\left(\sigma(-\theta^Tx_i) + \sigma(\theta^Tx_i)\right) - \sigma(\theta^Tx_i) \right)\\
 &=\sum_{i=1}^n\left( x_i(y_i - \sigma(\theta^Tx_i)) \right)=0
@@ -1530,27 +1591,44 @@ We now look for stationary points:
 The function is not linear in $\theta$. Contrast this with linear regression, which is linear $\theta$. This can be seen by observing the scalar form of the normal equations:
 $$\sum_{i=1}^n\left( x_i(y_i - \theta^Tx_i) \right)=0$$
 
-Unlike with Linear Regression, we must use optimization techniques to find the stationary points for this model. Since the Bernoulli distribution is in the exponential family, this is a convex optimization problem, and so the MLE and the stationary points coincide once again.
+Unlike with Linear Regression, we must use optimization techniques to find the stationary points for this model. It can be shown that this is a convex optimization problem, and so the MLE and the stationary points coincide once again. To make a prediction, we simply use the class with the highest posterior probability, which means that
+$$f(x)=1 \text{ iff } \sigma((\hat{\theta}^{\text{ML}})^Tx))>0.5 $$
+We look at the decision boundary, i.e. the boundary between $\mathcal{R}_0$ and $\mathcal{R}_1$. Notice that $\sigma((\hat{\theta}^{\text{ML}})^Tx))=0.5 \iff (\hat{\theta}^{\text{ML}})^Tx = 0$, and so our boundary is a linear function of $x$!
+\newpage
+
+\subsubsection{Generative Parametric Models}
+
+We now describe the \textbf{Fisher Linear Discriminant Analysis} model, a  Generative Parametric Model used for classification. We highlight the differences between it and Logistic regression to demonstrate the distinction between Discriminative and Generative approaches. We assume that $Y \in \{0,1\}$ and 
+\begin{align*}
+&p(x,y=i|\theta)=p(x|y=i,\theta)p(y=i|\theta)\\
+&\text{where $X|Y=i)\sim \mathcal{N}(\mu_i,\Sigma)$ and $Y\sim Bern(\pi)$}\\
+&\text{and $\theta=(\mu_0,\mu_1,\Sigma,\pi)$}
+\end{align*}
+It can be easily shown that
+\begin{align*}
+\hat{\mu}_0^{\text{ML}} &= \frac{1}{n_0}\sum_{i=1}^n \mathbbm{1}_{\{y_i = 0\}}x_i\\
+\hat{\mu}_1^{\text{ML}} &= \frac{1}{n_1}\sum_{i=1}^n \mathbbm{1}_{\{y_i = 1\}}x_i\\
+\hat{\Sigma}^{\text{ML}} &= \frac{n_0}{n}\hat{\Sigma}_0 + \frac{n_1}{n}\hat{\Sigma}_1\\
+\hat{\pi}_0^{\text{ML}}&=\frac{n_1}{n}
+\end{align*}
+Like Logistic Regression, this model also produces a linear decision boundary. This can be seen by considering the conditional distribution:
+\begin{align*}
+p(y = 1|x) &= \frac{p(x | y = 1)p(y=1)}{p(x | y = 0)p(y=0) + p(x | y = 1)p(y=1)}\\
+&= \frac{1}{1 + \exp\left\{-\log\frac{p(x | y = 1)p(y=1)}{p(x | y = 0)p(y=0)}\right\}}
+\end{align*}
+And 
+\begin{align*}
+&\log\frac{p(x | y = 1)p(y=1)}{p(x | y = 0)p(y=0)}\\
+&= \log \frac{\pi}{1-\pi} - \frac{1}{2}(x-\mu_1)^T\Sigma^{-1}(x-\mu_1) + \frac{1}{2}(x-\mu_0)^T\Sigma^{-1}(x-\mu_0)\\ 
+&= \log \frac{\pi}{1-\pi} + \mu_1^T\Sigma^{-1}x +\frac{1}{2}\mu_1^T\Sigma^{-1}\mu_1 - \mu_0^T\Sigma^{-1}x -\frac{1}{2}\mu_0^T\Sigma^{-1}\mu_0\\
+&= \log \frac{\pi}{1-\pi} +\frac{1}{2}\mu_1^T\Sigma^{-1}\mu_1 -\frac{1}{2}\mu_0^T\Sigma^{-1}\mu_0 + (\mu_1-\mu_0)^T\Sigma^{-1}x
+\end{align*}
+Which is clearly linear in $x$. Notice the decision boundary for Logistic Regression and of LDA will not coincide unless the assumptions on the class conditional distributions are satisfied (i.e. that they are Gaussian with shared covariance). We can see from this example that the Generative LDA has stronger assumptions then the discriminative Logistic Regression and is less robust. However, if the assumptions are satisfied then Generative models are more efficient then discriminative ones.
 
 \newpage
-\subsubsection{Generalized Linear Models}
 
-The following two models are a part of a general class of models called \textbf{Generalized Linear Models} (GLM). These models we suppose that $Y$ is a member of an Exponential family and $\mathbb{E}\{Y\}=f(\theta^TX)$ for some \textbf{Response Function} $f$. We also assume that $T(Y)=Y$ and that $X$ only appears via $\theta^TX$. We have that:
-$$p(y|\eta)=h(y)\exp\{\eta^Ty-A(\eta)\}$$
-and $\eta = \psi(f(\theta^Tx))$, where $\psi$ is the \textbf{Link Function}. If $f=\psi^{-1}$ then we have a \textbf{Canonical GLM}. We then have that
-$$p(y|\eta)=h(y)\exp\{\theta^Txy-A(\theta^Tx)\}$$
-Since the exponential family is convex, we can find the MLE by finding the stationary point(s) of the log likelihood. We have that:
-\begin{align*}
-\nabla_{\theta} \ell(y_1, \cdots, y_n | x_1, \cdots, x_n) &= \sum_{i=1}^n\left( x_iy_i - \frac{\partial}{\partial \theta}A(\theta^Tx_i)\frac{\partial}{\partial \theta}\theta^Tx_i \right)\\
-&= \sum_{i=1}^n( x_i(y_i - \underbrace{f(\theta^Tx)}_{\mathbb{E}\{Y\}}))=0
-\end{align*}
-Both the Logistic Regression and Linear Regression are Canonical GLMs. For the Logistic Regression case $f(\theta^Tx)=\sigma(\theta^Tx)$ and for the Linear Regression case: $f(\theta^Tx)=\theta^Tx$.
+\subsection{Optimization Algorithms for Training Models}
 
-\subsection{Predictive Distributions}
-
-In the Linear Regression case we saw that we could compute, via maximum Likelihood, $\hat{\theta}^{\text{MLE}}$ (and by extension $p(y|x)$). We suppose that we have learned the model and would like to make a prediction $\hat{y}$ given some new $x$. To minimize the squared loss, we should set $$\hat{y}=\mathbb{E}_{p(y|x)}\{y|x\}=(\hat{\theta}^{\text{MLE}})^Tx$$
-For Logistic Regression, the situation is a bit more complicated.
-$$\sum_i l_{ij} p(x, i)\propto \sum_i l_{ij} p(i|x)$$
 \newpage
 
 \section{Bayesian Inference}
