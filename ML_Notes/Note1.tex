@@ -99,9 +99,70 @@
 
 \section{Preliminaries}
 
-\subsection{Linear Algebra}
+\subsection{Linear Algebra and Topology}
 
-TODO: norms, Singular Value Decomposition, Eigen-Decomposition, Change of Basis and Spectral Radius vs Operator Norm.
+We define some basic notions from Linear Algebra which will appear throughout these notes.
+
+%of a \textbf{Vector Space} $V$ over a subfield $F$ as a mapping $V \mapsto \mathbb{R}$ satisfying the following properties $\forall a\in F, u,v\in V$:
+%\begin{itemize}
+%	\item $||av||=|a|||v||$ \emph{Absolutely Scalable}
+%	\item $||u+v||\le ||u||+||v||$ \emph{Triange Inequality}
+%	\item $||u||\ge0$ \emph{Non Negative}
+%	\item $||u||=0 \Rightarrow u=0$ \emph{Point-Seperating}
+%\end{itemize}
+
+\subsubsection{Inner Products, Norms}
+We define the \textbf{Inner Product} on $\mathbb{R}^n$ as:
+$$\langle x,y \rangle:=\sum_{i=1}^nx_iy_i$$
+Throughout these notes we denote this as $x^Ty$. We define the \textbf{Euclidean Norm} as: 
+$$||x||:=(x^Tx)^{\frac{1}{2}}=\left(\sum_{i=1}^n x_i^2\right)^{\frac{1}{2}}$$
+We can define an Inner Product on the space of matrices $\mathbb{R}^{m\times n}$ as:
+$$ \langle X,Y \rangle:=\sum_{i=1}^m\sum_{j=1}^n [X]_{ij}[Y]_{ij} $$
+Which can be written as $tr(X^TY)$. Notice that this inner product is just the usual inner product on $\mathbb{R}^n$ treating $X$ as a vector of size $mn$. We define the \textbf{Frobenius Norm} as:
+$$ ||X|| = tr(X^TX)^{\frac{1}{2}} $$
+From these notions we can define the \textbf{Ball} $B_r(x)$, the set of all points $y$ in $\mathbb{R}^n$ (or $\mathbb{R}^{m\times n}$) s.t. $||x-y||<r$.
+
+Suppose we have norms $||\cdot||_a$ and $||\cdot||_b$ on spaces $\mathbb{R}^m$ and $\mathbb{R}^n$ respectively. The \textbf{Operator Norm} is defined on $\mathbb{R}^{m\times n}$ as:
+$$||X||_{a,b}=\sup\{||Xu||_a \ | \ ||u||_b \le 1 \}$$
+When $||\cdot||_a$ and $||\cdot||_b$ are both Eucliedean Norms, then the Operator Norm of $X$ is its \textbf{Maximum Singular Value}, and is denoted as $||X||_2$.
+
+\newpage
+
+\subsubsection{Open and Closed Sets}
+
+An element $x \in C \subseteq \mathbb{R}^n$ is called an \textbf{Interior Point} if $\exists r>0$ s.t. $B_r(x) \subseteq C$. The set of all interior points of $C$ is called the \textbf{Interior} and is denoted int($C$). $C$ is \textbf{Open} if $C$=int($C$). A set is \textbf{Closed} if its complement $\mathbb{R}^n \setminus C$ is open. Alternatively, a set is called closed if it contains the limit point of every convergent sequence in it. The \textbf{Closure} of a set $C$, is the set of limit points of convergent sequences in $C$, denoted cl($C$). A point is said to be in the boundary $x \in $bd($C$) if $\forall \epsilon > 0 \ \exists y\in C, z \not\in C$ s.t. $||y-x||\le \epsilon$ and $ ||z - x|| \le \epsilon$. Semantically, this means that points in the boundary are aribtrarily close to points both inside of $C$ and outside of $C$. $C$ is closed if it contains all its boundary points, and open if it contains none of them. If the boundary is empty, the set is both closed and open, and it is called \textbf{Clopen}.
+
+\subsubsection{Range and Nullspace}
+
+Let $A \in \mathbb{R}^{m\times n}$. We say the \textbf{Range} of $A$ is the set of vectors that can be written as linear combinations of $A$, i.e. $range(A)=\{ Ax | x\in \mathbb{R}^n \}$. This is a subspace of $\mathbb{R}^m$, with dimension equal to $rank(A)$. The \textbf{Nullspace} of $A$ is the set of vectors which can be mapped to $0$ $null(A)=\{x|Ax=0\}$, which is a subset of $\mathbb{R}^n$.
+
+\subsubsection{Eigen-Decomposition and Singlular Value Decomposition}
+
+We call $\lambda\in \mathbb{R}$ an \textbf{Eigenvalue} and $q\in \mathbb{R}^n$ an \textbf{Eigenvector} of a square matrix $A\in\mathbb{R}^{n \times n}$ iff $Aq = \lambda q$. We have that $\det(A)=\prod_{i=1}^n\lambda_i$ and $tr(A)=\sum_{i=1}^n\lambda_i$. We call $A$ \textbf{Positive Semi Definite} if $x^TAx \ge 0 \ \forall x$. If the inequality is strict (i.e. $>$ instead of $\ge$) we say that $A$ is \textbf{Positive Definite}. We order the eigenvalues as $\lambda_1 \ge \lambda_2 \ge \cdots \ge \lambda_n$ and refer to $\lambda_i(A)$ as the $i^{th}$ largest eigenvalue of $A$.
+
+If $A$ is symmetric, we can define $Q$ as a matrix whose $i^{th}$ column $q_i$ is an eigenvector of $A$, whose corresponding eigenvalue is $\lambda_i = [\Lambda]_{ii}$ for $\Lambda$ diagonal. We define the \textbf{(Symmetric) Eigen-Decomposition} as:
+$$A = Q\Lambda Q^T = \sum_{i=1}^n \lambda_i q_i q_i^T$$
+Where $Q\in\mathbb{R}^{n \times n}$ is \textbf{Orthogonal} i.e. $Q^TQ=I$. Semantically, this says that any transformation $A$ can be decomposed into a rotation, a scaling, and then a reverse rotation (since $Q^T=Q^{-1}$).
+
+\newpage
+
+We define the \textbf{Singular Value Decomposition} of a matrix $A$ with $rank(A)=r$ as:
+\begin{align*}
+&A=UDV^T\\
+&\text{where $U\in\mathbb{R}^{m \times r}$, $V\in\mathbb{R}^{n \times r}$ with } U^TU=I, \ V^TV=I\\
+&\text{and $D$ diagonal with $[D]_{ii}=\sigma_i$}
+\end{align*}
+$\sigma_i$ is called the $i^{th}$ \textbf{Singular Value} of $A$ and $\sigma_1 \ge \cdots \ge \sigma_r > 0$. We can write this as:
+$$A = \sum_{i=1}^r \sigma_i u_iv_i^T$$
+Where $u_i, v_i$ are the $i^{th}$ columns of $U$ and $V$ respectively. 
+Unlike with the Eigen-Decomposition, this is defined for any matrix, even if it is non-square. There is a relationship between the singular values and the Eigen-Decomposition. Notice that:
+\begin{align*}
+A^TA &= VD^TU^TUDV^T=VD^TDV^T \Rightarrow A^TAV = VD^TD\\
+AA^T &= UDV^TVD^TU^T=UDD^TU^T \Rightarrow AA^TU = UDD^T
+\end{align*}
+And so each $v_i$ is an eigenvector of $A^TA$ and each $u_i$ is an eigenvector of $AA^T$. Furthermore, the singular values of a symmetric positive semi definite matrix are the same as its nonzero eigenvalues. We define the \textbf{Spectral Radius} of $A$ as $\max\limits_{i} |\lambda_i(A)|$. Contrast this with $||A||_2$, which is the maximum singular value $\sigma_1$.
+
+\newpage
 
 \subsection{Vector Calculus}
 
@@ -216,9 +277,7 @@ We now get to the payoff, some important results which will appear often in thes
 \end{proof}
 
 \subsubsection{Matrix Derivatives}
-We can refine our definition of differentiability to include matrices. That's right, you can actually do that. First we define the \textbf{Frobenius Norm} of matrix $X \in \mathbb{R}^{n \times n}$ as:
-$$ ||X|| = tr(X^TX)^{\frac{1}{2}} $$
-Notice that this norm is just the usual Euclidean norm treating $X$ as a vector of size $mn$. 
+We can refine our definition of differentiability to include matrices. That's right, you can actually do that.
 
 Let $S \subseteq \mathbb{R}^{n \times m}$ and $x_0$ an interior point of $S$ with $B_r(x_0) \subseteq S$. Given a function $f: S \rightarrow \mathbb{R}$ we say that $f$ is \textbf{Differentiable} at $x_0$ if there exists an $A \in \mathbb{R}^{n \times m}$ depending only on $x_0$ s.t. $\forall ||\Delta|| < r$
 \begin{align*}
@@ -258,7 +317,7 @@ We try to find our differential in the same way we did in the first example:
 Where (a) follows since $\det X = \prod_i \lambda_i(X)$; (b) using $\log(1+x)=x+O(x^2)$ for $|x|<1$; and (c) using tr($X$)$=\sum_i \lambda_i(X)$. 
 We use the characterization of the gradient for functions of matrices to get that $\nabla_X \log\det X = X^{-1}$.
 \end{proof}
-Finally, we use a previous result to compute a useful identity.
+The result is not as surprising when we compare it with the 1D result $\frac{d}{dx}\log x = \frac{1}{x}$. We now use a previous result to compute a useful identity.
 \begin{theorem}
 	$\nabla_{X} b^TXb = bb^T$
 \end{theorem}
@@ -1629,6 +1688,8 @@ Which is clearly linear in $x$. Notice the decision boundary for Logistic Regres
 
 \subsection{Optimization Algorithms for Training Models}
 
+Recall that for Logistic Regression we could not compute the MLE analytically. For cases such as this we must use a 
+
 \newpage
 
 \section{Bayesian Inference}
@@ -1646,6 +1707,51 @@ It turns out the above is equivalent to assuming the existence of the prior! The
 \end{theorem}
 
 This theory says that, if we assume exchangable data (and iid $\Rightarrow$ exchangeable), then there must exist a \(\theta\), \(p(X|\theta)\) and distribution \(\mu\) on \(\theta\)! So the idea of having a prior distribution on the parameters does have theory to back it up!
+
+\newpage
+
+\section{Probabilistic Graphical Models}
+
+An ordering \(I: v \mapsto \{1,\cdots,n\}\) is \textbf{Topological} iff \(j \in \pi_i \Rightarrow I(j) < I(i)\) \emph{i.e. parents always come before their children}
+If \(G\) is a DAG, then \(\exists\) a Topological Ordering on \(G\)
+A \textbf{Forest} is a Graph s.t. each node has at most one parent
+A \textbf{Tree} is a Forest if it is connected. The Factorization Property of DAGs
+is as follows: Given DAG \(G=(V,E)\)
+\begin{align*}
+\mathcal{L}(G)&=\left\{p \text{ is a dist over } x_v : 
+\exists \text{ factors } f_i \text{ s.t. } p(x_v) = \prod_{i=1}^n f_i(x_i;x_{\pi_i})\right\}\\
+&\text{ where $f_i$ satisfies: }\begin{array}{lll}
+	f_i>0 \\
+	\sum_{x_i}f_i(x_i; x_{\pi_i}) = 1 \\
+	f_i: Dom(x_i)^2 \mapsto [0,1]
+\end{array}
+\end{align*}
+\begin{theorem}[Leaf Plucking Property]
+	if \(n\) is a leaf of \(G\), \(p(x_v)\in \mathcal{L}\left(G-\{n\}\right)\)
+\end{theorem}
+\begin{proof}
+	$P(x_v)=p(x_{1:n-1},x_n)=f_n(x_n;x_{\pi_n})\prod_{i\ne n} f_i(x_i,x_{\pi_i})$. Next marginalizing out \(x_n\) and using that it is a leaf, we have:
+	\begin{align*}p(x_{1:n-1})=\underbrace{\sum_{x_n}f_n(x_n;x_{\pi_n})}_{\text{sums to 1}}\underbrace{\prod_{i=1}^{n-1} f_i(x_i;x_{\pi_i})}_{\text{Does not contain } x_n} = \prod_{i=1}^{n-1} f_i(x_i;x_{\pi_i})
+	\end{align*}
+	So $p(x_v) \in \mathcal{L}\left(G-\{n\}\right)$ as needed.
+\end{proof}
+\begin{theorem}[Factors are Conditional PMFs]
+	Let \(p \in \mathcal{L}(G)\) and $\{f_j\}$ be a factorization, then $\forall i, P(x_i | x_{\pi_i}) = f_i(x_i;x_{\pi_i})$
+\end{theorem}
+\begin{proof}
+	WLOG let $\{1,\cdots,n\}$ be a Topological Ordering and use Theorem 1 to get that \(p(x_{1:i}) \in \mathcal{L}(G-\{i+1,\cdots,n\})\), and so \(p(x_{1:i})=\underbrace{\prod_{j=1}^{i-1} f_j(x_j;x_{\pi_j})}_{\text{Call this } g(x_{1:i-1})} f_i(x_i;x_{\pi_i})\). We partition \(\{1:i\}\) as \( \{i\}\cup \pi_i \cup A\) and get that:
+	\begin{align*}
+	p(x_i \mid x_{\pi_i})= \frac{\sum_{x_A}f_i(x_i;x_{\pi_i})g(x_{1:i-1})}{\sum_{x_A}\sum_{x'_i}f_i(x'_i;x'_{\pi_i})g(x_{1:i-1})}=\frac{f_i(x_i;x_{\pi_i})\sum_{x_A}g(x_{1:i-1})}{\sum_{x'_i}f_i(x'_i;x'_{\pi_i})\sum_{x_A}g(x_{1:i-1})}=f_i(x_i;x_{\pi_i})
+	\end{align*}
+\end{proof}
+Note: adding edges adds more distributions i.e. \(E \subseteq E'\) and \(G' = (V, E')\) then \(\mathcal{L}(G) \subseteq \mathcal{L}(G')\)
+\begin{theorem}[] 
+	\( p \in \mathcal{L}(G) \iff x_i \perp x_{nd(i)} \mid \pi_i\)
+\end{theorem}
+\begin{proof}
+	(\(\Rightarrow\))
+	(\(\Leftarrow\))
+\end{proof}
 
 
 \newpage
