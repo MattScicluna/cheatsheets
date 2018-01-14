@@ -57,6 +57,6 @@
 \BOOKMARK [3][-]{subsubsection.5.2.2}{Logistic Regression}{subsection.5.2}% 57
 \BOOKMARK [3][-]{subsubsection.5.2.3}{Generative Parametric Models}{subsection.5.2}% 58
 \BOOKMARK [2][-]{subsection.5.3}{Empirical Risk Minimization and Regularization}{section.5}% 59
-\BOOKMARK [3][-]{subsubsection.5.3.1}{Validation Sets and Test Sets}{subsection.5.3}% 60
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Capacity and Generalization}{subsection.5.3}% 60
 \BOOKMARK [1][-]{section.6}{Bayesian Inference}{}% 61
 \BOOKMARK [1][-]{section.7}{Probabilistic Graphical Models}{}% 62

@@ -985,7 +985,7 @@ It turns out that a \emph{Bayes rule} can be obtained by taking the \emph{Bayes 
 
 \newpage
 
-\subsubsection{Frequentist Decisition Theory and Estimation}
+\subsubsection{Frequentist Decisition Theory and Estimation}\label{sec:freqbiasvar}
 We now describe how we can use Statistical Decision theory as a Frequentist to solve recurring problems throughout these notes. Lets return to the problem of estimating the parameters from a model in a chosen Parametric Family $\{p_{\theta}\}_{\theta\in\Theta}$. Typically we have data \(D=(X_1, \cdots, X_n)\) where each \(X_i\overset{iid}{\sim} p_{\theta}\). We want to use this data to estimate the true parameters \(\theta\). Hence, \(\mathcal{A} = \Theta\) and $\delta(D)$ is some an \textbf{Estimator} of \(\theta\). The estimator should minimize the frequentist risk. One popular loss function is the \textbf{Squared Loss}: 
 $$L(\theta,\delta(D)) = ||\theta-\delta(D)||^2$$
 Note that since the data are IID we use the marginal density over $X$ instead of the joint over $D$ in the loss function. If we take the expectation of the loss function above (the frequentist risk), we can decompose it nicely into two pieces:
@@ -1734,7 +1734,7 @@ Which is clearly linear in $x$. Notice the decision boundary for Logistic Regres
 \subsection{Empirical Risk Minimization and Regularization}
 
 We now expand on the decision theoretic framework for Supervised learning that we described in the beginning of this chapter. Let $D=\{(x_1,y_1), \cdots, (x_n,y_n)\}$ where $X_i \in \mathcal{X}$ and $Y_i \in \mathcal{Y}$ (we call $D$ the \textbf{Training Data}). We assume that  $(X_i,Y_i) \overset{iid}{\sim} p$.
-We call \(\delta\) a \textbf{Learning Algorithm} which learns $f$ using the training data i.e. $\delta(D) = f$. As before, we can evaluate the performance of $f$ using $V$. In this context $V$ is a measure of the distance between a given \textbf{Prediction} $f(x_i)$ and it’s associated \textbf{Ground Truth} $y_i$.
+We call \(\delta\) a \textbf{Learning Algorithm} which learns a \textbf{Model} $f$ using the training data i.e. $\delta(D) = f$. As before, we can evaluate the performance of $f$ using $V$. In this context $V$ is a measure of the distance between a given \textbf{Prediction} $f(x_i)$ and it’s associated \textbf{Ground Truth} $y_i$.
 
 We do not know the \text{Generalization Error} since we do not know $p$, but we can approximate it using the \textbf{Empirical Risk Minimization} (ERM):
 \begin{equation}\label{eq:erm}
@@ -1754,7 +1754,19 @@ V(y_i,\sigma(x_i))=y_i \log f(x_i) + (1-y_i)\log (1-f(x_i))
 \end{align}
 then ERM over this is equivalent to assuming that $p(y=1|x, \theta) = \sigma(\theta^Tx)$ and doing the optimal decision on the zero-one loss. Notice that the relationship between the first and second approach can be seen in terms through (\ref{sec:entropyest}), noticing that (\ref{eq:nlllog}) is the Negative Log Loss.
 
-\subsubsection{Validation Sets and Test Sets}
+\subsubsection{Capacity and Generalization}
+
+We can split our data into 3 sets: 
+\begin{itemize}
+	\item \textbf{Training Set} $\rightarrow$ This becomes the \textbf{Train Data} used to learn $f$
+	\item \textbf{Validation Set} $\rightarrow$ used to select \textbf{Hyperparameters} (which we will describe later)
+	\item \textbf{Test Set} $\rightarrow$ used to estimate the Generalization Error (since we want to assess the performance of $f$ on unseen data)
+\end{itemize} 
+We define the \textbf{Capacity} of $f$ as its ``flexibility". A \textbf{Hyper-parameter} is a parameter that is not trained (it is specified prior to training). The process of choosing the best hyper-parameters is called \textbf{Model Selection}.
+
+A model may not generalize well because of its capacity. If a trained model has high generalization error because it doesn't have sufficient capacity, we say that the model is \textbf{Underfitting}. Likewise, if the model has too much capacity, we say the model is \textbf{Overfitting}. The generalization error can be decomposed into a bias and variance term, like in (\ref{sec:freqbiasvar}). In this context, the bias term represents how close $f$ is to the ``true" $f$, and the variance term represents how much $f$ changes for different values of the training set.
+
+We can avoid overfitting by including a \textbf{Regularization} term to the ERM, which acts to penalize model complexity.
 
 \newpage
 

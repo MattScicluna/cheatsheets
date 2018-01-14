@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.22)  14 JAN 2018 14:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.22)  14 JAN 2018 16:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -727,7 +727,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 488.
  [16] [17] [18]
-<images/heads.png, id=458, 429.605pt x 428.60126pt>
+<images/heads.png, id=463, 429.605pt x 428.60126pt>
 File: images/heads.png Graphic file (type png)
  <use images/heads.png>
 Package pdftex.def Info: images/heads.png used on input line 573.
@@ -746,7 +746,7 @@ File: images/heads.png Graphic file (type png)
 Package pdftex.def Info: images/heads.png used on input line 573.
 (pdftex.def)             Requested size: 11.99608pt x 11.96805pt.
 
-<images/tails.png, id=460, 430.60875pt x 434.62375pt>
+<images/tails.png, id=465, 430.60875pt x 434.62375pt>
 File: images/tails.png Graphic file (type png)
  <use images/tails.png>
 Package pdftex.def Info: images/tails.png used on input line 573.
@@ -837,8 +837,8 @@ Overfull \hbox (64.54639pt too wide) in paragraph at lines 1670--1670
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ™ in font cmr10!
- [58] [59]
-Overfull \hbox (15.19838pt too wide) in paragraph at lines 1797--1798
+ [58] [59] [60]
+Overfull \hbox (15.19838pt too wide) in paragraph at lines 1809--1810
 []\OT1/cmr/bx/n/10 Theorem 7.1 (Leaf Pluck-ing Prop-erty). []\OT1/cmr/m/it/10 i
 f $\OML/cmm/m/it/10 n$ \OT1/cmr/m/it/10 is a leaf of $\OML/cmm/m/it/10 G$\OT1/c
 mr/m/it/10 , $\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]\OT1/cmr/m
@@ -846,7 +846,7 @@ mr/m/it/10 , $\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]\OT1/cmr/m
  []
 
 
-Overfull \hbox (6.94742pt too wide) in paragraph at lines 1809--1810
+Overfull \hbox (6.94742pt too wide) in paragraph at lines 1821--1822
 \OT1/cmr/m/n/10 get that $\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x
 []\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 2 L\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 G \OM
 S/cmsy/m/n/10 ^^@ f\OML/cmm/m/it/10 i \OT1/cmr/m/n/10 + 1\OML/cmm/m/it/10 ; [] 
@@ -857,33 +857,26 @@ n/10 (\OML/cmm/m/it/10 x[]\OT1/cmr/m/n/10 ) = [] \OML/cmm/m/it/10 f[]\OT1/cmr/m
  []
 
 
-Overfull \hbox (39.96529pt too wide) in paragraph at lines 1812--1812
+Overfull \hbox (39.96529pt too wide) in paragraph at lines 1824--1824
 [] 
  []
 
-[60] (./Note1.bbl) [61]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1829.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1829.
+[61] (./Note1.bbl) [62]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1841.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1841.
  (./Note1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1829.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1829.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1841.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1841.
 
-
-
-Package rerunfilecheck Warning: File `Note1.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Note1.out':
-(rerunfilecheck)             Before: E5DE0295BCD7B7260364C4C95EFB2C3D;4837
-(rerunfilecheck)             After:  B6F3E56D33B9E828D491BB9EDB09658C;4926.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1829.
+Package rerunfilecheck Info: File `Note1.out' has not changed.
+(rerunfilecheck)             Checksum: 9D44EA8F7CA76FEC7FCA217F32DBA92E;4924.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1841.
  ) 
 Here is how much of TeX's memory you used:
- 18833 strings out of 494953
- 360725 string characters out of 6180977
- 405141 words of memory out of 5000000
- 21508 multiletter control sequences out of 15000+600000
+ 18836 strings out of 494953
+ 360770 string characters out of 6180977
+ 405223 words of memory out of 5000000
+ 21510 multiletter control sequences out of 15000+600000
  17060 words of font info for 69 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  55i,19n,65p,1057b,775s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -913,10 +906,10 @@ sy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
 /share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/sh
 are/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on Note1.pdf (61 pages, 1237698 bytes).
+Output written on Note1.pdf (62 pages, 1239603 bytes).
 PDF statistics:
- 968 PDF objects out of 1000 (max. 8388607)
- 864 compressed objects within 9 object streams
- 278 named destinations out of 1000 (max. 500000)
- 511 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 977 PDF objects out of 1000 (max. 8388607)
+ 872 compressed objects within 9 object streams
+ 279 named destinations out of 1000 (max. 500000)
+ 519 words of extra memory for PDF output out of 10000 (max. 10000000)
 
