@@ -15,43 +15,48 @@
 \contentsline {subsubsection}{\numberline {2.3.3}Langrangian Duality}{14}{subsubsection.2.3.3}
 \contentsline {subsubsection}{\numberline {2.3.4}Saddle Point Interpretation}{15}{subsubsection.2.3.4}
 \contentsline {subsubsection}{\numberline {2.3.5}KKT Conditions}{16}{subsubsection.2.3.5}
-\contentsline {subsection}{\numberline {2.4}Probability}{18}{subsection.2.4}
-\contentsline {subsubsection}{\numberline {2.4.1}Random Variables and Vectors}{19}{subsubsection.2.4.1}
-\contentsline {subsubsection}{\numberline {2.4.2}Moments of a Random Variable}{21}{subsubsection.2.4.2}
-\contentsline {subsubsection}{\numberline {2.4.3}Frequentistism vs Bayesianism}{22}{subsubsection.2.4.3}
-\contentsline {subsection}{\numberline {2.5}Statistics}{23}{subsection.2.5}
-\contentsline {subsubsection}{\numberline {2.5.1}Statistical Inference}{23}{subsubsection.2.5.1}
-\contentsline {subsubsection}{\numberline {2.5.2}Maximum Likelihood Estimation}{24}{subsubsection.2.5.2}
-\contentsline {subsubsection}{\numberline {2.5.3}MAP Estimation and Method of Moments}{25}{subsubsection.2.5.3}
-\contentsline {subsubsection}{\numberline {2.5.4}The Multinomial Distribution}{26}{subsubsection.2.5.4}
-\contentsline {subsubsection}{\numberline {2.5.5}The Empirical Density Function}{28}{subsubsection.2.5.5}
-\contentsline {subsection}{\numberline {2.6}Statistical Decision Theory}{30}{subsection.2.6}
-\contentsline {subsubsection}{\numberline {2.6.1}Frequentist Risk Perspective}{30}{subsubsection.2.6.1}
-\contentsline {subsubsection}{\numberline {2.6.2}Bayesian Risk Perspective}{31}{subsubsection.2.6.2}
-\contentsline {subsubsection}{\numberline {2.6.3}Frequentist Decisition Theory and Estimation}{32}{subsubsection.2.6.3}
-\contentsline {subsubsection}{\numberline {2.6.4}Bayesian Decisition Theory and Estimation}{33}{subsubsection.2.6.4}
-\contentsline {subsection}{\numberline {2.7}The Exponential Family}{34}{subsection.2.7}
-\contentsline {subsubsection}{\numberline {2.7.1}Properties of Exponential Families}{35}{subsubsection.2.7.1}
-\contentsline {subsubsection}{\numberline {2.7.2}Estimation in the Exponential Family}{37}{subsubsection.2.7.2}
-\contentsline {subsubsection}{\numberline {2.7.3}Conjugate Priors of the Exponential Family}{38}{subsubsection.2.7.3}
-\contentsline {subsubsection}{\numberline {2.7.4}The Gaussian Distribution}{38}{subsubsection.2.7.4}
-\contentsline {section}{\numberline {3}Information Theory}{40}{section.3}
-\contentsline {subsection}{\numberline {3.1}Basic Concepts}{40}{subsection.3.1}
-\contentsline {subsubsection}{\numberline {3.1.1}KL Divergence}{41}{subsubsection.3.1.1}
-\contentsline {subsubsection}{\numberline {3.1.2}Mutual Information}{42}{subsubsection.3.1.2}
-\contentsline {subsubsection}{\numberline {3.1.3}Differential Entropy}{43}{subsubsection.3.1.3}
-\contentsline {subsection}{\numberline {3.2}Entropy and Estimation}{43}{subsection.3.2}
-\contentsline {subsubsection}{\numberline {3.2.1}Maximum Likelihood Estimation}{43}{subsubsection.3.2.1}
-\contentsline {subsubsection}{\numberline {3.2.2}Maximum Entropy Principle}{44}{subsubsection.3.2.2}
-\contentsline {subsubsection}{\numberline {3.2.3}MaxENT and the Exponential Family}{47}{subsubsection.3.2.3}
-\contentsline {section}{\numberline {4}Supervised Learning}{50}{section.4}
-\contentsline {subsection}{\numberline {4.1}Supervised Learning as a Decision Theoretic Problem}{50}{subsection.4.1}
-\contentsline {subsubsection}{\numberline {4.1.1}Regression}{50}{subsubsection.4.1.1}
-\contentsline {subsubsection}{\numberline {4.1.2}Classification}{52}{subsubsection.4.1.2}
-\contentsline {subsection}{\numberline {4.2}Parametric Models}{53}{subsection.4.2}
-\contentsline {subsubsection}{\numberline {4.2.1}Linear Regression}{53}{subsubsection.4.2.1}
-\contentsline {subsubsection}{\numberline {4.2.2}Logistic Regression}{54}{subsubsection.4.2.2}
-\contentsline {subsubsection}{\numberline {4.2.3}Generative Parametric Models}{55}{subsubsection.4.2.3}
-\contentsline {subsection}{\numberline {4.3}Optimization Algorithms for Training Models}{56}{subsection.4.3}
-\contentsline {section}{\numberline {5}Bayesian Inference}{57}{section.5}
-\contentsline {section}{\numberline {6}Probabilistic Graphical Models}{58}{section.6}
+\contentsline {subsection}{\numberline {2.4}Optimization Techniques}{17}{subsection.2.4}
+\contentsline {subsubsection}{\numberline {2.4.1}Newtons Method}{17}{subsubsection.2.4.1}
+\contentsline {subsubsection}{\numberline {2.4.2}Gradient Descent}{18}{subsubsection.2.4.2}
+\contentsline {section}{\numberline {3}Probability and Statistics}{19}{section.3}
+\contentsline {subsection}{\numberline {3.1}Probability}{19}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {3.1.1}Random Variables and Vectors}{20}{subsubsection.3.1.1}
+\contentsline {subsubsection}{\numberline {3.1.2}Moments of a Random Variable}{22}{subsubsection.3.1.2}
+\contentsline {subsubsection}{\numberline {3.1.3}Frequentistism vs Bayesianism}{23}{subsubsection.3.1.3}
+\contentsline {subsection}{\numberline {3.2}Statistics}{24}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Statistical Inference}{24}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Maximum Likelihood Estimation}{25}{subsubsection.3.2.2}
+\contentsline {subsubsection}{\numberline {3.2.3}MAP Estimation and Method of Moments}{26}{subsubsection.3.2.3}
+\contentsline {subsubsection}{\numberline {3.2.4}The Multinomial Distribution}{27}{subsubsection.3.2.4}
+\contentsline {subsubsection}{\numberline {3.2.5}The Empirical Density Function}{29}{subsubsection.3.2.5}
+\contentsline {subsection}{\numberline {3.3}Statistical Decision Theory}{31}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Frequentist Risk Perspective}{31}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}Bayesian Risk Perspective}{32}{subsubsection.3.3.2}
+\contentsline {subsubsection}{\numberline {3.3.3}Frequentist Decisition Theory and Estimation}{33}{subsubsection.3.3.3}
+\contentsline {subsubsection}{\numberline {3.3.4}Bayesian Decisition Theory and Estimation}{34}{subsubsection.3.3.4}
+\contentsline {subsection}{\numberline {3.4}The Exponential Family}{35}{subsection.3.4}
+\contentsline {subsubsection}{\numberline {3.4.1}Properties of Exponential Families}{36}{subsubsection.3.4.1}
+\contentsline {subsubsection}{\numberline {3.4.2}Estimation in the Exponential Family}{38}{subsubsection.3.4.2}
+\contentsline {subsubsection}{\numberline {3.4.3}Conjugate Priors of the Exponential Family}{39}{subsubsection.3.4.3}
+\contentsline {subsubsection}{\numberline {3.4.4}The Gaussian Distribution}{39}{subsubsection.3.4.4}
+\contentsline {section}{\numberline {4}Information Theory}{41}{section.4}
+\contentsline {subsection}{\numberline {4.1}Basic Concepts}{41}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}KL Divergence}{42}{subsubsection.4.1.1}
+\contentsline {subsubsection}{\numberline {4.1.2}Mutual Information}{43}{subsubsection.4.1.2}
+\contentsline {subsubsection}{\numberline {4.1.3}Differential Entropy}{44}{subsubsection.4.1.3}
+\contentsline {subsection}{\numberline {4.2}Entropy and Estimation}{44}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Maximum Likelihood Estimation}{44}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Maximum Entropy Principle}{45}{subsubsection.4.2.2}
+\contentsline {subsubsection}{\numberline {4.2.3}MaxENT and the Exponential Family}{48}{subsubsection.4.2.3}
+\contentsline {section}{\numberline {5}Supervised Learning}{51}{section.5}
+\contentsline {subsection}{\numberline {5.1}Optimum Actions for Regression and Classification}{51}{subsection.5.1}
+\contentsline {subsubsection}{\numberline {5.1.1}Regression}{51}{subsubsection.5.1.1}
+\contentsline {subsubsection}{\numberline {5.1.2}Classification}{53}{subsubsection.5.1.2}
+\contentsline {subsection}{\numberline {5.2}Parametric Models}{54}{subsection.5.2}
+\contentsline {subsubsection}{\numberline {5.2.1}Linear Regression}{54}{subsubsection.5.2.1}
+\contentsline {subsubsection}{\numberline {5.2.2}Logistic Regression}{55}{subsubsection.5.2.2}
+\contentsline {subsubsection}{\numberline {5.2.3}Generative Parametric Models}{57}{subsubsection.5.2.3}
+\contentsline {subsection}{\numberline {5.3}Empirical Risk Minimization and Regularization}{58}{subsection.5.3}
+\contentsline {subsubsection}{\numberline {5.3.1}Validation Sets and Test Sets}{58}{subsubsection.5.3.1}
+\contentsline {section}{\numberline {6}Bayesian Inference}{59}{section.6}
+\contentsline {section}{\numberline {7}Probabilistic Graphical Models}{60}{section.7}

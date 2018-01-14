@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.22)  13 JAN 2018 13:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.22)  14 JAN 2018 14:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -726,97 +726,99 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 [12] [13] [14] [15]
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 488.
- [16] [17]
-<images/heads.png, id=433, 429.605pt x 428.60126pt>
+ [16] [17] [18]
+<images/heads.png, id=458, 429.605pt x 428.60126pt>
 File: images/heads.png Graphic file (type png)
  <use images/heads.png>
-Package pdftex.def Info: images/heads.png used on input line 549.
+Package pdftex.def Info: images/heads.png used on input line 573.
 (pdftex.def)             Requested size: 11.99608pt x 11.96805pt.
 File: images/heads.png Graphic file (type png)
 
 <use images/heads.png>
-Package pdftex.def Info: images/heads.png used on input line 549.
+Package pdftex.def Info: images/heads.png used on input line 573.
 (pdftex.def)             Requested size: 11.99608pt x 11.96805pt.
 File: images/heads.png Graphic file (type png)
  <use images/heads.png>
-Package pdftex.def Info: images/heads.png used on input line 549.
+Package pdftex.def Info: images/heads.png used on input line 573.
 (pdftex.def)             Requested size: 11.99608pt x 11.96805pt.
 File: images/heads.png Graphic file (type png)
  <use images/heads.png>
-Package pdftex.def Info: images/heads.png used on input line 549.
+Package pdftex.def Info: images/heads.png used on input line 573.
 (pdftex.def)             Requested size: 11.99608pt x 11.96805pt.
 
-<images/tails.png, id=435, 430.60875pt x 434.62375pt>
+<images/tails.png, id=460, 430.60875pt x 434.62375pt>
 File: images/tails.png Graphic file (type png)
  <use images/tails.png>
-Package pdftex.def Info: images/tails.png used on input line 549.
+Package pdftex.def Info: images/tails.png used on input line 573.
 (pdftex.def)             Requested size: 11.88612pt x 11.99695pt.
 File: images/heads.png Graphic file (type png)
 
 <use images/heads.png>
-Package pdftex.def Info: images/heads.png used on input line 549.
+Package pdftex.def Info: images/heads.png used on input line 573.
 (pdftex.def)             Requested size: 11.99608pt x 11.96805pt.
 File: images/heads.png Graphic file (type png)
  <use images/heads.png>
-Package pdftex.def Info: images/heads.png used on input line 549.
+Package pdftex.def Info: images/heads.png used on input line 573.
 (pdftex.def)             Requested size: 11.99608pt x 11.96805pt.
 File: images/heads.png Graphic file (type png)
  <use images/heads.png>
-Package pdftex.def Info: images/heads.png used on input line 549.
+Package pdftex.def Info: images/heads.png used on input line 573.
 (pdftex.def)             Requested size: 11.99608pt x 11.96805pt.
 File: images/tails.png Graphic file (type png)
 
 <use images/tails.png>
-Package pdftex.def Info: images/tails.png used on input line 549.
+Package pdftex.def Info: images/tails.png used on input line 573.
 (pdftex.def)             Requested size: 11.88612pt x 11.99695pt.
 File: images/tails.png Graphic file (type png)
  <use images/tails.png>
-Package pdftex.def Info: images/tails.png used on input line 549.
+Package pdftex.def Info: images/tails.png used on input line 573.
 (pdftex.def)             Requested size: 11.88612pt x 11.99695pt.
 File: images/tails.png Graphic file (type png)
  <use images/tails.png>
-Package pdftex.def Info: images/tails.png used on input line 549.
+Package pdftex.def Info: images/tails.png used on input line 573.
 (pdftex.def)             Requested size: 11.88612pt x 11.99695pt.
 File: images/tails.png Graphic file (type png)
 
 <use images/tails.png>
-Package pdftex.def Info: images/tails.png used on input line 549.
+Package pdftex.def Info: images/tails.png used on input line 573.
 (pdftex.def)             Requested size: 11.88612pt x 11.99695pt.
 
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 551.
+(amsmath)                 on input line 575.
 
-[18 <./images/heads.png> <./images/tails.png>] [19] [20] [21] [22] [23]
-Overfull \hbox (6.22278pt too wide) in paragraph at lines 766--767
+[19 <./images/heads.png> <./images/tails.png>] [20] [21] [22] [23] [24]
+Overfull \hbox (6.22278pt too wide) in paragraph at lines 790--791
 []\OT1/cmr/m/n/10 Of these prin-ci-ples, Suf-fi-ciency is ac-cepted by both Fre
 -quen-tists and Bayesians,
  []
 
-[24] [25] [26] [27] [28] [29] [30] [31] [32] [33]
-Overfull \hbox (11.96973pt too wide) in paragraph at lines 1027--1028
+[25] [26] [27] [28] [29] [30] [31] [32] [33] [34]
+Overfull \hbox (11.96973pt too wide) in paragraph at lines 1051--1052
 []$\OML/cmm/m/it/10 A\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^Q\OT1/cmr/m/n/10 )$ is
  the \OT1/cmr/bx/n/10 Cu-mu-lant Func-tion $\OMS/cmsy/m/n/10 !$ \OT1/cmr/m/n/10
  en-sures that the den-sity sums/integrates
  []
 
-[34] [35] [36] [37] [38]
-Overfull \hbox (17.3612pt too wide) in paragraph at lines 1178--1178
+[35] [36] [37] [38] [39]
+Overfull \hbox (17.3612pt too wide) in paragraph at lines 1202--1202
 [] 
  []
 
-[39] [40] [41] [42] [43] [44] [45] [46]
-Overfull \hbox (3.97083pt too wide) in paragraph at lines 1465--1465
+[40] [41] [42] [43] [44] [45] [46] [47]
+Overfull \hbox (3.97083pt too wide) in paragraph at lines 1488--1488
 [] 
  []
 
-[47] [48] [49]
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
- [50] [51] [52]
-Overfull \hbox (16.62213pt too wide) in paragraph at lines 1629--1630
+[48] [49] [50]
+Overfull \hbox (3.3895pt too wide) in paragraph at lines 1547--1548
+[]\OT1/cmr/m/n/10 Supervised learn-ing prob-lems are called dif-fer-ent things 
+de-pend-ing on whether
+ []
+
+[51] [52] [53]
+Overfull \hbox (16.62213pt too wide) in paragraph at lines 1651--1652
 \OT1/cmr/m/n/10 We now sup-pose that $\OMS/cmsy/m/n/10 Y \OT1/cmr/m/n/10 = \OMS
 /cmsy/m/n/10 f\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 ; \OT1/cmr/m/n/10 1\OMS/cmsy/m/
 n/10 g$ \OT1/cmr/m/n/10 and $\OML/cmm/m/it/10 x; ^^R \OMS/cmsy/m/n/10 2 \U/msb/
@@ -826,21 +828,25 @@ j\OML/cmm/m/it/10 X \OMS/cmsy/m/n/10 ^^X \OML/cmm/m/it/10 Bern\OT1/cmr/m/n/10 (
 ,
  []
 
-[53]
-Overfull \hbox (64.54639pt too wide) in paragraph at lines 1648--1648
+[54]
+Overfull \hbox (64.54639pt too wide) in paragraph at lines 1670--1670
 [] 
  []
 
-[54] [55] [56] [57]
-Overfull \hbox (15.19838pt too wide) in paragraph at lines 1730--1731
-[]\OT1/cmr/bx/n/10 Theorem 6.1 (Leaf Pluck-ing Prop-erty). []\OT1/cmr/m/it/10 i
+[55] [56] [57]
+Missing character: There is no â in font cmr10!
+Missing character: There is no € in font cmr10!
+Missing character: There is no ™ in font cmr10!
+ [58] [59]
+Overfull \hbox (15.19838pt too wide) in paragraph at lines 1797--1798
+[]\OT1/cmr/bx/n/10 Theorem 7.1 (Leaf Pluck-ing Prop-erty). []\OT1/cmr/m/it/10 i
 f $\OML/cmm/m/it/10 n$ \OT1/cmr/m/it/10 is a leaf of $\OML/cmm/m/it/10 G$\OT1/c
 mr/m/it/10 , $\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]\OT1/cmr/m
 /n/10 ) \OMS/cmsy/m/n/10 2 L []$ 
  []
 
 
-Overfull \hbox (6.94742pt too wide) in paragraph at lines 1742--1743
+Overfull \hbox (6.94742pt too wide) in paragraph at lines 1809--1810
 \OT1/cmr/m/n/10 get that $\OML/cmm/m/it/10 p\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x
 []\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 2 L\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 G \OM
 S/cmsy/m/n/10 ^^@ f\OML/cmm/m/it/10 i \OT1/cmr/m/n/10 + 1\OML/cmm/m/it/10 ; [] 
@@ -851,26 +857,33 @@ n/10 (\OML/cmm/m/it/10 x[]\OT1/cmr/m/n/10 ) = [] \OML/cmm/m/it/10 f[]\OT1/cmr/m
  []
 
 
-Overfull \hbox (39.96529pt too wide) in paragraph at lines 1745--1745
+Overfull \hbox (39.96529pt too wide) in paragraph at lines 1812--1812
 [] 
  []
 
-[58] (./Note1.bbl) [59]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1762.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1762.
+[60] (./Note1.bbl) [61]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1829.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1829.
  (./Note1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1762.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1762.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1829.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1829.
 
-Package rerunfilecheck Info: File `Note1.out' has not changed.
-(rerunfilecheck)             Checksum: C5AF14C1B38E88F58541EC37A23D02C5;4551.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1762.
+
+
+Package rerunfilecheck Warning: File `Note1.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Note1.out':
+(rerunfilecheck)             Before: E5DE0295BCD7B7260364C4C95EFB2C3D;4837
+(rerunfilecheck)             After:  B6F3E56D33B9E828D491BB9EDB09658C;4926.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1829.
  ) 
 Here is how much of TeX's memory you used:
- 18818 strings out of 494953
- 360521 string characters out of 6180977
- 404920 words of memory out of 5000000
- 21501 multiletter control sequences out of 15000+600000
+ 18833 strings out of 494953
+ 360725 string characters out of 6180977
+ 405141 words of memory out of 5000000
+ 21508 multiletter control sequences out of 15000+600000
  17060 words of font info for 69 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  55i,19n,65p,1057b,775s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -900,10 +913,10 @@ sy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
 /share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/sh
 are/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on Note1.pdf (59 pages, 1228813 bytes).
+Output written on Note1.pdf (61 pages, 1237698 bytes).
 PDF statistics:
- 930 PDF objects out of 1000 (max. 8388607)
- 828 compressed objects within 9 object streams
- 270 named destinations out of 1000 (max. 500000)
- 479 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 968 PDF objects out of 1000 (max. 8388607)
+ 864 compressed objects within 9 object streams
+ 278 named destinations out of 1000 (max. 500000)
+ 511 words of extra memory for PDF output out of 10000 (max. 10000000)
 

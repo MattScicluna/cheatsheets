@@ -536,7 +536,31 @@ Let $x^*$ be the unique optima, then either:
 	\item $x^*$ is not feasible and no optimal can exist.
 \end{enumerate}
 
+\subsection{Optimization Techniques}
+
+We will encounter scenerios where we cannot find an optimal solution using the techniques described above. In these cases we must use an Optimization Algorithm. Our basic set up is as follows: suppose we have an objective function $f(x)$ which we want to minimize over $x\in\mathbb{R}^d$, i.e. unconstrained optimization. We first describe \textbf{Newtons Method}, a second order method used for computing the MLE of the Logistic regression. We then describe a much more popular first order method - \textbf{Gradient Descent}. In both cases, our algorithm produces a sequence of iterates $\{x_t\}$ s.t. $x_t \rightarrow x^*$ for $x^*$ an optimal point.
+
+\subsubsection{Newtons Method}
+
+The motivation for Newtons Method is that we are minimizing a \emph{quadratic approximation} of $f$ -- the second order Taylor Expansion: 
+\begin{align*}
+&f(x)=Q(x)+O(||x-x_t||^3)\\
+&\text{where }Q(x)=f(x_t)+\nabla_x f(x_t)^T(x-x_t)+\frac{1}{2}(x-x_t)^THf(x_t)(x-x_t)
+\end{align*}
+The algorithm works as follows: given $x_t$, we look for $x_{t+1}$ which minimizes $Q(x)$. Taking the gradient and setting it to $0$ gives us:
+\begin{align*}
+\nabla_x Q(x)&=\nabla_x f(x_t)+Hf(x_t)(x-x_t)=0\\
+&\Rightarrow x = x_t - Hf(x_t)^{-1}\nabla_x f(x_t)
+\end{align*}
+And we set $x_{t+1}=x$, and repeat iterating until convergence. Note that for each step, $Hf(x_t)^{-1}$. This operation has time complexity $O(d^3)$, which becomes prohibitive if $d$ is large.
+
 \newpage
+
+\subsubsection{Gradient Descent}
+
+\newpage
+
+\section{Probability and Statistics}
 
 \subsection{Probability}
 
@@ -577,7 +601,7 @@ P \left( \bigcap_{j\in k} A_j \right) = \prod_{j\in k}P(A_j)
 
 Finally, we define the \textbf{Probability Space} as the triple \( (\Omega, F, P)\) as defined in the previous section. An example of such a space for a finite $\Omega$ is as follows: take $\mathcal{F}=2^{\Omega}$ and use the \textbf{Counting Measure}: $P(E) = \frac{|E|}{|\Omega|}$. For $\Omega = \mathbb{R}$ we use the $\mathbb{B}$: the \textbf{Borel $\sigma$-algebra}. This consists of all intervals of the form $(-\infty, t], \ t \in \mathbb{R}$ along with their countable unions, countable intersections and complements. We will see in the next section how to define a probability for this.
 
-\subsubsection{Random Variables and Vectors}
+\subsubsection{Random Variables and Vectors}\label{sec:RVs}
 
 A \textbf{Random Variable} (RV) is a \(\mathbb{B}\)-Measurable function  \(X: (\Omega, \mathcal{F}) \mapsto (\mathbb{R},\mathbb{B}) \)\footnote{Note the measurability condition is to ensure that the CDF is well formed}. 
  We can use $X$ to transform questions about arbitrary sample spaces into questions about numbers, which Statisticians like more. For a \textbf{Measurable} set $A$ (meaning \( A \in \mathbb{B}\)) we can compute \( P(X \in A)\) as:
@@ -906,7 +930,7 @@ Finally, we notice that $\hat{f}$ and $\hat{F}$ satisfy an important relationshi
 
 \subsection{Statistical Decision Theory}\label{sec:dectheory}
 
-We now describe a general framework for how to make data-driven decisions under uncertainty: \textbf{Statistical Decision Theory}. We observe some \textbf{Data} \(D \in \mathcal{D}\), which comes from some \textbf{Data Generating Distribution} \(D \sim p\). Let \(p\in \mathcal{P}\)\footnote{Often $p$ will describe an IID process, e.g. $D = (X_1,...,X_n)$ where $X_i \overset{iid}\sim P_0$. In this case, the loss is usually written w.r.t $p_0$ instead of $p$.}, where \(\mathcal{P}\) is the set of possible distributions. Let \(\mathcal{A}\) be our set of possible actions. To determine how good an action is, we define the \textbf{Loss} (cost) of doing that action as \(L: \mathcal{P} \times \mathcal{A} \mapsto \mathbb{R}\). The goal is to determine a \textbf{Decision Rule} \(\delta: \mathcal{D} \mapsto \mathcal{A}\) which, given data, produces an action.
+We now describe a general framework for how to make data-driven decisions under uncertainty: \textbf{Statistical Decision Theory}. We observe some \textbf{Data} \(D \in \mathcal{D}\), which comes from some \textbf{Data Generating Distribution} \(D \sim p\). Let \(p\in \mathcal{P}\)\footnote{Often $p$ will describe an IID process, e.g. $D = (X_1,...,X_n)$ where $X_i \overset{iid}\sim p_0$. In this case, the loss is usually written w.r.t $p_0$ instead of $p$.}, where \(\mathcal{P}\) is the set of possible distributions. Let \(\mathcal{A}\) be our set of possible actions. To determine how good an action is, we define the \textbf{Loss} (cost) of doing that action as \(L: \mathcal{P} \times \mathcal{A} \mapsto \mathbb{R}\). The goal is to determine a \textbf{Decision Rule} \(\delta: \mathcal{D} \mapsto \mathcal{A}\) which, given data, produces an action.
 
 Typically we consider a Parametric Family of distributions ($\mathcal{P} = \{p_{\theta}\}_{\theta\in\Theta}$) and we use \(\Theta\) interchangibly with \(\mathcal{P}\). We need a way to assign a value to any \(\delta\) and a way to compare these values to find which one is ``best''. One such way of doing this is via the Frequentist Risk.
 
@@ -928,7 +952,7 @@ Unfortunately, different \(p\)'s usually produce different optimal \(\delta\)'s!
 \begin{equation}\delta_{minimax} := \,\min\limits_{\delta}\,\max\limits_{p \in \mathcal{P}}\ R(p,\delta)
 \end{equation}
 
-If \(\mathcal{P}\) is a Parameteric Family, we can handle the dependence of \(R\) on \(p\) by averaging it out. We can add weights \(\pi\) over $\Theta$ to put more weight on certain $\theta$'s. This results in a new weighted risk called the \textbf{Bayes Risk}. If we minimize this over \(\delta\) we get $\delta_{bayes}$ the \textbf{Bayes Rule}.
+If \(\mathcal{P}\) is a Parameteric Family we can handle the dependence of \(R\) on \(p\) by averaging out \(\Theta\). We can add weights \(\pi\) over $\Theta$ to put more weight on certain $\theta$'s. This results in a new weighted risk called the \textbf{Bayes Risk}. If we minimize this over \(\delta\) we get $\delta_{bayes}$ the \textbf{Bayes Rule}.
 \begin{equation}\label{eq:3}
 \delta_{bayes}:= \text{arg}\,\min\limits_{\delta}\,\int_{\Theta}^{}R(p_\theta,\delta)\pi(\theta)d\theta
 \end{equation}
@@ -1218,14 +1242,14 @@ We can extend this notion to a discrete Random Variable $X\sim p$ with finite do
 \begin{equation}
 H(X) = \mathbb{E}_{X\sim p}\{I(X)\} = \mathbb{E}_{X\sim p}\{-\log p(X)\} = -\sum_{x\in\mathcal{X}}p(x)\log p(x)
 \end{equation}
-We can also denote this as $H(p)$ where $p \sim X$ depending on what we want to emphasize. Note that WLOG we can assume that \(p(x)>0 \ \forall x\in\mathcal{X}\). This is because we can use the convention that \(0\cdot log0 = 0\) (based on continuity arguments). Hence zero probability outcomes do not contribute to $H(X)$ anyways. We can further extend this for two Random Variables $X$, $Y$ with finite domain \(\mathcal{X}\times\mathcal{Y}\) by defining the \textbf{Joint Entropy} as:
+We can also denote this as $H(p)$ depending on what we want to emphasize. Note that WLOG we can assume that \(p(x)>0 \ \forall x\in\mathcal{X}\). This is because we can use the convention that \(0\cdot log0 = 0\) (based on continuity arguments). Hence zero probability outcomes do not contribute to $H(X)$ anyways. We can further extend this for two Random Variables $X$, $Y$ with finite domain \(\mathcal{X}\times\mathcal{Y}\) by defining the \textbf{Joint Entropy} as:
 \begin{equation}
-H(X,Y) = -\sum_{x,y}p_{XY}(x,y)\log p_{XY}(x,y)
+H(X,Y) = -\sum_{x,y}p(x,y)\log p(x,y)
 \end{equation}
 
 The \textbf{Conditional Entropy} is defined as:
 \begin{equation}
-H(X|Y) = \mathbb{E}_{X|Y}\{-\log p(X|Y)\} = -\sum_{x,y}p_{XY}(x,y)\log p_{X|Y}(x|y)
+H(X|Y) = \mathbb{E}_{X|Y}\{-\log p(X|Y)\} = -\sum_{x,y}p(x,y)\log p(x|y)
 \end{equation}
 
 These quantities have nice properties:
@@ -1267,7 +1291,6 @@ The KL divergence has some nice properties.
 	&= -H(p) + \mathbb{E}_{X\sim p}\{-\log q(x)\} \\
 	&= -H(p) + CE(p,q)
 	\end{align}
-	
 	Where the $H(p)$ is the Entropy and $CE(p,q)$ is called the \textbf{Cross Entropy}.
 	
 \end{enumerate}
@@ -1275,27 +1298,27 @@ The KL divergence has some nice properties.
 \subsubsection{Mutual Information}
 We can quantify the amount of information obtained about one discrete random variable $X$, through another $Y$ by defining the \textbf{Mutual Information} as:
 \begin{equation}
-I(X,Y)=\sum_{x,y}p_{X,Y}(x,y)\log\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}
+I(X,Y)=\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p(x)p(y)}
 \end{equation}
 
 We again assume WLOG that \(p(x,y)>0 \ \forall (x,y)\in\mathcal{X}\times\mathcal{Y}\). We note the following properties of $I$:
 
 \begin{enumerate}
 	\item \(I(X,X) = H(X)\) \(\rightarrow\) Sometimes the Entropy is called the \textbf{Self Information}
-	\item $I(X,Y) = KL(p_{XY}||p_Xp_Y)$
+	\item $I(X,Y) = KL(p(x,y)||p(x)p(y))$
 	\item \(I(X,Y)\ge 0\)
 	\begin{proof}
-		Notice that \(I(X,Y) = KL(p_{XY}||p_Xp_Y) \ge 0\) by the positiveness of \(KL(\cdot||\cdot)\)
+		Notice that \(I(X,Y) = KL(p(x,y)||p(x)p(y)) \ge 0\) by the positiveness of \(KL(\cdot||\cdot)\)
 	\end{proof}
-	\item $I(X,Y) = H(p_X) + H(p_Y) -H(p_{XY})$
+	\item $I(X,Y) = H(X) + H(Y) -H(X,Y)$
 	\begin{proof} We use property 2. of $I$ and property 4. of \(KL(\cdot||\cdot)\)
 		\begin{align*}
-		I(X,Y) &= KL(p_{XY}||p_Xp_Y) \\
-		&= -H(p_{XY}) + CE(p_{XY},p_Xp_Y) \\
-		&= -H(p_{XY}) - \sum_{x,y}p_{X,Y}(x,y)\log p_X(x)p_Y(y)\\
-		&= -H(p_{XY}) - \left(\sum_{x,y}p_{X,Y}(x,y)\log p_X(x) + \sum_{x,y}p_{X,Y}(x,y)\log p_Y(y)\right)\\
-		&=-H(p_{XY}) - \left(\sum_{x}p_{X}(x)\log p_X(x) + \sum_{y}p_{Y}(y)\log p_Y(y)\right)\\
-		&= -H(p_{XY}) + H(p_X) + H(p_Y)
+		I(X,Y) &= KL(p(x,y)||p(x)p(y)) \\
+		&= -H(p(x,y)) + CE(p(x,y),p(x)p(y)) \\
+		&= -H(p(x,y)) - \sum_{x,y}p(x,y)\log p(x)p(y)\\
+		&= -H(p(x,y)) - \left(\sum_{x,y}p(x,y)\log p(x) + \sum_{x,y}p(x,y)\log p(y)\right)\\
+		&=-H(p(x,y)) - \left(\sum_{x}p(x)\log p(x) + \sum_{y}p(y)\log p(y)\right)\\
+		&= -H(X,Y) + H(X) + H(Y)
 		\end{align*}
 	\end{proof}
 	
@@ -1312,9 +1335,9 @@ I(X,Y) &=\int\int p_{X,Y}(x,y)\log\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}d\mu(x)d\mu(y)
 
 In the continuous case, the properties previously described hold except that the entropy is no longer necessarily non negative. For an example of this let $p = Uniform\left(\frac{1}{2},1\right)$. Then $H(p) = log(\frac{1}{2}) < 0$.
 
-\subsection{Entropy and Estimation}
+\subsection{Entropy and Estimation}\label{sec:entropyest}
 
-The KL divergence can be used within the Decision Theoretic framework. Semantically, $KL(p||q)$ represents how well some distribution $q$ approximates the ``true'' $p$. Suppose we wanted to estimate a distribution $p$ which we knew belonged to a Parametric Family  $p\in \{p_{\theta}\}_{\theta\in\Theta}$. Let \(\mathcal{A} = \{p_{\theta}\}_{\theta\in\Theta}\) and $\delta(D)=p_{\theta}$. Recall that this is similar to the Estimation problem described in \ref{sec:parest} \footnote{We modify the problem to make explicit the intention of estimating the density rather then the parameter. These goals are the same provided the parametric family is \textbf{identifiable}}.  We can define the \textbf{Negative Log Loss}:
+The KL divergence can be used within the Decision Theoretic framework. Semantically, $KL(p||q)$ represents how well some distribution $q$ approximates the ``true'' $p$. Suppose we wanted to estimate a distribution $p$ which we knew belonged to a Parametric Family  $p\in \{p_{\theta}\}_{\theta\in\Theta}$. Let \(\mathcal{A} = \{p_{\theta}\}_{\theta\in\Theta}\) and $\delta(D)=p_{\theta}$. Recall that this is similar to the Estimation problem described in (\ref{sec:parest}) \footnote{We modify the problem to make explicit the intention of estimating the density rather then the parameter. These goals are the same provided the parametric family is \textbf{identifiable}}.  We can define the \textbf{Negative Log Loss}:
 \begin{equation}
 L(p,p_{\theta}) = -\log p_{\theta}(X)
 \end{equation}
@@ -1328,7 +1351,7 @@ This risk also makes sense. $KL(p,p_{\theta}) = -H(p) + L(p,p_{\theta})$, and si
 
 \subsubsection{Maximum Likelihood Estimation}
 
-We don't know $p$, so we cannot compute (\ref{eq:celf}). Instead, we can use in its place the empirical density function $\hat{p}$, as defined in \ref{sec:empdist}. Given $X$ discrete, it turns out that the MLE for $\theta$ is the same as $\text{arg}\,\min\limits_{\theta\in\Theta} KL(\hat{p}||p_{\theta})$. This is because:
+We don't know $p$, so we cannot compute (\ref{eq:celf}). Instead, we can use in its place the empirical density function $\hat{p}$, as defined in (\ref{sec:empdist}). Given $X$ discrete, it turns out that the MLE for $\theta$ is the same as $\text{arg}\,\min\limits_{\theta\in\Theta} KL(\hat{p}||p_{\theta})$. This is because:
 
 \begin{align*}
 KL(\hat{p}||p_{\theta}) &= -H(\hat{p}) + CE(\hat{p},p_{\theta}) \\
@@ -1515,29 +1538,26 @@ What this means is that, given only Moment constraints and no other restrictions
 
 \section{Supervised Learning}
 
-We now describe a procedure that is crucial for Machine Learning -- \textbf{Supervised Learning}. We define it using the Statistical Theoretic Framework we developed in \ref{sec:dectheory}. Let $D=\{(x_1,y_1), \cdots, (x_n,y_n)\}$ where $X_i \in \mathcal{X}$ and $Y_i \in \mathcal{Y}$ (we call $D$ the \textbf{Training Data}). We put a density on $X$ and $Y$: $(X_i,Y_i) \overset{iid}{\sim} P_{XY}$. Our action space is $\mathcal{A} = \mathcal{Y}^\mathcal{X}$. We call \(\delta\) a \textbf{Learning Algorithm} which learns a function using the training data i.e. $\delta(D) = f$. We can evaluate the performance of $f$ using a \emph{prediction loss} $V: \mathcal{Y} \times \mathcal{Y} \mapsto \mathbb{R}$, a measure of the distance between a given prediction $f(x_i)$ and it’s associated ground truth $y_i$. We define the \textbf{Generalization Error} of $f$ as:
+We now describe a procedure that is crucial for Machine Learning -- \textbf{Supervised Learning}. We define it using the Statistical Theoretic Framework we developed in (\ref{sec:dectheory}). The idea is that we want to find a function $f$ which uses an RV $X\in\mathcal{X}$ to predict another RV $Y\in\mathcal{Y}$. We suppose that there is a density on $X\times Y$: $(X,Y) \sim p$. Our action space is $\mathcal{A} = \mathcal{Y}^\mathcal{X}$. We can evaluate the performance of $f$ using a \emph{prediction loss} $V: \mathcal{Y} \times \mathcal{Y} \mapsto \mathbb{R}$. We define the \textbf{Generalization Error} of $f$ as:
 \begin{equation}\label{eq:8}
-L(f) = \mathbb{E}_{(X,Y)\sim P_{XY}}\{V(Y,f(X)) \}
+L(f) = \mathbb{E}_{(X,Y)\sim p}\{V(Y,f(X)) \}
 \end{equation}
-This is often called the Risk in Machine Learning. Note that we do not know (\ref{eq:8}), but we can approximate it using the below formula. This is called \textbf{Empirical Risk Minimization}
-\begin{equation}\label{eq:erm}
-L(f) = \frac{1}{n}\sum_{i=1}^n V\left(y_i,f(x_i)\right)
-\end{equation}
+This is often called the \textbf{Risk} in Machine Learning. Notice that we do not know $p$, and so cannot compute (\ref{eq:8}), and so we would have to infer it using a technique like Maximum Likelihood. 
 
-Notice that (\ref{eq:erm}) is just (\ref{eq:8}) with the empirical density substituted in place of the true, unknown one. Prediction problems are called different things depending on whether $\mathcal{Y}$ is discrete or continuous. If $\mathcal{Y}$ discrete then the problem is called \textbf{Classification}, and if $\mathcal{Y}$ is not discrete e.g. $\mathcal{Y} = \mathbb{R}$, then it is referred to as \textbf{Regression}.  
+Supervised learning problems are called different things depending on whether $\mathcal{Y}$ is discrete or continuous (\ref{sec:RVs}). If $\mathcal{Y}$ discrete then the problem is called \textbf{Classification}, and if $\mathcal{Y}$ is not discrete e.g. $\mathcal{Y} = \mathbb{R}$, then it is referred to as \textbf{Regression}. Usually $\mathcal{X} = \mathbb{R}^d$, and we assume this for the remainder of this section.
 
-\subsection{Supervised Learning as a Decision Theoretic Problem}
-We wish to cast Regression and Classification in terms of the decision theory described before. We find the function $f$ which optimizes the Generalization error for some common loss functions, which turns out to depend on the unknown $p(x,y)$. In the subsequent subsection we find $p(x,y)$ by assuming it is from a Parametric family and using Maximum Likelihood. We begin with regression.
+\subsection{Optimum Actions for Regression and Classification}
+Given a Regression and Classification problem, we want to find optimal actions $f$ using ideas from decision theory described before. We analyze some common loss functions, computing their corresponding risk and optimal $f$ (i.e. the $f$ which minimizes the Generalization error). We will notice that in each case we will need to infer the true distribution $p$. We will tackle this problem in the subsequent subsection by assuming $p$ from a Parametric family and estimating its parameters using Maximum Likelihood. We will then derive a more general solution for estimating densities using an estimate of (\ref{eq:8}) called \textbf{Empirical Risk Minimization}. We begin with regression.
 
 \subsubsection{Regression}
-We use as $V$ the squared loss defined in this context as: $$V(Y, f(X)) = | Y - f(X) |^2$$
-We need to find a function $y: \mathcal{X} \rightarrow \mathcal{Y}$ which minimizes the Generalization Error:
+A common choice for $V$ is the squared loss: $$V(Y, f(X)) = | Y - f(X) |^2$$
+We want to find a function $f: \mathcal{X} \rightarrow \mathcal{Y}$ which minimizes the Generalization Error:
 \begin{align*}
-L(f) &= \mathbb{E}_{(X,Y)\sim P_{XY}}\{| Y - f(X) |^2\}\\
+L(f) &= \mathbb{E}_{(X,Y)\sim p}\{| Y - f(X) |^2\}\\
 &= \int \int | y - f(x) |^2 p(x, y) dx dy
 \end{align*}
 
-In this case we can find the optimal $y$ by using calculus of variations. That is to say, the problem is reduced to an optimization problem. We denote $G(f, f', x) = \int | y - f(x) |^2 p(x, y) dy$ and use the Euler Lagrange equations to get that our stationary point must occur at 
+For simplicity we will assume the existance of the PDF $p(x,y)$. In this case we can find the optimal $f$ by using calculus of variations. That is to say, the problem is reduced to an optimization problem. We denote $G(f, f', x) = \int | y - f(x) |^2 p(x, y) dy$ and use the Euler Lagrange equations to get that our stationary point must occur at 
 \begin{align*}
 &\frac{\partial G(f, f', x)}{\partial f} - \frac{d}{dx}\frac{\partial G(f, f', x)}{\partial f'} = 0\\
 &\Rightarrow \frac{\partial G(f, f', x)}{\partial f}=0
@@ -1568,6 +1588,8 @@ For $q=1$, we see that $y(x)$ is the conditional median of $y$.
 \int_{-\infty}^{f(x)} p(x,y)dy = \int_{f(x)}^{\infty} p(x,y)dy
 \end{align}
 Finally, as $q \rightarrow 0$, the $f(x)$ given by the Minkowski loss is the conditional mode of $y$. Notice again we need to know the underlying data generating pdf i.e. $p(x, y)$.
+
+\newpage
 
 \subsubsection{Classification}
 
@@ -1650,9 +1672,32 @@ We now look for stationary points:
 The function is not linear in $\theta$. Contrast this with linear regression, which is linear $\theta$. This can be seen by observing the scalar form of the normal equations:
 $$\sum_{i=1}^n\left( x_i(y_i - \theta^Tx_i) \right)=0$$
 
-Unlike with Linear Regression, we must use optimization techniques to find the stationary points for this model. It can be shown that this is a convex optimization problem, and so the MLE and the stationary points coincide once again. To make a prediction, we simply use the class with the highest posterior probability, which means that
+Unlike with Linear Regression, we must use optimization techniques to find the stationary points for this model. We first show that this is a convex optimization problem. It is enough to show that $\ell$ is concave, since $-\ell$ would be convex. We have that:
+\begin{align*}
+&\nabla_{\theta} (\ell(\theta)) =\sum_{i=1}^n\left( x_i(y_i - \sigma(\theta^Tx_i)) \right)\\
+&\Rightarrow H\ell(\theta)= -\sum_{i=1}^n x_ix_i^T\left(\sigma(\theta^Tx_i)\sigma(-\theta^Tx_i) \right)
+\end{align*}
+It is enough to show that $H\ell(\theta)$ is negative semi definite. Given $v\in\mathbb{R}^n$
+\begin{align*}
+v^TH\ell(\theta)v=-\sum_{i=1}^n \underbrace{v^Tx_ix_i^Tv}_{=(v^Tx_i)^2 \ge 0} \underbrace{\left(\sigma(\theta^Tx_i)\sigma(-\theta^Tx_i) \right)}_{\ge 0}
+\end{align*}
+Hence $-\ell(\theta)$ is positive semi definite, as needed. Since this is a convex optimization problem, the MLE and stationary points coincide once again. We can use Newtons Method to find the MLE. We compute Newtons update. Let $\mu_i = \sigma(\theta^Tx_i)$ we have:
+\begin{align*}
+&\nabla_{\theta} -\ell(\theta) = \sum_{i=1}^n x_i (\mu_i - y_i)=X^T(\mu-Y)\\
+&H-\ell(\theta) = \sum_{i=1}^n x_ix_i^T\left(\mu_i(1-\mu_i) \right)=X^TDX\\
+&\text{Where $D$ diagonal and } [D]_{ii}=\mu_i(1-\mu_i)
+\end{align*}
+Newtons update can be written as:
+\begin{align*}
+\theta_{t+1} &= \theta_t - (X^TD_tX)^{-1}X^T(\mu_t-Y_t)\\
+&= (X^TD_tX)^{-1}\left((X^TD_tX)\theta_t + X^T(Y_t-\mu_t)\right)\\
+&= (X^TD_tX)^{-1}\left( X^TD_tZ_t\right)\\
+&\text{Where $Z_t$ is $X\theta_t+D^{-1}_t(Y-\mu_t)$}
+\end{align*}
+Finally, to make a prediction, we simply use the class with the highest posterior probability, which means that:
 $$f(x)=1 \text{ iff } \sigma((\hat{\theta}^{\text{ML}})^Tx))>0.5 $$
 We look at the decision boundary, i.e. the boundary between $\mathcal{R}_0$ and $\mathcal{R}_1$. Notice that $\sigma((\hat{\theta}^{\text{ML}})^Tx))=0.5 \iff (\hat{\theta}^{\text{ML}})^Tx = 0$, and so our boundary is a linear function of $x$!
+
 \newpage
 
 \subsubsection{Generative Parametric Models}
@@ -1686,13 +1731,35 @@ Which is clearly linear in $x$. Notice the decision boundary for Logistic Regres
 
 \newpage
 
-\subsection{Optimization Algorithms for Training Models}
+\subsection{Empirical Risk Minimization and Regularization}
 
-Recall that for Logistic Regression we could not compute the MLE analytically. For cases such as this we must use a 
+We now expand on the decision theoretic framework for Supervised learning that we described in the beginning of this chapter. Let $D=\{(x_1,y_1), \cdots, (x_n,y_n)\}$ where $X_i \in \mathcal{X}$ and $Y_i \in \mathcal{Y}$ (we call $D$ the \textbf{Training Data}). We assume that  $(X_i,Y_i) \overset{iid}{\sim} p$.
+We call \(\delta\) a \textbf{Learning Algorithm} which learns $f$ using the training data i.e. $\delta(D) = f$. As before, we can evaluate the performance of $f$ using $V$. In this context $V$ is a measure of the distance between a given \textbf{Prediction} $f(x_i)$ and it’s associated \textbf{Ground Truth} $y_i$.
+
+We do not know the \text{Generalization Error} since we do not know $p$, but we can approximate it using the \textbf{Empirical Risk Minimization} (ERM):
+\begin{equation}\label{eq:erm}
+L(f) = \frac{1}{n}\sum_{i=1}^n V\left(y_i,f(x_i)\right)
+\end{equation}
+
+Notice that (\ref{eq:erm}) is just (\ref{eq:8}) with the empirical density (\ref{sec:empdist}) substituted in place of $p$. We restrict $\mathcal{A}=\mathcal{H} \subset \mathcal{Y}^\mathcal{X}$ and call this the \textbf{Hypothesis Space}.
+
+We now have 2 approaches to finding $f$:
+\begin{itemize}
+	\item We could choose $V$ and finding $f$ via ERM on a chosen $\mathcal{H}$
+	\item We could choose $V$ and find the optimal $f$ given $p$, and infer $p$ using MLE
+\end{itemize}
+We show that both of these approaches can be equivalent. Consider the Linear Regression model from before. Let $V=(Y-f(X))^2$. If we let $\mathcal{H}$ be the set of linear functions, doing ERM is equivalent to doing MLE and assuming that $p(y|x, \theta) =\mathcal{N}(\theta^Tx,\sigma^2)$. For Logistic Regression, let $$\mathcal{H} = \{f : f(x)=\sigma(\theta^Tx) \text{ for } \theta\in\mathbb{R}^{d+1} \}$$ where we append a $1$ to the end of $x$ like before. If we let 
+\begin{align}\label{eq:nlllog}
+V(y_i,\sigma(x_i))=y_i \log f(x_i) + (1-y_i)\log (1-f(x_i))
+\end{align}
+then ERM over this is equivalent to assuming that $p(y=1|x, \theta) = \sigma(\theta^Tx)$ and doing the optimal decision on the zero-one loss. Notice that the relationship between the first and second approach can be seen in terms through (\ref{sec:entropyest}), noticing that (\ref{eq:nlllog}) is the Negative Log Loss.
+
+\subsubsection{Validation Sets and Test Sets}
 
 \newpage
 
 \section{Bayesian Inference}
+
 We need a theoretical justification for why we assume the existence of a prior distribution on \(\theta\) in the first place! The justification for this requires the \textbf{Infinite Exchangeable} assumption. This is satisfied if; given a random infinite sequence of RVs \( \{X_i\}_{i=1}^{\infty}\), any finite subset \(\{X_j\}_{j=1}^{n}\), and any permutation of this subset \(\pi_{1:n}\), we have that:
 \begin{equation}
 P(X_1, \cdots, X_n) = P(X_{\pi_1}, \cdots, X_{\pi_n})

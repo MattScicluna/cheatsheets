@@ -15,43 +15,48 @@
 \BOOKMARK [3][-]{subsubsection.2.3.3}{Langrangian Duality}{subsection.2.3}% 15
 \BOOKMARK [3][-]{subsubsection.2.3.4}{Saddle Point Interpretation}{subsection.2.3}% 16
 \BOOKMARK [3][-]{subsubsection.2.3.5}{KKT Conditions}{subsection.2.3}% 17
-\BOOKMARK [2][-]{subsection.2.4}{Probability}{section.2}% 18
-\BOOKMARK [3][-]{subsubsection.2.4.1}{Random Variables and Vectors}{subsection.2.4}% 19
-\BOOKMARK [3][-]{subsubsection.2.4.2}{Moments of a Random Variable}{subsection.2.4}% 20
-\BOOKMARK [3][-]{subsubsection.2.4.3}{Frequentistism vs Bayesianism}{subsection.2.4}% 21
-\BOOKMARK [2][-]{subsection.2.5}{Statistics}{section.2}% 22
-\BOOKMARK [3][-]{subsubsection.2.5.1}{Statistical Inference}{subsection.2.5}% 23
-\BOOKMARK [3][-]{subsubsection.2.5.2}{Maximum Likelihood Estimation}{subsection.2.5}% 24
-\BOOKMARK [3][-]{subsubsection.2.5.3}{MAP Estimation and Method of Moments}{subsection.2.5}% 25
-\BOOKMARK [3][-]{subsubsection.2.5.4}{The Multinomial Distribution}{subsection.2.5}% 26
-\BOOKMARK [3][-]{subsubsection.2.5.5}{The Empirical Density Function}{subsection.2.5}% 27
-\BOOKMARK [2][-]{subsection.2.6}{Statistical Decision Theory}{section.2}% 28
-\BOOKMARK [3][-]{subsubsection.2.6.1}{Frequentist Risk Perspective}{subsection.2.6}% 29
-\BOOKMARK [3][-]{subsubsection.2.6.2}{Bayesian Risk Perspective}{subsection.2.6}% 30
-\BOOKMARK [3][-]{subsubsection.2.6.3}{Frequentist Decisition Theory and Estimation}{subsection.2.6}% 31
-\BOOKMARK [3][-]{subsubsection.2.6.4}{Bayesian Decisition Theory and Estimation}{subsection.2.6}% 32
-\BOOKMARK [2][-]{subsection.2.7}{The Exponential Family}{section.2}% 33
-\BOOKMARK [3][-]{subsubsection.2.7.1}{Properties of Exponential Families}{subsection.2.7}% 34
-\BOOKMARK [3][-]{subsubsection.2.7.2}{Estimation in the Exponential Family}{subsection.2.7}% 35
-\BOOKMARK [3][-]{subsubsection.2.7.3}{Conjugate Priors of the Exponential Family}{subsection.2.7}% 36
-\BOOKMARK [3][-]{subsubsection.2.7.4}{The Gaussian Distribution}{subsection.2.7}% 37
-\BOOKMARK [1][-]{section.3}{Information Theory}{}% 38
-\BOOKMARK [2][-]{subsection.3.1}{Basic Concepts}{section.3}% 39
-\BOOKMARK [3][-]{subsubsection.3.1.1}{KL Divergence}{subsection.3.1}% 40
-\BOOKMARK [3][-]{subsubsection.3.1.2}{Mutual Information}{subsection.3.1}% 41
-\BOOKMARK [3][-]{subsubsection.3.1.3}{Differential Entropy}{subsection.3.1}% 42
-\BOOKMARK [2][-]{subsection.3.2}{Entropy and Estimation}{section.3}% 43
-\BOOKMARK [3][-]{subsubsection.3.2.1}{Maximum Likelihood Estimation}{subsection.3.2}% 44
-\BOOKMARK [3][-]{subsubsection.3.2.2}{Maximum Entropy Principle}{subsection.3.2}% 45
-\BOOKMARK [3][-]{subsubsection.3.2.3}{MaxENT and the Exponential Family}{subsection.3.2}% 46
-\BOOKMARK [1][-]{section.4}{Supervised Learning}{}% 47
-\BOOKMARK [2][-]{subsection.4.1}{Supervised Learning as a Decision Theoretic Problem}{section.4}% 48
-\BOOKMARK [3][-]{subsubsection.4.1.1}{Regression}{subsection.4.1}% 49
-\BOOKMARK [3][-]{subsubsection.4.1.2}{Classification}{subsection.4.1}% 50
-\BOOKMARK [2][-]{subsection.4.2}{Parametric Models}{section.4}% 51
-\BOOKMARK [3][-]{subsubsection.4.2.1}{Linear Regression}{subsection.4.2}% 52
-\BOOKMARK [3][-]{subsubsection.4.2.2}{Logistic Regression}{subsection.4.2}% 53
-\BOOKMARK [3][-]{subsubsection.4.2.3}{Generative Parametric Models}{subsection.4.2}% 54
-\BOOKMARK [2][-]{subsection.4.3}{Optimization Algorithms for Training Models}{section.4}% 55
-\BOOKMARK [1][-]{section.5}{Bayesian Inference}{}% 56
-\BOOKMARK [1][-]{section.6}{Probabilistic Graphical Models}{}% 57
+\BOOKMARK [2][-]{subsection.2.4}{Optimization Techniques}{section.2}% 18
+\BOOKMARK [3][-]{subsubsection.2.4.1}{Newtons Method}{subsection.2.4}% 19
+\BOOKMARK [3][-]{subsubsection.2.4.2}{Gradient Descent}{subsection.2.4}% 20
+\BOOKMARK [1][-]{section.3}{Probability and Statistics}{}% 21
+\BOOKMARK [2][-]{subsection.3.1}{Probability}{section.3}% 22
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Random Variables and Vectors}{subsection.3.1}% 23
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Moments of a Random Variable}{subsection.3.1}% 24
+\BOOKMARK [3][-]{subsubsection.3.1.3}{Frequentistism vs Bayesianism}{subsection.3.1}% 25
+\BOOKMARK [2][-]{subsection.3.2}{Statistics}{section.3}% 26
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Statistical Inference}{subsection.3.2}% 27
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Maximum Likelihood Estimation}{subsection.3.2}% 28
+\BOOKMARK [3][-]{subsubsection.3.2.3}{MAP Estimation and Method of Moments}{subsection.3.2}% 29
+\BOOKMARK [3][-]{subsubsection.3.2.4}{The Multinomial Distribution}{subsection.3.2}% 30
+\BOOKMARK [3][-]{subsubsection.3.2.5}{The Empirical Density Function}{subsection.3.2}% 31
+\BOOKMARK [2][-]{subsection.3.3}{Statistical Decision Theory}{section.3}% 32
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Frequentist Risk Perspective}{subsection.3.3}% 33
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Bayesian Risk Perspective}{subsection.3.3}% 34
+\BOOKMARK [3][-]{subsubsection.3.3.3}{Frequentist Decisition Theory and Estimation}{subsection.3.3}% 35
+\BOOKMARK [3][-]{subsubsection.3.3.4}{Bayesian Decisition Theory and Estimation}{subsection.3.3}% 36
+\BOOKMARK [2][-]{subsection.3.4}{The Exponential Family}{section.3}% 37
+\BOOKMARK [3][-]{subsubsection.3.4.1}{Properties of Exponential Families}{subsection.3.4}% 38
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Estimation in the Exponential Family}{subsection.3.4}% 39
+\BOOKMARK [3][-]{subsubsection.3.4.3}{Conjugate Priors of the Exponential Family}{subsection.3.4}% 40
+\BOOKMARK [3][-]{subsubsection.3.4.4}{The Gaussian Distribution}{subsection.3.4}% 41
+\BOOKMARK [1][-]{section.4}{Information Theory}{}% 42
+\BOOKMARK [2][-]{subsection.4.1}{Basic Concepts}{section.4}% 43
+\BOOKMARK [3][-]{subsubsection.4.1.1}{KL Divergence}{subsection.4.1}% 44
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Mutual Information}{subsection.4.1}% 45
+\BOOKMARK [3][-]{subsubsection.4.1.3}{Differential Entropy}{subsection.4.1}% 46
+\BOOKMARK [2][-]{subsection.4.2}{Entropy and Estimation}{section.4}% 47
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Maximum Likelihood Estimation}{subsection.4.2}% 48
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Maximum Entropy Principle}{subsection.4.2}% 49
+\BOOKMARK [3][-]{subsubsection.4.2.3}{MaxENT and the Exponential Family}{subsection.4.2}% 50
+\BOOKMARK [1][-]{section.5}{Supervised Learning}{}% 51
+\BOOKMARK [2][-]{subsection.5.1}{Optimum Actions for Regression and Classification}{section.5}% 52
+\BOOKMARK [3][-]{subsubsection.5.1.1}{Regression}{subsection.5.1}% 53
+\BOOKMARK [3][-]{subsubsection.5.1.2}{Classification}{subsection.5.1}% 54
+\BOOKMARK [2][-]{subsection.5.2}{Parametric Models}{section.5}% 55
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Linear Regression}{subsection.5.2}% 56
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Logistic Regression}{subsection.5.2}% 57
+\BOOKMARK [3][-]{subsubsection.5.2.3}{Generative Parametric Models}{subsection.5.2}% 58
+\BOOKMARK [2][-]{subsection.5.3}{Empirical Risk Minimization and Regularization}{section.5}% 59
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Validation Sets and Test Sets}{subsection.5.3}% 60
+\BOOKMARK [1][-]{section.6}{Bayesian Inference}{}% 61
+\BOOKMARK [1][-]{section.7}{Probabilistic Graphical Models}{}% 62
