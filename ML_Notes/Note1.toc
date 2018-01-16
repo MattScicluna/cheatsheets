@@ -11,7 +11,7 @@
 \contentsline {subsubsection}{\numberline {2.2.3}Matrix Derivatives}{10}{subsubsection.2.2.3}
 \contentsline {subsection}{\numberline {2.3}Optimization}{12}{subsection.2.3}
 \contentsline {subsubsection}{\numberline {2.3.1}Convex Sets and Functions}{12}{subsubsection.2.3.1}
-\contentsline {subsubsection}{\numberline {2.3.2}Unconstrained Optimization}{13}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.2}Unconstrained Optimization}{14}{subsubsection.2.3.2}
 \contentsline {subsubsection}{\numberline {2.3.3}Langrangian Duality}{14}{subsubsection.2.3.3}
 \contentsline {subsubsection}{\numberline {2.3.4}Saddle Point Interpretation}{15}{subsubsection.2.3.4}
 \contentsline {subsubsection}{\numberline {2.3.5}KKT Conditions}{16}{subsubsection.2.3.5}
