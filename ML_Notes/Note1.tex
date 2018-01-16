@@ -384,7 +384,7 @@ We present some examples of Convex functions.
 \end{itemize}
 
 To check for convexity, we present first and second order conditions which are both necessary and sufficient:
-\begin{theorem}
+\begin{theorem}\label{eq:convex1st}
 	A function $f$ is convex if and only if dom($f$) is convex and $\forall x,y \in$dom($f$)
 	$$ f(y) \ge f(x) + \nabla f(x)^T(y-x)$$
 \end{theorem}
@@ -437,7 +437,7 @@ We call (\ref{eq:primal}) the \textbf{Primal Problem} and (\ref{eq:dual}) the \t
 Instead of minimizing $f_0$ using the primal we can maximize the lower bound $g$. This may be an easier problem since $g$ is always concave. It is clear that we always have \textbf{Weak Duality} $p^* \ge d^*$, although we want \textbf{Strong Duality}: $p^* = d^*$. A sufficient condition for strong duality is \textbf{Slater's Condition}.
 
 \begin{theorem}[Slater's Condition]
-	Suppose we have a convex primal, and that int($\mathcal{D}$) is non empty. If $\exists x \in$int($\mathcal{D}$) satisfying $f_1(x)<0, \cdots, f_m(x)<0$ and $h_1(x)=0, \cdots, h_p(x)=0$, we have strong duality. If any $f_i$ are affine, we only need them to satisfy $f_i(x)=0$.
+	Suppose we have a convex primal, and that int($\mathcal{D}$) is non empty. If $\exists x \in$int($\mathcal{D}$)\footnote{The conditions that int($\mathcal{D}$) is non empty and $\exists x \in$int($\mathcal{D}$) can be generalized to $\exists x \in$relint($\mathcal{D}$)} satisfying $f_1(x)<0, \cdots, f_m(x)<0$ and $h_1(x)=0, \cdots, h_p(x)=0$, we have strong duality. If any $f_i$ are affine, we only need them to satisfy $f_i(x)=0$.
 \end{theorem}
 \begin{proof}
 	Boyd section 5.3.2 \cite{Boyd:2004:CO:993483}
@@ -533,7 +533,7 @@ Let $x^*$ be the unique optima, then either:
 
 \subsection{Optimization Techniques}
 
-We will encounter scenerios where we cannot find an optimal solution using the techniques described above. In these cases we must use an Optimization Algorithm. Our basic set up is as follows: suppose we have an objective function $f(x)$ which we want to minimize over $x\in\mathbb{R}^d$, i.e. unconstrained optimization. We first describe \textbf{Newtons Method}, a second order method used for computing the MLE of the Logistic regression. We then describe a much more popular first order method - \textbf{Gradient Descent}. In both cases, our algorithm produces a sequence of iterates $\{x_t\}$ s.t. $x_t \rightarrow x^*$ for $x^*$ an optimal point.
+We will encounter scenerios where we cannot find an optimal solution using the techniques described above. In these cases we must use an Optimization Algorithm. Our basic set up is as follows: suppose we have an objective function $f(x)$ which we want to minimize over $x\in\mathbb{R}^d$, i.e. unconstrained optimization. We  describe two methods: a first order method -- \textbf{Gradient Descent}, and a second order method -- \textbf{Newtons Method}. In both cases, our algorithm produces a sequence of iterates $\{x_t\}$ s.t. (ideally) $x_t \rightarrow x^*$ for $x^*$ an optimal point.
 
 \subsubsection{Newtons Method}
 
@@ -549,14 +549,34 @@ The algorithm works as follows: given $x_t$, we look for $x_{t+1}$ which minimiz
 \end{align*}
 And we set $x_{t+1}=x$, and repeat iterating until convergence. Note that for each step, $Hf(x_t)^{-1}$. This operation has time complexity $O(d^3)$, which becomes prohibitive if $d$ is large.
 
-\newpage
-
 \subsubsection{Gradient Descent}
 
-We first describe a property of functions that will be needed. We say a function $f$ is $L$ \textbf{Lipschitz Continuous} if $$|f(x)-f(y)|=L||x-y||^2$$
-Such a function has the following property: $||\nabla_xf(x)||\le L$
+We first describe a property of functions that will be needed. We say a function $f$ is $L$ \textbf{Lipschitz Continuous} if 
+\begin{align}
+|f(x)-f(y)|=L||x-y||^2
+\end{align}
+Such a function has the following property: $||\nabla_xf(x)||\le L$. The Gradient Descent algorithm iterates in the following way, given $x_t$ set 
+\begin{align}\label{eq:gdeq}
+x_{t+1}=x_t-\gamma\nabla_x f(x_{t})
+\end{align}
+and iterate until convergence (or boredom). The motivation for this is to minimize a \emph{linear approximation} of $f$ -- the first order Taylor Expansion (contrast this with Newtons method). We call $\gamma$ the \textbf{Learning Rate}\footnote{This is also called the \textbf{Step Size} in Optimization}. The following theorem provides a way to choose the step size.
 
-Our algorithm iterates in the following way, given some $x_1$
+\begin{theorem}
+	Let $f$ be convex and $L$-Lipschitz then if we choose $\gamma=\frac{|| x_1 - x^*||}{L\sqrt{T}}$, we have that $$f\left( \frac{1}{T}\sum_{i=1}^T x_t \right) - f(x^*) \le \frac{||x_1 - x^*||L}{\sqrt{T}}$$
+\end{theorem}
+\begin{proof}
+	We use the convexity of $f$ and (\ref{eq:convex1st}) to get that:
+	\begin{align*}
+	f(x_t) - f(x^*) &\le \nabla_x f(x_t)^T(x_t-x^*)\\
+	&\overset{(a)}{=}-\frac{1}{\gamma}(x_{t+1}-x_t)^T(x_t-x^*)\\
+	&= \frac{1}{2\gamma}\Bigl( ||x_t-x^*||^2 - ||x_{t+1}-x^*||^2 + \gamma^2 || \nabla_x f(x_t) ||^2\Bigr)\\
+	&\overset{(b)}{=} \frac{1}{2\gamma}\Bigl( ||x_t-x^*||^2 - ||x_{t+1}-x^*||^2 \Bigr) + \frac{\gamma}{2}L^2\\
+	\end{align*}
+	where (a) follows by (\ref{eq:gdeq}) and (b) follows from the Lipschitz continuity of $f$. We denote
+\end{proof}
+
+
+
 
 \newpage
 
